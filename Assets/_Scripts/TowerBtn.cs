@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TowerBtn : MonoBehaviour {
 
+  
+
     [SerializeField]
     private GameObject towerPrefab;
     //returning prefab to other scripts
@@ -14,5 +16,14 @@ public class TowerBtn : MonoBehaviour {
             return towerPrefab;
         }
     }
-
+    // enabling icon sprites for each button
+    [SerializeField]
+    private Sprite sprite;
+    public Sprite Sprite
+    {
+        get
+        {
+            return sprite;
+        }
+    }
 }
