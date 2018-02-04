@@ -1,10 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TowerBtn : MonoBehaviour {
 
-  
+    [SerializeField]
+    private int price;
+
+    public int Price
+    {
+        get
+        {
+            return price;
+        }
+    }
+
+    [SerializeField]
+    private Text priceTxt;
 
     [SerializeField]
     private GameObject towerPrefab;
@@ -16,6 +29,7 @@ public class TowerBtn : MonoBehaviour {
             return towerPrefab;
         }
     }
+
     // enabling icon sprites for each button
     [SerializeField]
     private Sprite sprite;
@@ -25,5 +39,11 @@ public class TowerBtn : MonoBehaviour {
         {
             return sprite;
         }
+    }
+
+
+    private void Start()
+    {
+        priceTxt.text = Price + "$";
     }
 }
