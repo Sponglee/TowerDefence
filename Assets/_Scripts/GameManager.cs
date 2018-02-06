@@ -71,6 +71,7 @@ public class GameManager : Singleton<GameManager> {
             Currency -= ClickedBtn.Price;
             Hover.Instance.Deactivate();
             ClickedBtn = null;
+          
         }
      
     }

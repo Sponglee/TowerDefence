@@ -10,6 +10,8 @@ public class LevelManager : Singleton<LevelManager> {
     private GameObject bluePortalPref, redPortalPref;
     [SerializeField]
     private Transform map;
+
+    private Point mapSize;
     private Point blueSpawn, redSpawn;
     public Dictionary<Point, TileScript> Tiles { get; set; }
 
@@ -37,6 +39,7 @@ public class LevelManager : Singleton<LevelManager> {
         //Map size from Level.txt
         int mapX = mapData[0].ToCharArray().Length;
         int mapY = mapData.Length;
+        mapSize = new Point(mapData[0].ToCharArray().Length, mapData.Length);
 
         Vector3 worldStart = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height));
 
@@ -49,6 +52,7 @@ public class LevelManager : Singleton<LevelManager> {
             for (int x= 0; x<mapX; x++)
             {
                 PlaceTile(newTiles[x].ToString(), x, y, worldStart);
+            
             }
         }
     }
@@ -62,11 +66,19 @@ public class LevelManager : Singleton<LevelManager> {
         //Instantiating TileScript to each component
         TileScript newTile = Instantiate(tiles[tileIndex]).GetComponent<TileScript>();
 
+        //Checks if tile is a road(Walkable) or not and sets it in 
+        //Walkable property for TileScript instance
+        if (tileIndex != 4)
+        {
+            newTile.WalkAble = false;
+        }
+        else
+            newTile.WalkAble = true;
         //Moving tile to it's place
         newTile.transform.position = new Vector2(worldStart.x + TileSize * x + TileSize/2, worldStart.y - TileSize* y - TileSize/2);
         newTile.Setup(new Point(x, y), newTile.transform.position = new Vector2(worldStart.x + TileSize * x + TileSize / 2, worldStart.y - TileSize * y - TileSize / 2), map);
 
-        //Updating the dictionary
+       
    
     }
 
@@ -85,5 +97,10 @@ public class LevelManager : Singleton<LevelManager> {
         redSpawn = new Point(12, 8);
         Instantiate(bluePortalPref, Tiles[blueSpawn].GetComponent<TileScript>().WorldPosition, Quaternion.Euler(Vector3.forward * -90));
         Instantiate(redPortalPref, Tiles[redSpawn].GetComponent<TileScript>().WorldPosition, Quaternion.Euler(Vector3.forward * -90));
+    }
+
+    public bool InBounds(Point position)
+    {
+        return position.X >= 0 && position.Y >= 0 && position.X <= mapSize.X & position.Y <= mapSize.Y;
     }
 }
