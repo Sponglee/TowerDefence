@@ -75,7 +75,7 @@ public class LevelManager : Singleton<LevelManager> {
         else
             newTile.WalkAble = true;
         //Moving tile to it's place
-        newTile.transform.position = new Vector2(worldStart.x + TileSize * x + TileSize/2, worldStart.y - TileSize* y - TileSize/2);
+        newTile.transform.position = new Vector2(worldStart.x + TileSize * x + TileSize/2, worldStart.y - TileSize * y - TileSize/2 );
         newTile.Setup(new Point(x, y), newTile.transform.position = new Vector2(worldStart.x + TileSize * x + TileSize / 2, worldStart.y - TileSize * y - TileSize / 2), map);
 
        
@@ -93,8 +93,9 @@ public class LevelManager : Singleton<LevelManager> {
     // Add portals to the grid
     private void SpawnPortals()
     {
-        blueSpawn = new Point(0, 1);
-        redSpawn = new Point(12, 8);
+        Camera.main.transform.Translate(Vector3.up*0.65f);
+        blueSpawn = new Point(1, 1);
+        redSpawn = new Point(13, 8);
         Instantiate(bluePortalPref, Tiles[blueSpawn].GetComponent<TileScript>().WorldPosition, Quaternion.Euler(Vector3.forward * -90));
         Instantiate(redPortalPref, Tiles[redSpawn].GetComponent<TileScript>().WorldPosition, Quaternion.Euler(Vector3.forward * -90));
     }

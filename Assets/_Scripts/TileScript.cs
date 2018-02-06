@@ -17,8 +17,7 @@ public class TileScript : MonoBehaviour {
     public bool IsEmpty { get; private set; }
 
  
-    //property to be used in other scripts
-    public SpriteRenderer SpriteRenderer { get; set; }
+
 
     public bool Debugging{ get; set; }
 
@@ -28,13 +27,17 @@ public class TileScript : MonoBehaviour {
     private Color32 fullColor = new Color32(255, 0, 0, 255);
     private Color32 emptyColor = new Color32(96, 255, 90, 255);
 
-    
-    public void Start()
-    {
-       SpriteRenderer = GetComponent<SpriteRenderer>();
-    }
+    //Sprite renderer variable
+    private SpriteRenderer spriteRenderer;
 
     public bool WalkAble { get; set; }
+
+    public void Start()
+    {
+       spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+  
 
     //Setting up a grid values for Tile
     public void Setup(Point gridPos, Vector3 worldPos, Transform parent)
@@ -42,6 +45,9 @@ public class TileScript : MonoBehaviour {
         IsEmpty = true;
         this.GridPosition = gridPos;
         transform.position = worldPos;
+        //
+        Debug.Log(transform.position);
+        //
         transform.SetParent(parent);
         LevelManager.Instance.Tiles.Add(gridPos, this);
     }
@@ -54,9 +60,9 @@ public class TileScript : MonoBehaviour {
             {
                 
                 if (IsEmpty && !Debugging && !WalkAble)
-                        SpriteRenderer.color = emptyColor;
+                        spriteRenderer.color = emptyColor;
                 if ((!IsEmpty && !Debugging) || (WalkAble && !Debugging))
-                   SpriteRenderer.color = fullColor;
+                   spriteRenderer.color = fullColor;
                 else if (Input.GetMouseButtonDown(0))
                     PlaceTower();
             }   
@@ -65,7 +71,7 @@ public class TileScript : MonoBehaviour {
     private void OnMouseExit()
     {
         if (!Debugging)
-          SpriteRenderer.color = Color.white;
+         spriteRenderer.color = Color.white;
     }
 
 
@@ -75,12 +81,13 @@ public class TileScript : MonoBehaviour {
             // Instantiate tower on gridTile where mouse coursor is
             
             GameObject tower = (GameObject)Instantiate(GameManager.Instance.ClickedBtn.TowerPrefab, transform.position, Quaternion.identity);
-            tower.GetComponent<SpriteRenderer>().sortingOrder = GridPosition.Y;
+            
+            tower.GetComponent<SpriteRenderer>().sortingOrder = GridPosition.Y+1;
             tower.transform.SetParent(transform);
             GameManager.Instance.BuyTower();
             WalkAble = false;
             IsEmpty = false;
-            SpriteRenderer.color = Color.white;
+            spriteRenderer.color = Color.white;
 
 
 
