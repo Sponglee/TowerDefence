@@ -45,9 +45,6 @@ public class TileScript : MonoBehaviour {
         IsEmpty = true;
         this.GridPosition = gridPos;
         transform.position = worldPos;
-        //
-        Debug.Log(transform.position);
-        //
         transform.SetParent(parent);
         LevelManager.Instance.Tiles.Add(gridPos, this);
     }
@@ -62,7 +59,7 @@ public class TileScript : MonoBehaviour {
                 if (IsEmpty && !Debugging && !WalkAble)
                         spriteRenderer.color = emptyColor;
                 if ((!IsEmpty && !Debugging) || (WalkAble && !Debugging))
-                   spriteRenderer.color = fullColor;
+                spriteRenderer.color = fullColor;
                 else if (Input.GetMouseButtonDown(0))
                     PlaceTower();
             }   

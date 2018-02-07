@@ -21,7 +21,7 @@ public class AStarDebugger : MonoBehaviour {
 
         if(Input.GetKeyDown(KeyCode.Space))
             {
-                AStar.GetPath(start.GridPosition);
+                AStar.GetPath(start.GridPosition, goal.GridPosition);
             }
     }
     private void ClickTile()
@@ -57,33 +57,42 @@ public class AStarDebugger : MonoBehaviour {
     }
 
 
-    private void CreateDebugTile(Vector3 worldPos, Color32 color)
-    {
-        GameObject debugTile = Instantiate(debugTilePrefab, worldPos, Quaternion.identity);
-        debugTile.GetComponent<SpriteRenderer>().color = color;
-
-    }
 
     //Debug path for closed list
-    public void DebugPath(HashSet<Node>openList, HashSet<Node> closedList)
+    public void DebugPath(HashSet<Node>openList, HashSet<Node> closedList, Stack<Node> path)
     {
         //Open list loop
         foreach (Node node in openList)
         {
-            if (node.TileRef != start)
+            if (node.TileRef != start && node.TileRef != goal)//color neighbours
             {
-              CreateDebugTile(node.TileRef.WorldPosition, new Color32(0, 132,255 , 255));
+              CreateDebugTile(node.TileRef.WorldPosition, new Color32(0, 132,255 , 255), node);
             }
-            //show arrow to parent node
+            //Point arrow to parent node
             PointToParent(node, node.TileRef.WorldPosition);
         }
         // Closed list loop
-        foreach (Node node in closedList)
+        foreach (Node node in closedList)//Color closed list blue
         {
-            if (node.TileRef != start && node.TileRef != goal)
+            if (node.TileRef != start && node.TileRef != goal && path.Contains(node))
             {
-               CreateDebugTile(node.TileRef.WorldPosition, new Color32(0, 0, 255, 255));
+               
+                CreateDebugTile(node.TileRef.WorldPosition, new Color32(0, 0, 255, 255),node);
+                //show arrow to parent node
+                PointToParent(node, node.TileRef.WorldPosition);
             }
+        }
+        
+        foreach(Node node in path)
+        {
+            if (node.TileRef != start && node.TileRef != goal)//Color path Green
+            {
+                
+                CreateDebugTile(node.TileRef.WorldPosition, new Color32(0, 255, 0, 255), node);
+                
+            }
+               
+
         }
     }
 
@@ -139,5 +148,20 @@ public class AStarDebugger : MonoBehaviour {
         }
     }
 
-   
+
+
+    private void CreateDebugTile(Vector3 worldPos, Color32 color, Node node=null)
+    {
+        GameObject debugTile = (GameObject) Instantiate(debugTilePrefab, worldPos, Quaternion.identity);
+        debugTile.transform.position = worldPos;
+        if (node !=null)
+        {
+            DebugTile tmp = debugTile.GetComponent<DebugTile>();
+            tmp.G.text += node.G;
+            tmp.H.text += node.H;
+            tmp.F.text += node.F;
+        }
+        debugTile.GetComponent<SpriteRenderer>().color = color;
+
+    }
 }
