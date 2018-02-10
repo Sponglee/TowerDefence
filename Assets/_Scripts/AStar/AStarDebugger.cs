@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class AStarDebugger : MonoBehaviour {
     [SerializeField]
-    private TileScript goal,start;
+    private TileScript goal;
+    [SerializeField]
+    private TileScript start;
     [SerializeField]
     private Sprite blankTile;
     //arrow for parent
@@ -19,21 +21,23 @@ public class AStarDebugger : MonoBehaviour {
     {
         ClickTile();
 
-        if(Input.GetKeyDown(KeyCode.Space))
-            {
-                AStar.GetPath(start.GridPosition, goal.GridPosition);
-            }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            AStar.GetPath(start.GridPosition, goal.GridPosition);
+        }
     }
+
+    //Pick start and end for pathfinding
     private void ClickTile()
     {
         if (Input.GetMouseButtonDown(2))
         {
-            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero); 
+            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
-            if(hit.collider != null)
+            if (hit.collider != null)
             {
                 TileScript tmp = hit.collider.GetComponent<TileScript>();
-                Debug.Log(tmp.WorldPosition);
+                
                 if (tmp != null)
                 {
                     if (start == null)
@@ -47,13 +51,14 @@ public class AStarDebugger : MonoBehaviour {
                     {
                         goal = tmp;
                         CreateDebugTile(goal.WorldPosition, new Color32(255, 0, 0, 255));
-                      
+
                     }
 
                 }
             }
 
         }
+     
     }
 
 

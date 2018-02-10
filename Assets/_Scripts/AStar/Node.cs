@@ -10,6 +10,8 @@ public class Node
 
     public TileScript TileRef{ get; private  set; }
 
+    public Vector2 WorldPosition { get; set; }
+
     //property for parent node 
     public Node Parent { get; private set; }
 
@@ -22,8 +24,9 @@ public class Node
 
     public Node(TileScript tileRef)
     {
-        this.TileRef = tileRef;
-        this.GridPosition = tileRef.GridPosition;
+        TileRef = tileRef;
+        GridPosition = tileRef.GridPosition;
+        WorldPosition = tileRef.WorldPosition;
     }
 
 

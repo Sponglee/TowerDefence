@@ -16,14 +16,16 @@ public static class AStar
         foreach (TileScript tile in LevelManager.Instance.Tiles.Values)
         {
             nodes.Add(tile.GridPosition, new Node(tile));
+            Debug.Log(nodes.Count);
         }
     }
 
     //Create a list of nodes for AStar
-    public static void GetPath(Point start, Point goal)
+    public static Stack<Node> GetPath(Point start, Point goal)
     {
         if (nodes == null)
         {
+            Debug.Log("NO NODES");
             CreateNodes();
         }
 
@@ -63,10 +65,10 @@ public static class AStar
                         else
                         {
                         //Add this if Towers can be places on road tiles (see TileScript.cs)
-                           /* if(!ConnectedDiagonally(currentNode, nodes[neighbourPos]))
-                            {
+                           if(!ConnectedDiagonally(currentNode, nodes[neighbourPos]))
+                           {
                                 continue;
-                            }*/
+                           }
                             gCost = 14;
                         }
                           
@@ -98,6 +100,7 @@ public static class AStar
             //5,8 Moves current node from openList to closedList
             openList.Remove(currentNode);
             closedList.Add(currentNode);
+           
 
             //7. Sort the list and select lowest
             if (openList.Count > 0)
@@ -108,21 +111,24 @@ public static class AStar
 
             //11 Exit if we found the goal
             if (currentNode == nodes[goal])
+
             {
                 while(currentNode.GridPosition != start)
                 {
                      finalPath.Push(currentNode);
+                    
                      currentNode = currentNode.Parent;
                 }
                 break;
             }
         }
-     
+
+        
         //****ONLY FOR DEBUGGING*****//
         GameObject.Find("AStarDebugger").GetComponent<AStarDebugger>().DebugPath(openList, closedList, finalPath);
 
-
-       
+     
+        return finalPath;
     }
     //Checking if path cuts a corner (NOT needed for current version of game Rules
 
@@ -135,13 +141,20 @@ public static class AStar
         Point direction = neighbour.GridPosition - currentNode.GridPosition;
 
         Point first = new Point(currentNode.GridPosition.X + direction.X, currentNode.GridPosition.Y + direction.Y);
+       
         Point second = new Point(currentNode.GridPosition.X, currentNode.GridPosition.Y + direction.Y);
+
+        Point third = new Point(currentNode.GridPosition.X+direction.X, currentNode.GridPosition.Y);
 
         if (LevelManager.Instance.InBounds(first) && !LevelManager.Instance.Tiles[first].WalkAble)
         {
             return false;
         }
         if (LevelManager.Instance.InBounds(second) && !LevelManager.Instance.Tiles[second].WalkAble)
+        {
+            return false;
+        }
+        if (LevelManager.Instance.InBounds(third) && !LevelManager.Instance.Tiles[third].WalkAble)
         {
             return false;
         }

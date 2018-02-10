@@ -11,6 +11,8 @@ public class GameManager : Singleton<GameManager> {
     [SerializeField]
     private Text currencyTxt;
 
+    // Create monster object pool
+    public ObjectPool Pool { get; set; }
     //incapsulation of currency with property
     public int Currency
     {
@@ -30,6 +32,10 @@ public class GameManager : Singleton<GameManager> {
     // property to access this from other scripts
     public TowerBtn ClickedBtn { get; set; }
 
+    private void Awake()
+    {
+        Pool = GetComponent<ObjectPool>();
+    }
     // Use this for initialization
     void Start ()
     {
@@ -76,6 +82,32 @@ public class GameManager : Singleton<GameManager> {
      
     }
 
+    //Spawn waves of monsters
+    public void StartWave()
+    {
+        StartCoroutine (SpawnWave());
 
-    
+    }
+   
+   private IEnumerator SpawnWave()
+    {
+        LevelManager.Instance.GeneratePath();
+       
+        int monsterIndex = Random.Range(0, 2);
+        string type = string.Empty;
+        switch(monsterIndex)
+        {
+            case 0:
+                type = "orc";
+                break;
+            case 1:
+                type = "goblin";
+                break;
+        }
+        //Grab Monster script from monster spawn and spawn it on portal
+        Monster monster = Pool.GetObject(type).GetComponent<Monster>();
+        monster.Spawn();
+
+        yield return new WaitForSeconds(2.5f);
+    }
 }

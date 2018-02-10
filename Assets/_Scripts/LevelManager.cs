@@ -12,7 +12,26 @@ public class LevelManager : Singleton<LevelManager> {
     private Transform map;
 
     private Point mapSize;
-    private Point blueSpawn, redSpawn;
+   
+    public Point blueSpawn, redSpawn;
+
+    public Portal BluePortal{ get; set; }
+    
+   
+    //Path for AStar
+    private Stack<Node> path;
+    public Stack<Node> Path
+    {
+        get
+        {
+            if (path == null)
+            {
+                Debug.Log("LEvelManager.path is null");
+                GeneratePath();
+            }
+            return new Stack<Node>(new Stack<Node>(path));
+        }
+    }
     public Dictionary<Point, TileScript> Tiles { get; set; }
 
     //Get size of a Tile for further calculations
@@ -96,12 +115,21 @@ public class LevelManager : Singleton<LevelManager> {
         Camera.main.transform.Translate(Vector3.up*0.65f);
         blueSpawn = new Point(1, 1);
         redSpawn = new Point(13, 8);
-        Instantiate(bluePortalPref, Tiles[blueSpawn].GetComponent<TileScript>().WorldPosition, Quaternion.Euler(Vector3.forward * -90));
+        GameObject tmp = Instantiate(bluePortalPref, Tiles[blueSpawn].GetComponent<TileScript>().WorldPosition, Quaternion.Euler(Vector3.forward * -90));
+        BluePortal = tmp.GetComponent<Portal>();
+        BluePortal.name = "BluePortal";
+
         Instantiate(redPortalPref, Tiles[redSpawn].GetComponent<TileScript>().WorldPosition, Quaternion.Euler(Vector3.forward * -90));
     }
 
     public bool InBounds(Point position)
     {
         return position.X >= 0 && position.Y >= 0 && position.X <= mapSize.X & position.Y <= mapSize.Y;
+    }
+
+    public void GeneratePath()
+    {
+        path = AStar.GetPath(blueSpawn, redSpawn);
+        Debug.Log("GETPATH: " + path.Count);
     }
 }

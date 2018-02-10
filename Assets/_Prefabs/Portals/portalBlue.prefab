@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4785653584652252}
   - component: {fileID: 212696505634655970}
   - component: {fileID: 95720055689591806}
+  - component: {fileID: 114064408250082658}
   m_Layer: 0
   m_Name: portalBlue
   m_TagString: Untagged
@@ -58,6 +59,17 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114064408250082658
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1123442704115244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19aef9ca7ac3fc34ea04a5cb92e4304e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212696505634655970
 SpriteRenderer:
   m_ObjectHideFlags: 1
