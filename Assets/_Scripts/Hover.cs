@@ -33,7 +33,8 @@ public class Hover : Singleton<Hover> {
     {
         spriteRenderer.enabled = true;
         this.spriteRenderer.sprite = sprite;
-        
+       
+
     }
 
     //Discard icon

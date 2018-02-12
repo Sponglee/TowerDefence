@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AStarDebugger : MonoBehaviour {
+public class AStarDebugger : MonoBehaviour
+{
     [SerializeField]
     private TileScript goal;
     [SerializeField]
@@ -12,7 +13,7 @@ public class AStarDebugger : MonoBehaviour {
     //arrow for parent
     [SerializeField]
     private GameObject arrowPrefab;
-    
+
     //Debug tile for debug layer
     [SerializeField]
     private GameObject debugTilePrefab;
@@ -37,7 +38,7 @@ public class AStarDebugger : MonoBehaviour {
             if (hit.collider != null)
             {
                 TileScript tmp = hit.collider.GetComponent<TileScript>();
-                
+
                 if (tmp != null)
                 {
                     if (start == null)
@@ -58,20 +59,20 @@ public class AStarDebugger : MonoBehaviour {
             }
 
         }
-     
+
     }
 
 
 
     //Debug path for closed list
-    public void DebugPath(HashSet<Node>openList, HashSet<Node> closedList, Stack<Node> path)
+    public void DebugPath(HashSet<Node> openList, HashSet<Node> closedList, Stack<Node> path)
     {
         //Open list loop
         foreach (Node node in openList)
         {
             if (node.TileRef != start && node.TileRef != goal)//color neighbours
             {
-              CreateDebugTile(node.TileRef.WorldPosition, new Color32(0, 132,255 , 255), node);
+                CreateDebugTile(node.TileRef.WorldPosition, new Color32(0, 132, 255, 255), node);
             }
             //Point arrow to parent node
             PointToParent(node, node.TileRef.WorldPosition);
@@ -81,31 +82,31 @@ public class AStarDebugger : MonoBehaviour {
         {
             if (node.TileRef != start && node.TileRef != goal && path.Contains(node))
             {
-               
-                CreateDebugTile(node.TileRef.WorldPosition, new Color32(0, 0, 255, 255),node);
+
+                CreateDebugTile(node.TileRef.WorldPosition, new Color32(0, 0, 255, 255), node);
                 //show arrow to parent node
                 PointToParent(node, node.TileRef.WorldPosition);
             }
         }
-        
-        foreach(Node node in path)
+
+        foreach (Node node in path)
         {
             if (node.TileRef != start && node.TileRef != goal)//Color path Green
             {
-                
+
                 CreateDebugTile(node.TileRef.WorldPosition, new Color32(0, 255, 0, 255), node);
-                
+
             }
-               
+
 
         }
     }
 
-   
+
     private void PointToParent(Node node, Vector2 position)
     {
         if (node.Parent != null)
-        { 
+        {
             GameObject arrow = GameObject.Instantiate(arrowPrefab, position, Quaternion.identity);
             arrow.GetComponent<SpriteRenderer>().sortingOrder = 3;
             //Point to the Right
@@ -114,30 +115,30 @@ public class AStarDebugger : MonoBehaviour {
                 arrow.transform.eulerAngles = new Vector3(0, 0, 0);
             }
             //Top right
-            else if ((node.GridPosition.X<node.Parent.GridPosition.X)&&(node.GridPosition.Y>node.Parent.GridPosition.Y))
+            else if ((node.GridPosition.X < node.Parent.GridPosition.X) && (node.GridPosition.Y > node.Parent.GridPosition.Y))
             {
-                arrow.transform.eulerAngles = new Vector3(0, 0, -135+180);
+                arrow.transform.eulerAngles = new Vector3(0, 0, -135 + 180);
             }
             //Up
             else if ((node.GridPosition.X == node.Parent.GridPosition.X) && (node.GridPosition.Y > node.Parent.GridPosition.Y))
             {
-                arrow.transform.eulerAngles = new Vector3(0, 0, -90+180);
+                arrow.transform.eulerAngles = new Vector3(0, 0, -90 + 180);
             }
             //Top left
             else if ((node.GridPosition.X > node.Parent.GridPosition.X) && (node.GridPosition.Y > node.Parent.GridPosition.Y))
             {
-                arrow.transform.eulerAngles = new Vector3(0, 0, -45+180);
+                arrow.transform.eulerAngles = new Vector3(0, 0, -45 + 180);
             }
             //Down
             else if ((node.GridPosition.X == node.Parent.GridPosition.X) && (node.GridPosition.Y < node.Parent.GridPosition.Y))
             {
-                arrow.transform.eulerAngles = new Vector3(0, 0, 90+180);
+                arrow.transform.eulerAngles = new Vector3(0, 0, 90 + 180);
             }
-           
+
             //Bottom right
             else if ((node.GridPosition.X < node.Parent.GridPosition.X) && (node.GridPosition.Y < node.Parent.GridPosition.Y))
             {
-                arrow.transform.eulerAngles = new Vector3(0, 0, 135+180);
+                arrow.transform.eulerAngles = new Vector3(0, 0, 135 + 180);
             }
             // Left
             else if ((node.GridPosition.X > node.Parent.GridPosition.X) && (node.GridPosition.Y == node.Parent.GridPosition.Y))
@@ -147,7 +148,7 @@ public class AStarDebugger : MonoBehaviour {
             //Bottom left
             else if ((node.GridPosition.X > node.Parent.GridPosition.X) && (node.GridPosition.Y < node.Parent.GridPosition.Y))
             {
-                arrow.transform.eulerAngles = new Vector3(0, 0, 45+180);
+                arrow.transform.eulerAngles = new Vector3(0, 0, 45 + 180);
             }
 
         }
@@ -155,11 +156,11 @@ public class AStarDebugger : MonoBehaviour {
 
 
 
-    private void CreateDebugTile(Vector3 worldPos, Color32 color, Node node=null)
+    private void CreateDebugTile(Vector3 worldPos, Color32 color, Node node = null)
     {
-        GameObject debugTile = (GameObject) Instantiate(debugTilePrefab, worldPos, Quaternion.identity);
+        GameObject debugTile = (GameObject)Instantiate(debugTilePrefab, worldPos, Quaternion.identity);
         debugTile.transform.position = worldPos;
-        if (node !=null)
+        if (node != null)
         {
             DebugTile tmp = debugTile.GetComponent<DebugTile>();
             tmp.G.text += node.G;
@@ -169,4 +170,7 @@ public class AStarDebugger : MonoBehaviour {
         debugTile.GetComponent<SpriteRenderer>().color = color;
 
     }
+
+  
+
 }

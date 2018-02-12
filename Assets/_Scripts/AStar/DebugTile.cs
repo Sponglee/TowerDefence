@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class DebugTile : MonoBehaviour
 {
     [SerializeField]
-    private Text f, g, h;
+    private Text f, g, h, grid;
 
     
     public Text F
@@ -50,6 +50,21 @@ public class DebugTile : MonoBehaviour
         set
         {
             h = value;
+        }
+    }
+
+    public Text Grid
+    {
+        get
+        {
+            grid.gameObject.SetActive(true);
+            return grid;
+        }
+
+        set
+        {
+
+            grid = value;
         }
     }
 }

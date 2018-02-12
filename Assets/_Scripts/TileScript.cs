@@ -31,6 +31,7 @@ public class TileScript : MonoBehaviour {
     private SpriteRenderer spriteRenderer;
 
     public bool WalkAble { get; set; }
+    public bool Enemy { get; set; }
 
     public void Start()
     {
@@ -56,9 +57,9 @@ public class TileScript : MonoBehaviour {
         if (!EventSystem.current.IsPointerOverGameObject() && GameManager.Instance.ClickedBtn != null )
             {
                 
-                if (IsEmpty && !Debugging && !WalkAble)
+                if (IsEmpty && !Debugging && WalkAble )
                         spriteRenderer.color = emptyColor;
-                if ((!IsEmpty && !Debugging) || (WalkAble && !Debugging))
+                if ((!IsEmpty && !Debugging) /*|| (WalkAble && !Debugging)*/)
                 spriteRenderer.color = fullColor;
                 else if (Input.GetMouseButtonDown(0))
                     PlaceTower();
@@ -83,6 +84,7 @@ public class TileScript : MonoBehaviour {
             tower.transform.SetParent(transform);
             GameManager.Instance.BuyTower();
             WalkAble = false;
+            Enemy = true;
             IsEmpty = false;
             spriteRenderer.color = Color.white;
 

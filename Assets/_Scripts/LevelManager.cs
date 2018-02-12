@@ -16,9 +16,10 @@ public class LevelManager : Singleton<LevelManager> {
     public Point blueSpawn, redSpawn;
 
     public Portal BluePortal{ get; set; }
-    
-   
+
+
     //Path for AStar
+  
     private Stack<Node> path;
     public Stack<Node> Path
     {
@@ -26,7 +27,7 @@ public class LevelManager : Singleton<LevelManager> {
         {
             if (path == null)
             {
-                Debug.Log("LEvelManager.path is null");
+                Debug.Log("HEY! PATH IS NULL");
                 GeneratePath();
             }
             return new Stack<Node>(new Stack<Node>(path));
@@ -129,7 +130,17 @@ public class LevelManager : Singleton<LevelManager> {
 
     public void GeneratePath()
     {
+        // case when there's clear path to redSpawn
         path = AStar.GetPath(blueSpawn, redSpawn);
-        Debug.Log("GETPATH: " + path.Count);
+        if (path.Count == 0)
+        {
+            //If path to redSpawn is unreachable turn on "NEW GoAL" mode to get to random obstacle
+            Debug.Log("NEW PATH");
+            AStar.NewGoal = true;
+            int rng = UnityEngine.Random.Range(0, AStar.Obstacles.Count-1);
+            Point tmp = AStar.Obstacles[rng].GridPosition;
+            Debug.Log("NEW GOAL: " + tmp.X + " " + tmp.Y);
+            path = AStar.GetPath(blueSpawn, tmp);
+        }
     }
 }

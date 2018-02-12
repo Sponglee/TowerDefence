@@ -25,9 +25,9 @@ public class Monster : MonoBehaviour {
     {
         transform.position = LevelManager.Instance.BluePortal.transform.position;
         StartCoroutine(Scale(new Vector3(0.1f,0.1f,0.1f), new Vector3(0.3f,0.3f,0.1f)));
-        Debug.Log("PATH BEFORE SETPATH: " + LevelManager.Instance.Path.Count);
+
+    
         SetPath(LevelManager.Instance.Path);
-      
     }
 
     public IEnumerator Scale (Vector3 from, Vector3 to)
@@ -53,10 +53,10 @@ public class Monster : MonoBehaviour {
 
             if (transform.position == destination)
             {
-                Debug.Log("Reached "+ path);
+               
                 if (path != null && path.Count > 0)
                 {
-                    Debug.Log("Setting path to " + path);
+                    
                     GridPosition = path.Peek().GridPosition;
                     destination = path.Pop().WorldPosition;
                 }
@@ -68,17 +68,18 @@ public class Monster : MonoBehaviour {
 
     private void SetPath(Stack<Node> newPath)
     {
-        Debug.Log("SET PATH: ");
+      
         if (newPath != null)
         {
             path = newPath;
-            Debug.Log(path.Count);
+            
             if (path.Count>0)
             {
-                Debug.Log("PATH NOT EMPTY");
+               
                 GridPosition = path.Peek().GridPosition;
                 destination = path.Pop().WorldPosition;
             }
+           
            
         }
     }

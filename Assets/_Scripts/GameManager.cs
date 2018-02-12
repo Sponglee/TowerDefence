@@ -8,6 +8,10 @@ public class GameManager : Singleton<GameManager> {
     //money
     private int currency;
 
+
+  
+  
+
     [SerializeField]
     private Text currencyTxt;
 
@@ -92,21 +96,21 @@ public class GameManager : Singleton<GameManager> {
    private IEnumerator SpawnWave()
     {
         LevelManager.Instance.GeneratePath();
-       
-        int monsterIndex = Random.Range(0, 2);
-        string type = string.Empty;
-        switch(monsterIndex)
-        {
-            case 0:
-                type = "orc";
-                break;
-            case 1:
-                type = "goblin";
-                break;
-        }
-        //Grab Monster script from monster spawn and spawn it on portal
-        Monster monster = Pool.GetObject(type).GetComponent<Monster>();
-        monster.Spawn();
+        
+            int monsterIndex = Random.Range(0, 2);
+            string type = string.Empty;
+            switch(monsterIndex)
+            {
+                case 0:
+                    type = "orc";
+                    break;
+                case 1:
+                    type = "goblin";
+                    break;
+            }
+            //Grab Monster script from monster spawn and spawn it on portal
+            Monster monster = Pool.GetObject(type).GetComponent<Monster>();
+            monster.Spawn();
 
         yield return new WaitForSeconds(2.5f);
     }
