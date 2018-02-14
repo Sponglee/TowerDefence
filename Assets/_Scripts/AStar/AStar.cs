@@ -45,7 +45,6 @@ public static class AStar
         obstacles = new List<Node>();
     
 
-        Debug.Log("Start of GetPath");
         if (nodes == null)
         {
             CreateNodes();
@@ -110,12 +109,11 @@ public static class AStar
                             neighbour.CalcValues(currentNode, nodes[goal], gCost); //9.3
                         }
                     }
-                    // Add any obstacle to list(stack atm)
+                    // Add any obstacle to list
                     else if (LevelManager.Instance.Tiles[neighbourPos].Enemy)
                     {
                         Node neighbour = nodes[neighbourPos];
-                        Debug.Log("THIS NODE: " + currentNode.GridPosition.X + " " + currentNode.GridPosition.Y);
-                        Debug.Log("PUSHING A NEIGHBOUR: " + neighbour.GridPosition.X + " " + neighbour.GridPosition.Y);
+                      
                   
                        obstacles.Add(neighbour);
                   
@@ -141,7 +139,7 @@ public static class AStar
             {
                 //Path is clear
                 NewGoal = false;
-                Debug.Log("REACHING LE GOAL : " + currentNode.GridPosition.X + " " + currentNode.GridPosition.Y);
+
                 while (currentNode.GridPosition != start)
                 {
                     finalPath.Push(currentNode);
@@ -150,17 +148,14 @@ public static class AStar
                 }
                 break;
             }
-
-
             //if we didn't exit - push new goal to finalPath(cause can't reach Obstacle (unwalkable))
-
-            else if (NewGoal == true && obstacles.Contains(nodes[goal]))
+            else if (NewGoal == true)
             {
-                                                                                       /* if (Math.Abs(currentNode.GridPosition.X - nodes[goal].GridPosition.X) <= 1
-                                                                                            && Math.Abs(currentNode.GridPosition.Y - nodes[goal].GridPosition.Y) <= 1)
-                                                                                        */
-                    Debug.Log("WHAT TO DO");
-                    Debug.Log(currentNode.GridPosition.X + " " + currentNode.GridPosition.Y);
+                if (Math.Abs(currentNode.GridPosition.X - nodes[goal].GridPosition.X) <= 1
+                        && Math.Abs(currentNode.GridPosition.Y - nodes[goal].GridPosition.Y) <= 1
+                        && LevelManager.Instance.Tiles[currentNode.GridPosition].WalkAble)
+                { 
+
                     while (currentNode.GridPosition != start)
                     {
                         finalPath.Push(currentNode);
@@ -168,7 +163,7 @@ public static class AStar
                         currentNode = currentNode.Parent;
                     }
                     break;
-              
+                }
             }
         }
 
@@ -179,8 +174,8 @@ public static class AStar
             return finalPath;
         else
         {
-
-            //finalPath.Clear();
+            NewGoal = true;
+            
             return finalPath;
         }
             

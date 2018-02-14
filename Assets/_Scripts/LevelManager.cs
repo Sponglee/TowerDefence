@@ -27,7 +27,7 @@ public class LevelManager : Singleton<LevelManager> {
         {
             if (path == null)
             {
-                Debug.Log("HEY! PATH IS NULL");
+              
                 GeneratePath();
             }
             return new Stack<Node>(new Stack<Node>(path));
@@ -132,15 +132,30 @@ public class LevelManager : Singleton<LevelManager> {
     {
         // case when there's clear path to redSpawn
         path = AStar.GetPath(blueSpawn, redSpawn);
-        if (path.Count == 0)
+        if (AStar.NewGoal)
         {
             //If path to redSpawn is unreachable turn on "NEW GoAL" mode to get to random obstacle
-            Debug.Log("NEW PATH");
-            AStar.NewGoal = true;
-            int rng = UnityEngine.Random.Range(0, AStar.Obstacles.Count-1);
+          
+
+            int rng = UnityEngine.Random.Range(0, (AStar.Obstacles.Count));
             Point tmp = AStar.Obstacles[rng].GridPosition;
-            Debug.Log("NEW GOAL: " + tmp.X + " " + tmp.Y);
-            path = AStar.GetPath(blueSpawn, tmp);
+            Debug.Log(rng);
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int y = -1; y <= 1; y++)
+                {
+                    Point neighbourPos = new Point(tmp.X - x, tmp.Y - y);
+                    // Inbounds checks "offgrid" cases and Walkables
+                    if (LevelManager.Instance.InBounds(neighbourPos) && LevelManager.Instance.Tiles[neighbourPos].WalkAble
+                        && neighbourPos != tmp)
+                    {
+                        
+                        path = AStar.GetPath(blueSpawn, tmp);
+                        
+                    }
+                }
+            }
+           
         }
     }
 }
