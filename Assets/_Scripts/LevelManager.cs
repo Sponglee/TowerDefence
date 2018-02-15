@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelManager : Singleton<LevelManager> {
+
     [SerializeField]
     private GameObject[] tiles;
     [SerializeField]
@@ -13,42 +14,51 @@ public class LevelManager : Singleton<LevelManager> {
 
     private Point mapSize;
    
-    public Point blueSpawn, redSpawn;
+    public Point redSpawn;
 
     public Portal BluePortal{ get; set; }
 
+    public Dictionary<Point, TileScript> Tiles { get; set; }
 
     //Path for AStar
-  
     private Stack<Node> path;
+
+    private Point blueSpawn;
+
+    public Point BlueSpawn
+    {
+        get
+        {
+            return blueSpawn;
+        }
+    }
     public Stack<Node> Path
     {
         get
         {
             if (path == null)
-            {
-              
+            { 
                 GeneratePath();
             }
             return new Stack<Node>(new Stack<Node>(path));
         }
     }
-    public Dictionary<Point, TileScript> Tiles { get; set; }
-
+  
     //Get size of a Tile for further calculations
     public float TileSize
     {
         get { return tiles[0].GetComponent<SpriteRenderer>().sprite.bounds.size.x; }
     }
 
+  
+
     // Use this for initialization
-    void Start () {
-      
+    void Start ()
+    { 
         InitializeLevel();
         SpawnPortals();
 	}
     
-
     // Create a level
     private void InitializeLevel()
     {
@@ -72,7 +82,6 @@ public class LevelManager : Singleton<LevelManager> {
             for (int x= 0; x<mapX; x++)
             {
                 PlaceTile(newTiles[x].ToString(), x, y, worldStart);
-            
             }
         }
     }
@@ -115,8 +124,8 @@ public class LevelManager : Singleton<LevelManager> {
     {
         Camera.main.transform.Translate(Vector3.up*0.65f);
         blueSpawn = new Point(1, 1);
-        redSpawn = new Point(13, 8);
-        GameObject tmp = Instantiate(bluePortalPref, Tiles[blueSpawn].GetComponent<TileScript>().WorldPosition, Quaternion.Euler(Vector3.forward * -90));
+        redSpawn = new Point(13, 8);//13.8
+        GameObject tmp = Instantiate(bluePortalPref, Tiles[BlueSpawn].GetComponent<TileScript>().WorldPosition, Quaternion.Euler(Vector3.forward * -90));
         BluePortal = tmp.GetComponent<Portal>();
         BluePortal.name = "BluePortal";
 
@@ -131,15 +140,14 @@ public class LevelManager : Singleton<LevelManager> {
     public void GeneratePath()
     {
         // case when there's clear path to redSpawn
-        path = AStar.GetPath(blueSpawn, redSpawn);
+        path = AStar.GetPath(BlueSpawn, redSpawn);
         if (AStar.NewGoal)
         {
             //If path to redSpawn is unreachable turn on "NEW GoAL" mode to get to random obstacle
-          
-
             int rng = UnityEngine.Random.Range(0, (AStar.Obstacles.Count));
             Point tmp = AStar.Obstacles[rng].GridPosition;
             Debug.Log(rng);
+            //Check if 
             for (int x = -1; x <= 1; x++)
             {
                 for (int y = -1; y <= 1; y++)
@@ -149,9 +157,7 @@ public class LevelManager : Singleton<LevelManager> {
                     if (LevelManager.Instance.InBounds(neighbourPos) && LevelManager.Instance.Tiles[neighbourPos].WalkAble
                         && neighbourPos != tmp)
                     {
-                        
-                        path = AStar.GetPath(blueSpawn, tmp);
-                        
+                        path = AStar.GetPath(BlueSpawn, tmp);  
                     }
                 }
             }

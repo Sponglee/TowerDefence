@@ -54,15 +54,18 @@ public class TileScript : MonoBehaviour {
     {
         //clicking the tile places towers after we pick it by pressing on button
         //also checks if tile is Not walkable by monsters to place it
-        if (!EventSystem.current.IsPointerOverGameObject() && GameManager.Instance.ClickedBtn != null )
+        if (!EventSystem.current.IsPointerOverGameObject() && GameManager.Instance.ClickedBtn != null)
             {
-                
-                if (IsEmpty && !Debugging && WalkAble )
-                        spriteRenderer.color = emptyColor;
-                if ((!IsEmpty && !Debugging) /*|| (WalkAble && !Debugging)*/)
-                spriteRenderer.color = fullColor;
-                else if (Input.GetMouseButtonDown(0))
-                    PlaceTower();
+                if (IsEmpty && !Debugging && WalkAble)
+                {
+                    spriteRenderer.color = emptyColor;
+                    if (Input.GetMouseButtonDown(0))
+                        PlaceTower();
+                }
+                else if ((!IsEmpty && !Debugging) /*|| (WalkAble && !Debugging)*/)
+                {
+                    spriteRenderer.color = fullColor;
+                }
             }   
     }
 

@@ -8,16 +8,14 @@ public static class AStar
 {
 
     public static Dictionary<Point, Node> nodes;
-    //Add Points of obstacles if they block the way
+    //Add List of obstacles if they block the way
     private static List<Node> obstacles;
-   
     public static List<Node> Obstacles
     {
         get
         {
             return obstacles;
         }
-
         set
         {
             obstacles = value;
@@ -44,7 +42,6 @@ public static class AStar
         // numerator for array of obstacles
         obstacles = new List<Node>();
     
-
         if (nodes == null)
         {
             CreateNodes();
@@ -52,16 +49,12 @@ public static class AStar
 
         //Declare open list
         HashSet<Node> openList = new HashSet<Node>();
-        
         //Declare closed list
         HashSet<Node> closedList = new HashSet<Node>();
-
         //Declare a final path stack to backtrack the path
-        Stack<Node> finalPath = new Stack<Node>();
-        
+        Stack<Node> finalPath = new Stack<Node>();        
         //Find start node 
         Node currentNode = nodes[start];
-
 
         //1 Add the start node to OpenList
         openList.Add(currentNode);
@@ -85,7 +78,6 @@ public static class AStar
                             gCost = 10;
                         else
                         {
-
                             if (!ConnectedDiagonally(currentNode, nodes[neighbourPos]))
                             {
                                 continue;
@@ -113,10 +105,7 @@ public static class AStar
                     else if (LevelManager.Instance.Tiles[neighbourPos].Enemy)
                     {
                         Node neighbour = nodes[neighbourPos];
-                      
-                  
-                       obstacles.Add(neighbour);
-                  
+                        obstacles.Add(neighbour);
                     }
                 }
             }
@@ -125,7 +114,6 @@ public static class AStar
             openList.Remove(currentNode);
             closedList.Add(currentNode);
            
-
             //7. Sort the list and select lowest
             if (openList.Count > 0)
             {
@@ -135,15 +123,13 @@ public static class AStar
 
             //11 Exit if we found the goal
             if (currentNode == nodes[goal])
-
             {
                 //Path is clear
                 NewGoal = false;
-
+                //Backtrack to start
                 while (currentNode.GridPosition != start)
                 {
                     finalPath.Push(currentNode);
-
                     currentNode = currentNode.Parent;
                 }
                 break;
@@ -151,15 +137,15 @@ public static class AStar
             //if we didn't exit - push new goal to finalPath(cause can't reach Obstacle (unwalkable))
             else if (NewGoal == true)
             {
+                // Check if current node is near the current Obstacle
                 if (Math.Abs(currentNode.GridPosition.X - nodes[goal].GridPosition.X) <= 1
                         && Math.Abs(currentNode.GridPosition.Y - nodes[goal].GridPosition.Y) <= 1
                         && LevelManager.Instance.Tiles[currentNode.GridPosition].WalkAble)
                 { 
-
+                    //Backtrack to start
                     while (currentNode.GridPosition != start)
                     {
                         finalPath.Push(currentNode);
-
                         currentNode = currentNode.Parent;
                     }
                     break;
@@ -168,35 +154,31 @@ public static class AStar
         }
 
         //****ONLY FOR DEBUGGING*****//
+        //GameObject.Find("AStarDebugger").GetComponent<AStarDebugger>().DebugPath(openList, closedList, finalPath);
 
-        GameObject.Find("AStarDebugger").GetComponent<AStarDebugger>().DebugPath(openList, closedList, finalPath);
+        //If goal is reachable
         if (finalPath.Count>0)
             return finalPath;
         else
         {
+            //Tell LevelManager to set a goal to new obstacle 
             NewGoal = true;
-            
             return finalPath;
         }
             
     }
-    //Checking if path cuts a corner (NOT needed for current version of game Rules
 
+    //Checking if path cuts a corner (NOT needed for current version of game Rules
     //
     //   X  ^
     //   >  X
-
     private static bool ConnectedDiagonally(Node currentNode, Node neighbour)
     {
         Point direction = neighbour.GridPosition - currentNode.GridPosition;
-
         Point first = new Point(currentNode.GridPosition.X + direction.X, currentNode.GridPosition.Y + direction.Y);
-       
         Point second = new Point(currentNode.GridPosition.X, currentNode.GridPosition.Y + direction.Y);
-
         Point third = new Point(currentNode.GridPosition.X+direction.X, currentNode.GridPosition.Y);
 
-       
         if (LevelManager.Instance.InBounds(first) && !LevelManager.Instance.Tiles[first].WalkAble)
         {
             //obstacles.Push(neighbour);

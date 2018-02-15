@@ -1,22 +1,55 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager> {
 
     //money
     private int currency;
-
-
-  
-  
-
     [SerializeField]
     private Text currencyTxt;
 
+    //Our hp
+    private int lives;
+    [SerializeField]
+    private Text livesTxt;
+
+    //wave number
+    private int wave = 0;
+    [SerializeField]
+    private Text waveTxt;
+    [SerializeField]
+    private GameObject waveBtn;
+
+    //Check if ther're are monsters on the field
+    public bool WaveActive
+    {
+        get {
+            //If no monsters in ActiveMonsters list - return false
+            return activeMonsters.Count > 0;
+        }
+    }
+    //GameOver checker
+    private bool gameOverChecker = false;
+    public bool GameOverChecker
+    {
+        get
+        {
+            return gameOverChecker;
+        }
+    }
+
+    [SerializeField]
+    private GameObject gameOverMenu;
+
+    //List to check if the wave is over
+    private List<Monster> activeMonsters = new List<Monster>();
+
     // Create monster object pool
     public ObjectPool Pool { get; set; }
+
     //incapsulation of currency with property
     public int Currency
     {
@@ -28,14 +61,38 @@ public class GameManager : Singleton<GameManager> {
         set
         {
             currency = value;
-            this.currencyTxt.text = value.ToString() + " <color=lime>$</color>";
+            this.currencyTxt.text = value.ToString() + " <color=orange>$</color>";
         }
     }
 
+    //set property for our hp
+    public int Lives
+    {
+        get
+        {
+            return lives;
+        }
+        set
+        {
+            //set value hp if not 0
+            this.lives = value;
+            livesTxt.text = string.Format("Health: <color=orange>{0}</color>", lives.ToString());
+            //Check for gameover on set
+            if (lives <= 0)
+            {
+                this.lives = 0;
+                GameOver();
+            }        
+           
+        }
+    }
 
     // property to access this from other scripts
     public TowerBtn ClickedBtn { get; set; }
 
+   
+
+    //Before start
     private void Awake()
     {
         Pool = GetComponent<ObjectPool>();
@@ -43,8 +100,8 @@ public class GameManager : Singleton<GameManager> {
     // Use this for initialization
     void Start ()
     {
+        Lives = 10;
         Currency = 5;
-
 	}
 	
 	// Update is called once per frame
@@ -56,7 +113,7 @@ public class GameManager : Singleton<GameManager> {
     //Activate tower placement whichever button is pressed
     public void PickTower(TowerBtn towerBtn)
     {
-        if(Currency >= towerBtn.Price)
+        if(Currency >= towerBtn.Price && !WaveActive && !gameOverChecker)
         {
             this.ClickedBtn = towerBtn;
             Hover.Instance.Activate(towerBtn.Sprite);
@@ -89,17 +146,25 @@ public class GameManager : Singleton<GameManager> {
     //Spawn waves of monsters
     public void StartWave()
     {
+        wave++;
+        waveTxt.text = string.Format("Wave: <color=orange>{0}</color>", wave);
+
         StartCoroutine (SpawnWave());
 
+        waveBtn.SetActive(false);
     }
-   
+
+
+   //Monster spawn
    private IEnumerator SpawnWave()
     {
-        LevelManager.Instance.GeneratePath();
         
+        LevelManager.Instance.GeneratePath();
+        for (int i = 0; i < wave; i++)
+        {
             int monsterIndex = Random.Range(0, 2);
             string type = string.Empty;
-            switch(monsterIndex)
+            switch (monsterIndex)
             {
                 case 0:
                     type = "orc";
@@ -110,8 +175,47 @@ public class GameManager : Singleton<GameManager> {
             }
             //Grab Monster script from monster spawn and spawn it on portal
             Monster monster = Pool.GetObject(type).GetComponent<Monster>();
-            monster.Spawn();
 
-        yield return new WaitForSeconds(2.5f);
+            monster.Spawn();
+            //Added to list of active monsters to check for waves
+            activeMonsters.Add(monster);
+            yield return new WaitForSeconds(2.5f);
+        }
+       
+    }
+
+    //Removes monsters from activeMonster list for wavechecks
+    public void RemoveMonster(Monster monster)
+    {
+        //Add monster to active monster list
+        activeMonsters.Remove(monster);
+        if (!WaveActive && !GameOverChecker)
+        {
+            waveBtn.SetActive(true);
+        }
+    }
+
+    //Show gameOver menu 
+    public void GameOver()
+    {
+        if(!GameOverChecker)
+        {
+            gameOverChecker = true;
+            gameOverMenu.SetActive(true);
+        }
+    }
+
+    //Restarts game
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //In case game was paused before
+        Time.timeScale = 1;
+    }
+
+    //Quit
+    public void Quit()
+    {
+        Application.Quit();
     }
 }
