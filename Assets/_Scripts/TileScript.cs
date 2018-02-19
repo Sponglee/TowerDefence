@@ -16,7 +16,9 @@ public class TileScript : MonoBehaviour {
 
     public bool IsEmpty { get; private set; }
 
- 
+
+    //keeping track of selected towers
+    private Tower myTower;
 
 
     public bool Debugging{ get; set; }
@@ -55,18 +57,34 @@ public class TileScript : MonoBehaviour {
         //clicking the tile places towers after we pick it by pressing on button
         //also checks if tile is Not walkable by monsters to place it
         if (!EventSystem.current.IsPointerOverGameObject() && GameManager.Instance.ClickedBtn != null)
+        {
+            if (IsEmpty && !Debugging && WalkAble)
             {
-                if (IsEmpty && !Debugging && WalkAble)
-                {
-                    spriteRenderer.color = emptyColor;
-                    if (Input.GetMouseButtonDown(0))
-                        PlaceTower();
-                }
-                else if ((!IsEmpty && !Debugging) /*|| (WalkAble && !Debugging)*/)
-                {
-                    spriteRenderer.color = fullColor;
-                }
-            }   
+                spriteRenderer.color = emptyColor;
+            }
+            if ((!IsEmpty && !Debugging) /*|| (WalkAble && !Debugging)*/)
+            {
+                spriteRenderer.color = fullColor;
+            }
+            else if (Input.GetMouseButtonDown(0))
+            {
+                PlaceTower();
+            }
+
+        }
+        else if (!EventSystem.current.IsPointerOverGameObject() && GameManager.Instance.ClickedBtn == null && Input.GetMouseButtonDown(0))
+        {
+            if (myTower != null)
+            {
+                GameManager.Instance.SelectTower(myTower);
+            }
+            else
+            {
+                Debug.Log("YAY");
+                GameManager.Instance.DeselectTower();
+            }
+              
+        }
     }
 
     private void OnMouseExit()
@@ -85,12 +103,17 @@ public class TileScript : MonoBehaviour {
             
             tower.GetComponent<SpriteRenderer>().sortingOrder = GridPosition.Y+1;
             tower.transform.SetParent(transform);
+            // reference to tower for range
+            myTower = tower.transform.GetChild(0).GetComponent<Tower>();
+            Debug.Log(myTower);
+
             GameManager.Instance.BuyTower();
             WalkAble = false;
             Enemy = true;
             IsEmpty = false;
             spriteRenderer.color = Color.white;
-
+            
+            
 
 
     }

@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameManager : Singleton<GameManager> {
+public class GameManager : Singleton<GameManager>
+{
 
     //money
     private int currency;
@@ -23,10 +24,14 @@ public class GameManager : Singleton<GameManager> {
     [SerializeField]
     private GameObject waveBtn;
 
+    //current selected tower
+    private Tower selectedTower;
+
     //Check if ther're are monsters on the field
     public bool WaveActive
     {
-        get {
+        get
+        {
             //If no monsters in ActiveMonsters list - return false
             return activeMonsters.Count > 0;
         }
@@ -43,6 +48,8 @@ public class GameManager : Singleton<GameManager> {
 
     [SerializeField]
     private GameObject gameOverMenu;
+
+  
 
     //List to check if the wave is over
     private List<Monster> activeMonsters = new List<Monster>();
@@ -82,15 +89,15 @@ public class GameManager : Singleton<GameManager> {
             {
                 this.lives = 0;
                 GameOver();
-            }        
-           
+            }
+
         }
     }
 
     // property to access this from other scripts
     public TowerBtn ClickedBtn { get; set; }
 
-   
+
 
     //Before start
     private void Awake()
@@ -98,36 +105,58 @@ public class GameManager : Singleton<GameManager> {
         Pool = GetComponent<ObjectPool>();
     }
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         Lives = 10;
         Currency = 5;
-	}
-	
-	// Update is called once per frame
-	void Update ()
+    }
+
+    // Update is called once per frame
+    void Update()
     {
         HandleEscape();
-	}
+    }
 
     //Activate tower placement whichever button is pressed
     public void PickTower(TowerBtn towerBtn)
     {
-        if(Currency >= towerBtn.Price && !WaveActive && !gameOverChecker)
+        if (Currency >= towerBtn.Price && !WaveActive && !gameOverChecker)
         {
             this.ClickedBtn = towerBtn;
             Hover.Instance.Activate(towerBtn.Sprite);
         }
-       
+
     }
 
     // discard the tower
     private void HandleEscape()
     {
-        if(Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1))
         {
             Hover.Instance.Deactivate();
         }
+    }
+
+    //Selects tower
+    public void SelectTower(Tower tower)
+    {
+        if (selectedTower != null)
+        {
+            selectedTower.Select();
+        }
+        selectedTower = tower;
+        //toggle spriteRenderer for range(based on current selection)
+        selectedTower.Select();
+    }
+
+    //Deselect tower
+    public void DeselectTower()
+    {
+        if(selectedTower !=null)
+        {
+            selectedTower.Select();
+        }
+        selectedTower = null;
     }
 
     // handles buy 
