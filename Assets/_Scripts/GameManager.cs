@@ -12,6 +12,11 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     private Text currencyTxt;
 
+    //Object reference for hover icon
+
+    [SerializeField]
+    private GameObject hoverRange;
+
     //Our hp
     private int lives;
     [SerializeField]
@@ -124,6 +129,9 @@ public class GameManager : Singleton<GameManager>
         {
             this.ClickedBtn = towerBtn;
             Hover.Instance.Activate(towerBtn.Sprite);
+            //Gets hover range size for each button
+            hoverRange.transform.localScale = towerBtn.TowerPrefab.transform.GetChild(0).transform.localScale;
+            Debug.Log(towerBtn.TowerPrefab.transform.GetChild(0).transform.localScale);
         }
 
     }

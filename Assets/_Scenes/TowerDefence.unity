@@ -3147,6 +3147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currencyTxt: {fileID: 377304344}
+  hoverRange: {fileID: 2026904231}
   livesTxt: {fileID: 179679665}
   waveTxt: {fileID: 1980065479}
   waveBtn: {fileID: 225464141}
@@ -3178,6 +3179,7 @@ MonoBehaviour:
   objectPrefabs:
   - {fileID: 1301393560359996, guid: b7c29d91588cbb84b9caef4ff033df6c, type: 2}
   - {fileID: 1564361108796160, guid: eb78aca50f0bca54faa6f1afa20eaa83, type: 2}
+  - {fileID: 1356663010559574, guid: f88c403ed48cd4547aed562fa521aa4c, type: 2}
 --- !u!1 &2080648304
 GameObject:
   m_ObjectHideFlags: 0

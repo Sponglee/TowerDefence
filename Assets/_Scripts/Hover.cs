@@ -16,6 +16,7 @@ public class Hover : Singleton<Hover> {
         this.spriteRenderer = GetComponent<SpriteRenderer>();
 
         this.rangeSpriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
+
 	}
 	
 	// Update is called once per frame

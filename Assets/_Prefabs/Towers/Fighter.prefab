@@ -116,6 +116,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50ac3801825e69749aacc593142dfc7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectileType: 
+  towerRange: 0
+  AttackCooldown: 0.5
 --- !u!212 &212898475590831412
 SpriteRenderer:
   m_ObjectHideFlags: 1
