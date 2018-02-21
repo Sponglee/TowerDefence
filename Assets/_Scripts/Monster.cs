@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Monster : MonoBehaviour {
 
@@ -14,15 +15,33 @@ public class Monster : MonoBehaviour {
     private Vector3 destination;
     //Spawn trigger (don't move before spawn finishes)
     public bool IsActive { get; set; }
+    [SerializeField]
+    private Text hp;
 
+    /*Stat class
+    [SerializeField]
+    private Stat health;
+    */
+    private int health;
+
+    public void Awake()
+    {
+        //health.Initialize();
+        health = 15;
+    }
     private void Update()
     {
         Move();
     }
 
     //Spawn monster
-    public void Spawn()
+    public void Spawn(int health)
     {
+        /*set initial health to 10
+        this.health.MaxVal = 10;
+        this.health.CurrentVal = this.health.MaxVal;
+        */
+       
         transform.position = LevelManager.Instance.BluePortal.transform.position;
         StartCoroutine(Scale(new Vector3(0.1f,0.1f,0.1f), new Vector3(0.3f,0.3f,0.1f), false));
         //Get a path
@@ -82,18 +101,33 @@ public class Monster : MonoBehaviour {
         if (other.CompareTag("RedPortal"))
         {
             StartCoroutine(Scale(new Vector3(0.3f, 0.3f, 0.1f), new Vector3(0.1f, 0.1f, 0.1f), true));
+            //DAMAGE US
+            GameManager.Instance.Lives -= 1;
         }
     }
     //Resets disabled object (Monster) 1 function to disable object, lots to enable
     private void Release()
     {
-        //DAMAGE US
-        GameManager.Instance.Lives -= 1;
         //Stop before scaling is done
         IsActive = false;
         GridPosition = LevelManager.Instance.BlueSpawn;
         GameManager.Instance.Pool.ReleaseObject(gameObject);
         //Romove itself from the active monsterlist
         GameManager.Instance.RemoveMonster(this);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (IsActive)
+        {
+            health -= damage;
+            hp.text = health.ToString();
+          
+            if(health <=0)
+            {
+                Release();
+                health = 15;
+            }
+        }
     }
 }

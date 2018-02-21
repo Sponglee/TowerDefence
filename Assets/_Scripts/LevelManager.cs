@@ -146,7 +146,7 @@ public class LevelManager : Singleton<LevelManager> {
             //If path to redSpawn is unreachable turn on "NEW GoAL" mode to get to random obstacle
             int rng = UnityEngine.Random.Range(0, (AStar.Obstacles.Count));
             Point tmp = AStar.Obstacles[rng].GridPosition;
-            Debug.Log(rng);
+           
             //Check if 
             for (int x = -1; x <= 1; x++)
             {

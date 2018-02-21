@@ -53,7 +53,10 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField]
     private GameObject gameOverMenu;
+    //Health of monsters
 
+    [SerializeField]
+    private int health;
   
 
     //List to check if the wave is over
@@ -108,12 +111,13 @@ public class GameManager : Singleton<GameManager>
     private void Awake()
     {
         Pool = GetComponent<ObjectPool>();
+        
     }
     // Use this for initialization
     void Start()
     {
         Lives = 10;
-        Currency = 5;
+        Currency = 15;
     }
 
     // Update is called once per frame
@@ -131,7 +135,7 @@ public class GameManager : Singleton<GameManager>
             Hover.Instance.Activate(towerBtn.Sprite);
             //Gets hover range size for each button
             hoverRange.transform.localScale = towerBtn.TowerPrefab.transform.GetChild(0).transform.localScale;
-            Debug.Log(towerBtn.TowerPrefab.transform.GetChild(0).transform.localScale);
+          
         }
 
     }
@@ -212,8 +216,14 @@ public class GameManager : Singleton<GameManager>
             }
             //Grab Monster script from monster spawn and spawn it on portal
             Monster monster = Pool.GetObject(type).GetComponent<Monster>();
-
-            monster.Spawn();
+            
+            monster.Spawn(health);
+            
+            //increase difficulty every 2nd wave
+            if (wave%2 == 0)
+            {
+                health += 5;
+            }
             //Added to list of active monsters to check for waves
             activeMonsters.Add(monster);
             yield return new WaitForSeconds(2.5f);

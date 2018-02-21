@@ -116,7 +116,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50ac3801825e69749aacc593142dfc7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileType: 
+  damage: 2
+  projectileType: fire
+  projectileSpeed: 2
   towerRange: 0
   AttackCooldown: 1
 --- !u!212 &212062092271384062

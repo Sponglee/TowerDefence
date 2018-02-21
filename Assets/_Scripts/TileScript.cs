@@ -61,14 +61,12 @@ public class TileScript : MonoBehaviour {
             if (IsEmpty && !Debugging && WalkAble)
             {
                 spriteRenderer.color = emptyColor;
+                if (Input.GetMouseButtonDown(0))
+                    PlaceTower();
             }
-            if ((!IsEmpty && !Debugging) /*|| (WalkAble && !Debugging)*/)
+            else if ((!IsEmpty && !Debugging) /*|| (WalkAble && !Debugging)*/)
             {
                 spriteRenderer.color = fullColor;
-            }
-            else if (Input.GetMouseButtonDown(0))
-            {
-                PlaceTower();
             }
 
         }
@@ -80,7 +78,7 @@ public class TileScript : MonoBehaviour {
             }
             else
             {
-                Debug.Log("YAY");
+                
                 GameManager.Instance.DeselectTower();
             }
               
@@ -105,7 +103,7 @@ public class TileScript : MonoBehaviour {
             tower.transform.SetParent(transform);
             // reference to tower for range
             myTower = tower.transform.GetChild(0).GetComponent<Tower>();
-            Debug.Log(myTower);
+          
 
             GameManager.Instance.BuyTower();
             WalkAble = false;
