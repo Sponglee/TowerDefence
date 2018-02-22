@@ -64,7 +64,7 @@ public class TileScript : MonoBehaviour {
                 if (Input.GetMouseButtonDown(0))
                     PlaceTower();
             }
-            else if ((!IsEmpty && !Debugging) /*|| (WalkAble && !Debugging)*/)
+            else if ((!IsEmpty && !Debugging) || (WalkAble && !Debugging))
             {
                 spriteRenderer.color = fullColor;
             }

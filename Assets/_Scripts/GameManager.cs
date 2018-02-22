@@ -53,11 +53,11 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField]
     private GameObject gameOverMenu;
-    //Health of monsters
 
+    //Health of monsters
     [SerializeField]
-    private int health;
-  
+    private int gmHealth;
+
 
     //List to check if the wave is over
     private List<Monster> activeMonsters = new List<Monster>();
@@ -188,6 +188,14 @@ public class GameManager : Singleton<GameManager>
     public void StartWave()
     {
         wave++;
+
+        //increase difficulty every 3rd wave
+        if (wave % 3 == 0)
+        {
+            gmHealth += 5;
+        }
+        Debug.Log("GM " + gmHealth);
+
         waveTxt.text = string.Format("Wave: <color=orange>{0}</color>", wave);
 
         StartCoroutine (SpawnWave());
@@ -199,7 +207,7 @@ public class GameManager : Singleton<GameManager>
    //Monster spawn
    private IEnumerator SpawnWave()
     {
-        
+   
         LevelManager.Instance.GeneratePath();
         for (int i = 0; i < wave; i++)
         {
@@ -214,16 +222,15 @@ public class GameManager : Singleton<GameManager>
                     type = "goblin";
                     break;
             }
+
             //Grab Monster script from monster spawn and spawn it on portal
             Monster monster = Pool.GetObject(type).GetComponent<Monster>();
-            
-            monster.Spawn(health);
-            
-            //increase difficulty every 2nd wave
-            if (wave%2 == 0)
-            {
-                health += 5;
-            }
+
+
+            monster.Spawn(gmHealth);
+
+          
+           
             //Added to list of active monsters to check for waves
             activeMonsters.Add(monster);
             yield return new WaitForSeconds(2.5f);

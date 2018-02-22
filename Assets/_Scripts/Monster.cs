@@ -15,33 +15,49 @@ public class Monster : MonoBehaviour {
     private Vector3 destination;
     //Spawn trigger (don't move before spawn finishes)
     public bool IsActive { get; set; }
+
+   
+
     [SerializeField]
     private Text hp;
+    private int gmhealth;
 
     /*Stat class
     [SerializeField]
     private Stat health;
     */
     private int health;
+    private int maxHealth = 15;
 
-    public void Awake()
+
+    public void Start()
     {
-        //health.Initialize();
-        health = 15;
+        health = maxHealth;
+
     }
     private void Update()
     {
+        hp.text = health.ToString();
+        
         Move();
     }
 
     //Spawn monster
-    public void Spawn(int health)
+    public void Spawn(int gmhealth)
     {
+
+        maxHealth += gmhealth;
+        Debug.Log("max " + maxHealth);
+       
+        hp.text = health.ToString();
+
+        //health.Initialize();
+
         /*set initial health to 10
         this.health.MaxVal = 10;
         this.health.CurrentVal = this.health.MaxVal;
         */
-       
+
         transform.position = LevelManager.Instance.BluePortal.transform.position;
         StartCoroutine(Scale(new Vector3(0.1f,0.1f,0.1f), new Vector3(0.3f,0.3f,0.1f), false));
         //Get a path
@@ -50,7 +66,7 @@ public class Monster : MonoBehaviour {
 
     public IEnumerator Scale (Vector3 from, Vector3 to, bool remove)
     {
-       
+        health = maxHealth;
         float progress = 0;
         while (progress<=1)
         {
@@ -103,11 +119,14 @@ public class Monster : MonoBehaviour {
             StartCoroutine(Scale(new Vector3(0.3f, 0.3f, 0.1f), new Vector3(0.1f, 0.1f, 0.1f), true));
             //DAMAGE US
             GameManager.Instance.Lives -= 1;
+            health = maxHealth;
         }
     }
-    //Resets disabled object (Monster) 1 function to disable object, lots to enable
+    //Resets disabled object 
     private void Release()
     {
+        health = maxHealth;
+        hp.text = health.ToString();
         //Stop before scaling is done
         IsActive = false;
         GridPosition = LevelManager.Instance.BlueSpawn;
@@ -125,8 +144,9 @@ public class Monster : MonoBehaviour {
           
             if(health <=0)
             {
+              
                 Release();
-                health = 15;
+                
             }
         }
     }

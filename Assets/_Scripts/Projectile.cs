@@ -52,7 +52,9 @@ public class Projectile : MonoBehaviour {
             {
                 Monster hitInfo = other.GetComponent<Monster>();
                 target.TakeDamage(parent.Damage);
-                //GameManager.Instance.Pool.ReleaseObject(gameObject);
+
+                //delete the projectile
+                GameManager.Instance.Pool.ReleaseObject(gameObject);
             }
 
            
