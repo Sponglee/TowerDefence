@@ -3152,7 +3152,7 @@ MonoBehaviour:
   waveTxt: {fileID: 1980065479}
   waveBtn: {fileID: 225464141}
   gameOverMenu: {fileID: 1093085335}
-  health: 15
+  gmHealth: 0
 --- !u!4 &2053752474
 Transform:
   m_ObjectHideFlags: 0

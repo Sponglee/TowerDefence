@@ -46,7 +46,7 @@ public class Projectile : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Monster"))
+        if (other.CompareTag("Monster") && gameObject.CompareTag("TowerProj"))
         {
             if (target.gameObject == other.gameObject)
             {
@@ -58,6 +58,10 @@ public class Projectile : MonoBehaviour {
             }
 
            
+        }
+        else if (other.CompareTag("Tower") && gameObject.CompareTag("MonsterProj"))
+        {
+
         }
     }
 }

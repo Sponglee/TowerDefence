@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114672414727480664}
   m_Layer: 2
   m_Name: Range
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 95623341795434318}
   m_Layer: 0
   m_Name: Gunman
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

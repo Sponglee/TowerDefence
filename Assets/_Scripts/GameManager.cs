@@ -225,12 +225,7 @@ public class GameManager : Singleton<GameManager>
 
             //Grab Monster script from monster spawn and spawn it on portal
             Monster monster = Pool.GetObject(type).GetComponent<Monster>();
-
-
             monster.Spawn(gmHealth);
-
-          
-           
             //Added to list of active monsters to check for waves
             activeMonsters.Add(monster);
             yield return new WaitForSeconds(2.5f);

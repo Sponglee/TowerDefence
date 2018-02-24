@@ -160,4 +160,9 @@ public class Tower : MonoBehaviour {
             target = null;
         }
     }
+
+    public void TowerDamage()
+    {
+
+    }
 }

@@ -20,8 +20,7 @@ public class Monster : MonoBehaviour {
 
     [SerializeField]
     private Text hp;
-    private int gmhealth;
-
+  
     /*Stat class
     [SerializeField]
     private Stat health;
@@ -32,6 +31,7 @@ public class Monster : MonoBehaviour {
 
     public void Start()
     {
+  
         health = maxHealth;
 
     }
@@ -45,8 +45,9 @@ public class Monster : MonoBehaviour {
     //Spawn monster
     public void Spawn(int gmhealth)
     {
-
-        maxHealth += gmhealth;
+        
+       
+        health = maxHealth;
         Debug.Log("max " + maxHealth);
        
         hp.text = health.ToString();
@@ -62,6 +63,7 @@ public class Monster : MonoBehaviour {
         StartCoroutine(Scale(new Vector3(0.1f,0.1f,0.1f), new Vector3(0.3f,0.3f,0.1f), false));
         //Get a path
         SetPath(LevelManager.Instance.Path);
+      
     }
 
     public IEnumerator Scale (Vector3 from, Vector3 to, bool remove)
@@ -119,7 +121,7 @@ public class Monster : MonoBehaviour {
             StartCoroutine(Scale(new Vector3(0.3f, 0.3f, 0.1f), new Vector3(0.1f, 0.1f, 0.1f), true));
             //DAMAGE US
             GameManager.Instance.Lives -= 1;
-            health = maxHealth;
+            
         }
     }
     //Resets disabled object 
