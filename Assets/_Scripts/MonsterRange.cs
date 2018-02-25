@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tower : MonoBehaviour {
+public class MonsterRange : MonoBehaviour {
 
     [SerializeField]
     private int damage = 1;
@@ -33,9 +33,9 @@ public class Tower : MonoBehaviour {
 
 
     //monster ref
-    private Monster target;
+    private TowerHP target;
     // public property for target
-    public Monster Target
+    public TowerHP Target
     {
         get { return target; }
     }
@@ -43,7 +43,7 @@ public class Tower : MonoBehaviour {
    
 
     // queue of monsters that will enter the range
-    private Queue<Monster> monsters = new Queue<Monster>();
+    private Queue<TowerHP> monsters = new Queue<TowerHP>();
 
     //Range sprite
     private SpriteRenderer mySpriteRenderer;
@@ -65,15 +65,10 @@ public class Tower : MonoBehaviour {
     void Update() {
         
         Attack();
-     
+
         
     }
-    // toggle Tower's range
-    public void Select()
-    {
-        mySpriteRenderer.enabled = !mySpriteRenderer.enabled;
-        
-    }
+
 
     public void Attack()
     {
@@ -81,9 +76,8 @@ public class Tower : MonoBehaviour {
         //animator for a tower
         Animator anim = transform.parent.GetComponent<Animator>();
         //left or right bool
-        
 
-
+       
         if (!canAttack)
         {
             AttackTimer += Time.deltaTime;
@@ -99,22 +93,15 @@ public class Tower : MonoBehaviour {
             target = monsters.Dequeue();
         }
         //make sure that we dont attack inactive monsters
-        if (target != null && target.IsActive)
+        if (target != null)
         {
             if (canAttack)
             {
                 
                 Shoot();
-                if (target.transform.position.x >= transform.position.x)
-                {
-                    transform.parent.GetComponent<SpriteRenderer>().flipX=true;
-                    flip = true;
-                }
-                else
-                {
-                    transform.parent.GetComponent<SpriteRenderer>().flipX = false;
-                    flip = false;
-                }
+                Debug.Log("Time to shoot " + target);
+
+               
                 anim.SetBool("attack", true);
                 canAttack = false;
             }
@@ -129,16 +116,10 @@ public class Tower : MonoBehaviour {
 
     private void Shoot()
     {
-        Projectile projectile = GameManager.Instance.Pool.GetObject(projectileType).GetComponent<Projectile>();
-
-        if (flip)
-        {
-            projectile.transform.position = transform.position + new Vector3(0.7f, 0.7f, 0f);
-        }
-        else
-        {
-            projectile.transform.position = transform.position + new Vector3(-0.7f, 0.7f, 0f);
-        }
+        MProjectile projectile = GameManager.Instance.Pool.GetObject(projectileType).GetComponent<MProjectile>();
+       
+        projectile.transform.position = transform.position + new Vector3(0.7f, 0.7f, 0f);
+     
 
         //passing Tower to Projectile script to get references 
         projectile.Initialize(this);
@@ -147,17 +128,19 @@ public class Tower : MonoBehaviour {
 
     public void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Monster")
+        if (other.tag == "Tower")
         {
-            monsters.Enqueue(other.GetComponent<Monster>());
+            Debug.Log("WE GOTTA BE SHOOTING");
+            monsters.Enqueue(other.GetComponent<TowerHP>());
 
         }
     }
 
     public void OnTriggerExit2D(Collider2D other)
     {
-        if(other.tag == "Monster")
+        if(other.tag == "Tower")
         {
+
             target = null;
         }
     }

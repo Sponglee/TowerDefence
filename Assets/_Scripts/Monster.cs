@@ -40,6 +40,11 @@ public class Monster : MonoBehaviour {
         hp.text = health.ToString();
         
         Move();
+
+        if (TowerHP.IsDead)
+        {
+            ///////////////////////
+        }
     }
 
     //Spawn monster
@@ -48,7 +53,7 @@ public class Monster : MonoBehaviour {
         
        
         health = maxHealth;
-        Debug.Log("max " + maxHealth);
+
        
         hp.text = health.ToString();
 
@@ -116,7 +121,7 @@ public class Monster : MonoBehaviour {
 
     private void OnTriggerEnter2D (Collider2D other)
     {
-        if (other.CompareTag("RedPortal"))
+        if (other.CompareTag("RedPortal") && gameObject.tag =="Monster")
         {
             StartCoroutine(Scale(new Vector3(0.3f, 0.3f, 0.1f), new Vector3(0.1f, 0.1f, 0.1f), true));
             //DAMAGE US

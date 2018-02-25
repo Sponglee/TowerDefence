@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour {
+public class MProjectile : MonoBehaviour {
 
 
-    private Monster target;
+    private TowerHP target;
     // ref to parent (Tower script)
-    private Tower parent;
+    private MonsterRange parent;
 	// Use this for initialization
 	void Start () {
 		
@@ -20,14 +20,14 @@ public class Projectile : MonoBehaviour {
     }
 
     //grab references from tower script (parent)
-    public void Initialize(Tower parent)
+    public void Initialize(MonsterRange parent)
     {
         this.target = parent.Target;
         this.parent = parent;
     }
     private void MoveToTarget()
     {
-        if(target !=null && target.IsActive)
+        if(target !=null && target.MIsActive)
         {
             transform.position = Vector3.MoveTowards(transform.position, target.transform.position, Time.deltaTime * parent.ProjectileSpeed);
 
@@ -38,23 +38,22 @@ public class Projectile : MonoBehaviour {
 
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
-        else if(!target.IsActive)
+        else if(!target.MIsActive)
         {
-            Debug.Log("HERE");
             GameManager.Instance.Pool.ReleaseObject(gameObject);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-       
-        if (other.CompareTag("Monster") && gameObject.CompareTag("TowerProj"))
+
+        if (other.CompareTag("Tower") && gameObject.CompareTag("MonsterProj"))
         {
-           
+            
             if (target.gameObject == other.gameObject)
             {
-           
-                Monster hitInfo = other.GetComponent<Monster>();
+            
+                TowerHP hitInfo = other.GetComponent<TowerHP>();
                 target.TakeDamage(parent.Damage);
 
                 //delete the projectile
@@ -63,9 +62,6 @@ public class Projectile : MonoBehaviour {
 
            
         }
-        else if (other.CompareTag("Tower") && gameObject.CompareTag("MonsterProj"))
-        {
-            
-        }
+        
     }
 }

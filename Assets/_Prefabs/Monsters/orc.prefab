@@ -39,10 +39,10 @@ GameObject:
   - component: {fileID: 4872901449188548}
   - component: {fileID: 212286812166287692}
   - component: {fileID: 58124507310472550}
-  - component: {fileID: 114637559879225032}
-  m_Layer: 2
+  - component: {fileID: 114830174267204742}
+  m_Layer: 1
   m_Name: Range
-  m_TagString: Monster
+  m_TagString: Range
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 95975320407873670}
   - component: {fileID: 114245928181007532}
   - component: {fileID: 61933692686136890}
-  - component: {fileID: 50139427623501170}
+  - component: {fileID: 50626677430475960}
   m_Layer: 0
   m_Name: orc
   m_TagString: Monster
@@ -289,7 +289,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1564361108796160}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.96, y: 3.32, z: 0}
+  m_LocalPosition: {x: -1.67, y: -0.59442925, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.1}
   m_Children:
   - {fileID: 4741767914725506}
@@ -411,21 +411,21 @@ Transform:
   m_Father: {fileID: 4381580695955410}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &50139427623501170
+--- !u!50 &50626677430475960
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1564361108796160}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -538,15 +538,15 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
---- !u!114 &114637559879225032
+--- !u!114 &114830174267204742
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1221296731550348}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50ac3801825e69749aacc593142dfc7c, type: 3}
+  m_Script: {fileID: 11500000, guid: 2af07622e47f46747878c44e47a6a36a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
@@ -1113,7 +1113,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0.24, y: 4.02}
   m_SizeDelta: {x: 2, y: 0.22}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224467565800157834
@@ -1131,6 +1131,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.15}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}

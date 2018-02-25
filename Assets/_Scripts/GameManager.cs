@@ -98,7 +98,6 @@ public class GameManager : Singleton<GameManager>
                 this.lives = 0;
                 GameOver();
             }
-
         }
     }
 
@@ -110,8 +109,7 @@ public class GameManager : Singleton<GameManager>
     //Before start
     private void Awake()
     {
-        Pool = GetComponent<ObjectPool>();
-        
+        Pool = GetComponent<ObjectPool>();      
     }
     // Use this for initialization
     void Start()
@@ -135,7 +133,6 @@ public class GameManager : Singleton<GameManager>
             Hover.Instance.Activate(towerBtn.Sprite);
             //Gets hover range size for each button
             hoverRange.transform.localScale = towerBtn.TowerPrefab.transform.GetChild(0).transform.localScale;
-          
         }
 
     }
@@ -179,9 +176,7 @@ public class GameManager : Singleton<GameManager>
             Currency -= ClickedBtn.Price;
             Hover.Instance.Deactivate();
             ClickedBtn = null;
-          
         }
-     
     }
 
     //Spawn waves of monsters
@@ -194,7 +189,6 @@ public class GameManager : Singleton<GameManager>
         {
             gmHealth += 5;
         }
-        Debug.Log("GM " + gmHealth);
 
         waveTxt.text = string.Format("Wave: <color=orange>{0}</color>", wave);
 
@@ -207,7 +201,6 @@ public class GameManager : Singleton<GameManager>
    //Monster spawn
    private IEnumerator SpawnWave()
     {
-   
         LevelManager.Instance.GeneratePath();
         for (int i = 0; i < wave; i++)
         {
@@ -222,15 +215,13 @@ public class GameManager : Singleton<GameManager>
                     type = "goblin";
                     break;
             }
-
             //Grab Monster script from monster spawn and spawn it on portal
             Monster monster = Pool.GetObject(type).GetComponent<Monster>();
             monster.Spawn(gmHealth);
             //Added to list of active monsters to check for waves
             activeMonsters.Add(monster);
             yield return new WaitForSeconds(2.5f);
-        }
-       
+        }  
     }
 
     //Removes monsters from activeMonster list for wavechecks

@@ -10,6 +10,8 @@ TagManager:
   - TowerProj
   - Tower
   - MonsterProj
+  - TowerHP
+  - Range
   layers:
   - Default
   - TransparentFX

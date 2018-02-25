@@ -14,7 +14,7 @@ public class TileScript : MonoBehaviour {
     }
     
 
-    public bool IsEmpty { get; private set; }
+    public bool IsEmpty { get; set; }
 
 
     //keeping track of selected towers
