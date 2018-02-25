@@ -32,7 +32,7 @@ public class MonsterRange : MonoBehaviour {
     bool flip=false;
 
 
-    //monster ref
+    //tower ref
     private TowerHP target;
     // public property for target
     public TowerHP Target
@@ -40,7 +40,6 @@ public class MonsterRange : MonoBehaviour {
         get { return target; }
     }
 
-   
 
     // queue of monsters that will enter the range
     private Queue<TowerHP> monsters = new Queue<TowerHP>();
@@ -66,7 +65,6 @@ public class MonsterRange : MonoBehaviour {
         
         Attack();
 
-        
     }
 
 

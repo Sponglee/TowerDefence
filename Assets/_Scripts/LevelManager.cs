@@ -15,7 +15,6 @@ public class LevelManager : Singleton<LevelManager> {
     private Point mapSize;
 
     private Point redSpawn;
-
     public Point RedSpawn
     {
         get
@@ -23,8 +22,6 @@ public class LevelManager : Singleton<LevelManager> {
             return redSpawn;
         }
     }
-
-
     public Portal BluePortal{ get; set; }
 
     public Dictionary<Point, TileScript> Tiles { get; set; }
@@ -37,13 +34,14 @@ public class LevelManager : Singleton<LevelManager> {
         {
             if (path == null)
             {
-                GeneratePath(blueSpawn);
+                   //Makes a Path between cTMP position and Redspawn
+                    GeneratePath(AStar.cTmp.GridPosition);
             }
             return new Stack<Node>(new Stack<Node>(path));
         }
+        set { path = value; }
     }
     private Point blueSpawn;
-
     public Point BlueSpawn
     {
         get
@@ -53,7 +51,6 @@ public class LevelManager : Singleton<LevelManager> {
     }
     //Temporary position
     Point tmp;
-
     public Point Tmp
     {
         get
@@ -166,6 +163,7 @@ public class LevelManager : Singleton<LevelManager> {
     {
         // case when there's clear path to redSpawn
         path = AStar.GetPath(spawn, RedSpawn);
+        Debug.Log(path.Count+ " <-ASTAR");
         if (AStar.NewGoal)
         {
             //If path to redSpawn is unreachable turn on "NEW GoAL" mode to get to random obstacle

@@ -16,55 +16,62 @@ public class Monster : MonoBehaviour {
     //Spawn trigger (don't move before spawn finishes)
     public bool IsActive { get; set; }
 
-    private bool pathfind;
-   
 
+   
     [SerializeField]
     private Text hp;
-  
+
     /*Stat class
     [SerializeField]
     private Stat health;
     */
+    [SerializeField]
     private int health;
+
     private int maxHealth = 15;
 
 
     public void Start()
     {
-        pathfind = false;
         health = maxHealth;
-
     }
     private void Update()
     {
         hp.text = health.ToString();
-        if (!TowerHP.IsDead)
+        Move();
+        //If tower died
+        if (TowerHP.IsDead)
         {
-       
-            Move();
+            //Toggle Repath algorythm in GameManager
+            GameManager.Instance.cRePath = true;
         }
-        else if (TowerHP.IsDead)
-        {
-           
-                Debug.Log(LevelManager.Instance.Tmp.X + " " + LevelManager.Instance.Tmp.Y);
-            //Generate new path from the point monster is now
-            Point tmp = LevelManager.Instance.Tmp;
-            LevelManager.Instance.GeneratePath(tmp);
-            //set ne path
-            SetPath(LevelManager.Instance.Path);
-
-            //move to the first point
-            transform.position = Vector2.MoveTowards(
-                    transform.position, new Vector2(tmp.X, tmp.Y), speed * Time.deltaTime);
-            
-            //move to destination
-            //Move();
-            pathfind = true;
-            TowerHP.IsDead = false;
-
-        }
+        
     }
+
+    //Recalculates a path for a monster which had an obscured path and now it's open
+    public void RePath()
+    {
+        //Reset previous path
+        LevelManager.Instance.Path = null;
+        //Toggle switch of start to this current tile
+        AStar.firstCurrent = true;
+        //this current start tile
+           
+        Point tmp = AStar.cTmp.GridPosition;
+          
+        //Toggle off obscured ASTar path
+        AStar.NewGoal = false;
+        //Generate New path from this place
+        LevelManager.Instance.GeneratePath(tmp);
+        //Set it as Path for this Monster
+        SetPath(LevelManager.Instance.Path);
+        
+        //Move 
+        Move();
+        
+        TowerHP.IsDead = false;
+    }
+
 
     //Spawn monster
     public void Spawn(int gmhealth)

@@ -23,16 +23,16 @@ public static class AStar
     }
     // New Goal mode (if path is obscured)
     public static bool NewGoal = false;
-
+    //first node for ReCalculated path after a Tower death
+    public static bool firstCurrent = true;
+    public static Node cTmp = null;
     // Add nodes for each tile
     private static void CreateNodes()
     {
         nodes = new Dictionary<Point, Node>();
-
         foreach (TileScript tile in LevelManager.Instance.Tiles.Values)
         {
             nodes.Add(tile.GridPosition, new Node(tile));
-
         }
     }
 
@@ -58,6 +58,14 @@ public static class AStar
 
         //1 Add the start node to OpenList
         openList.Add(currentNode);
+        //If none, get new start point
+      
+        if (cTmp == null)
+        {
+            //Set a cTMP (start node) for a Path 
+            cTmp = currentNode;
+            
+        }
 
         //10. Search until no path available
         while (openList.Count>0)
@@ -126,6 +134,7 @@ public static class AStar
             {
                 //Path is clear
                 NewGoal = false;
+                Debug.Log("NET");
                 //Backtrack to start
                 while (currentNode.GridPosition != start)
                 {
@@ -137,6 +146,7 @@ public static class AStar
             //if we didn't exit - push new goal to finalPath(cause can't reach Obstacle (unwalkable))
             else if (NewGoal == true)
             {
+                Debug.Log("DA");
                 // Check if current node is near the current Obstacle
                 if (Math.Abs(currentNode.GridPosition.X - nodes[goal].GridPosition.X) <= 1
                         && Math.Abs(currentNode.GridPosition.Y - nodes[goal].GridPosition.Y) <= 1
@@ -145,6 +155,12 @@ public static class AStar
                     //Backtrack to start
                     while (currentNode.GridPosition != start)
                     {
+                        if (firstCurrent)
+                        {
+                            cTmp = currentNode;
+                            firstCurrent = false;   
+                        }
+                           
                         finalPath.Push(currentNode);
                         currentNode = currentNode.Parent;
                     }
@@ -155,15 +171,17 @@ public static class AStar
 
         //****ONLY FOR DEBUGGING*****//
         
-            GameObject.Find("AStarDebugger").GetComponent<AStarDebugger>().DebugPath(openList, closedList, finalPath);
+        //GameObject.Find("AStarDebugger").GetComponent<AStarDebugger>().DebugPath(openList, closedList, finalPath);
 
         //If goal is reachable
         if (finalPath.Count>0)
             return finalPath;
         else
         {
+            
             //Tell LevelManager to set a goal to new obstacle 
             NewGoal = true;
+            Debug.Log("NOW HERE");
             return finalPath;
         }
             

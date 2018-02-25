@@ -32,13 +32,17 @@ public class GameManager : Singleton<GameManager>
     //current selected tower
     private Tower selectedTower;
 
+    //toggle for RePathing on death
+    
+    public bool cRePath = false;
+
     //Check if ther're are monsters on the field
     public bool WaveActive
     {
         get
         {
             //If no monsters in ActiveMonsters list - return false
-            return activeMonsters.Count > 0;
+            return ActiveMonsters.Count > 0;
         }
     }
     //GameOver checker
@@ -61,7 +65,15 @@ public class GameManager : Singleton<GameManager>
 
     //List to check if the wave is over
     private List<Monster> activeMonsters = new List<Monster>();
+    public List<Monster> ActiveMonsters
+    {
+        get
+        {
+            return activeMonsters;
+        }
 
+     
+    }
     // Create monster object pool
     public ObjectPool Pool { get; set; }
 
@@ -106,6 +118,7 @@ public class GameManager : Singleton<GameManager>
 
 
 
+
     //Before start
     private void Awake()
     {
@@ -121,6 +134,20 @@ public class GameManager : Singleton<GameManager>
     // Update is called once per frame
     void Update()
     {
+       
+        //If there's need to Recalculate a Path - do it for every active monster
+        if (cRePath && AStar.NewGoal == true)
+        {
+            foreach (Monster monster in ActiveMonsters)
+            {
+                //Recalculate a Path from the point monster is standing atm
+                monster.GetComponent<Monster>().RePath();
+            }
+            //Reset "non bluePortal" toggle
+            AStar.cTmp = null;
+            
+            cRePath = false;
+        }
         HandleEscape();
     }
 
@@ -178,12 +205,33 @@ public class GameManager : Singleton<GameManager>
             ClickedBtn = null;
         }
     }
+    /*
+     * 
+     *           
+     *           Once tower dies - last of many wave monsters isn't on the "CURRENT" tile yet
+     *           and rushes there through air
+     *           
+     *           
+     *           ADD way to either guide last monster TO that node first or get path for each monster seperately
+     *           
+     *           OR (!) courutine to start moving from there like spawnWave (!) <- need this anyway
+     *           
+     *           
+     *           !! MAKE TARGET CHOICE AFFECTED BY F SCORE?
+     *    
+     *           !!!!( MULTIPLE DEATHS  OF OBSTACLES in 1 WAVE BREAKS THE LOGIC))
+     *           !!! Plus make ground around portals unwalkable
+     * 
+     * */
 
     //Spawn waves of monsters
     public void StartWave()
     {
         wave++;
-
+        Debug.Log(LevelManager.Instance.BlueSpawn.X + " " + LevelManager.Instance.BlueSpawn.Y);
+        //Set Recalc Path toggle off each wave
+        cRePath = false;
+        //AStar.NewGoal = true;
         //increase difficulty every 3rd wave
         if (wave % 3 == 0)
         {
@@ -201,6 +249,7 @@ public class GameManager : Singleton<GameManager>
    //Monster spawn
    private IEnumerator SpawnWave()
     {
+        
         LevelManager.Instance.GeneratePath(LevelManager.Instance.BlueSpawn);
         for (int i = 0; i < wave; i++)
         {
@@ -219,7 +268,7 @@ public class GameManager : Singleton<GameManager>
             Monster monster = Pool.GetObject(type).GetComponent<Monster>();
             monster.Spawn(gmHealth);
             //Added to list of active monsters to check for waves
-            activeMonsters.Add(monster);
+            ActiveMonsters.Add(monster);
             yield return new WaitForSeconds(2.5f);
         }  
     }
@@ -228,7 +277,7 @@ public class GameManager : Singleton<GameManager>
     public void RemoveMonster(Monster monster)
     {
         //Add monster to active monster list
-        activeMonsters.Remove(monster);
+        ActiveMonsters.Remove(monster);
         if (!WaveActive && !GameOverChecker)
         {
             waveBtn.SetActive(true);

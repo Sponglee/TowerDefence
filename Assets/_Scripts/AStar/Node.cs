@@ -6,7 +6,7 @@ using UnityEngine;
 public class Node
 {
 
-    public Point GridPosition { get; private set; }
+    public Point GridPosition { get;  set; }
 
     public TileScript TileRef{ get; private  set; }
 

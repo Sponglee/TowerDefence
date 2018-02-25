@@ -501,6 +501,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 1
   hp: {fileID: 114874288405995524}
+  health: 0
 --- !u!114 &114614857336050442
 MonoBehaviour:
   m_ObjectHideFlags: 1
