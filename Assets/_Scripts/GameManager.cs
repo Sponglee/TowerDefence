@@ -201,7 +201,7 @@ public class GameManager : Singleton<GameManager>
    //Monster spawn
    private IEnumerator SpawnWave()
     {
-        LevelManager.Instance.GeneratePath();
+        LevelManager.Instance.GeneratePath(LevelManager.Instance.BlueSpawn);
         for (int i = 0; i < wave; i++)
         {
             int monsterIndex = Random.Range(0, 2);

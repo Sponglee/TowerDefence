@@ -13,8 +13,17 @@ public class LevelManager : Singleton<LevelManager> {
     private Transform map;
 
     private Point mapSize;
-   
-    public Point redSpawn;
+
+    private Point redSpawn;
+
+    public Point RedSpawn
+    {
+        get
+        {
+            return redSpawn;
+        }
+    }
+
 
     public Portal BluePortal{ get; set; }
 
@@ -22,7 +31,17 @@ public class LevelManager : Singleton<LevelManager> {
 
     //Path for AStar
     private Stack<Node> path;
-
+    public Stack<Node> Path
+    {
+        get
+        {
+            if (path == null)
+            {
+                GeneratePath(blueSpawn);
+            }
+            return new Stack<Node>(new Stack<Node>(path));
+        }
+    }
     private Point blueSpawn;
 
     public Point BlueSpawn
@@ -32,25 +51,31 @@ public class LevelManager : Singleton<LevelManager> {
             return blueSpawn;
         }
     }
-    public Stack<Node> Path
+    //Temporary position
+    Point tmp;
+
+    public Point Tmp
     {
         get
         {
-            if (path == null)
-            { 
-                GeneratePath();
-            }
-            return new Stack<Node>(new Stack<Node>(path));
+            return tmp;
+        }
+
+        set
+        {
+            tmp = value;
         }
     }
-  
+
+
     //Get size of a Tile for further calculations
     public float TileSize
     {
         get { return tiles[0].GetComponent<SpriteRenderer>().sprite.bounds.size.x; }
     }
 
-  
+
+
 
     // Use this for initialization
     void Start ()
@@ -129,7 +154,7 @@ public class LevelManager : Singleton<LevelManager> {
         BluePortal = tmp.GetComponent<Portal>();
         BluePortal.name = "BluePortal";
 
-        Instantiate(redPortalPref, Tiles[redSpawn].GetComponent<TileScript>().WorldPosition, Quaternion.Euler(Vector3.forward * -90));
+        Instantiate(redPortalPref, Tiles[RedSpawn].GetComponent<TileScript>().WorldPosition, Quaternion.Euler(Vector3.forward * -90));
     }
 
     public bool InBounds(Point position)
@@ -137,27 +162,27 @@ public class LevelManager : Singleton<LevelManager> {
         return position.X >= 0 && position.Y >= 0 && position.X <= mapSize.X & position.Y <= mapSize.Y;
     }
 
-    public void GeneratePath()
+    public void GeneratePath(Point spawn)
     {
         // case when there's clear path to redSpawn
-        path = AStar.GetPath(BlueSpawn, redSpawn);
+        path = AStar.GetPath(spawn, RedSpawn);
         if (AStar.NewGoal)
         {
             //If path to redSpawn is unreachable turn on "NEW GoAL" mode to get to random obstacle
             int rng = UnityEngine.Random.Range(0, (AStar.Obstacles.Count));
-            Point tmp = AStar.Obstacles[rng].GridPosition;
-           
+            Tmp = AStar.Obstacles[rng].GridPosition;
+            
             //Check if 
             for (int x = -1; x <= 1; x++)
             {
                 for (int y = -1; y <= 1; y++)
                 {
-                    Point neighbourPos = new Point(tmp.X - x, tmp.Y - y);
+                    Point neighbourPos = new Point(Tmp.X - x, Tmp.Y - y);
                     // Inbounds checks "offgrid" cases and Walkables
                     if (LevelManager.Instance.InBounds(neighbourPos) && LevelManager.Instance.Tiles[neighbourPos].WalkAble
-                        && neighbourPos != tmp)
+                        && neighbourPos != Tmp)
                     {
-                        path = AStar.GetPath(BlueSpawn, tmp);  
+                        path = AStar.GetPath(spawn, Tmp);  
                     }
                 }
             }
