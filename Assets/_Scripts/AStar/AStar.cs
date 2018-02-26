@@ -181,7 +181,7 @@ public static class AStar
             
             //Tell LevelManager to set a goal to new obstacle 
             NewGoal = true;
-            Debug.Log("NOW HERE");
+            Debug.Log("NOW NEW GOAL");
             return finalPath;
         }
             

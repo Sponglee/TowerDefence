@@ -15,9 +15,24 @@ public class Monster : MonoBehaviour {
     private Vector3 destination;
     //Spawn trigger (don't move before spawn finishes)
     public bool IsActive { get; set; }
+    //Declare a final path stack to backtrack the path
+    Stack<Node> MonsterlPath = new Stack<Node>();
+
+    private Point currentTilePos;
+    public Point CurrentTilePos
+    {
+        get
+        {
+            return currentTilePos;
+        }
+
+        set
+        {
+            currentTilePos = value;
+        }
+    }
 
 
-   
     [SerializeField]
     private Text hp;
 
@@ -37,6 +52,7 @@ public class Monster : MonoBehaviour {
     }
     private void Update()
     {
+      
         hp.text = health.ToString();
         Move();
         //If tower died
@@ -56,18 +72,19 @@ public class Monster : MonoBehaviour {
         //Toggle switch of start to this current tile
         AStar.firstCurrent = true;
         //this current start tile
-           
-        Point tmp = AStar.cTmp.GridPosition;
+
+            //<----
           
         //Toggle off obscured ASTar path
-        AStar.NewGoal = false;
+        //AStar.NewGoal = false;
         //Generate New path from this place
-        LevelManager.Instance.GeneratePath(tmp);
+        LevelManager.Instance.GeneratePath(CurrentTilePos);
         //Set it as Path for this Monster
         SetPath(LevelManager.Instance.Path);
+        Debug.Log(LevelManager.Instance.Path.Count + " <- MONSTER");
         
         //Move 
-        Move();
+        //Move();
         
         TowerHP.IsDead = false;
     }

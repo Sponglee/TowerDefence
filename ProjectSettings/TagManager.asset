@@ -12,6 +12,7 @@ TagManager:
   - MonsterProj
   - TowerHP
   - Range
+  - Tile
   layers:
   - Default
   - TransparentFX

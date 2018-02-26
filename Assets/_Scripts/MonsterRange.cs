@@ -97,9 +97,6 @@ public class MonsterRange : MonoBehaviour {
             {
                 
                 Shoot();
-                Debug.Log("Time to shoot " + target);
-
-               
                 anim.SetBool("attack", true);
                 canAttack = false;
             }
@@ -128,9 +125,7 @@ public class MonsterRange : MonoBehaviour {
     {
         if (other.tag == "Tower")
         {
-            Debug.Log("WE GOTTA BE SHOOTING");
             monsters.Enqueue(other.GetComponent<TowerHP>());
-
         }
     }
 

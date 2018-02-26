@@ -32,11 +32,11 @@ public class LevelManager : Singleton<LevelManager> {
     {
         get
         {
-            if (path == null)
-            {
-                   //Makes a Path between cTMP position and Redspawn
-                    GeneratePath(AStar.cTmp.GridPosition);
-            }
+            //if (path == null)
+            //{
+            //       //Makes a Path between cTMP position and Redspawn
+            //        GeneratePath();
+            //}
             return new Stack<Node>(new Stack<Node>(path));
         }
         set { path = value; }
@@ -159,17 +159,21 @@ public class LevelManager : Singleton<LevelManager> {
         return position.X >= 0 && position.Y >= 0 && position.X <= mapSize.X & position.Y <= mapSize.Y;
     }
 
-    public void GeneratePath(Point spawn)
+    public Stack<Node> GeneratePath(Point spawn)
     {
-        // case when there's clear path to redSpawn
+        if (AStar.Obstacles ==null)
+            AStar.NewGoal = false;
+            // case when there's clear path to redSpawn
         path = AStar.GetPath(spawn, RedSpawn);
+        
         Debug.Log(path.Count+ " <-ASTAR");
         if (AStar.NewGoal)
         {
             //If path to redSpawn is unreachable turn on "NEW GoAL" mode to get to random obstacle
             int rng = UnityEngine.Random.Range(0, (AStar.Obstacles.Count));
+           
             Tmp = AStar.Obstacles[rng].GridPosition;
-            
+           
             //Check if 
             for (int x = -1; x <= 1; x++)
             {
@@ -180,11 +184,13 @@ public class LevelManager : Singleton<LevelManager> {
                     if (LevelManager.Instance.InBounds(neighbourPos) && LevelManager.Instance.Tiles[neighbourPos].WalkAble
                         && neighbourPos != Tmp)
                     {
-                        path = AStar.GetPath(spawn, Tmp);  
+                        path = AStar.GetPath(spawn, Tmp);
+                        return path;
                     }
                 }
             }
            
         }
+        return path;
     }
 }

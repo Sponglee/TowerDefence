@@ -127,8 +127,8 @@ public class GameManager : Singleton<GameManager>
     // Use this for initialization
     void Start()
     {
-        Lives = 10;
-        Currency = 15;
+        Lives = 50;
+        Currency = 150;
     }
 
     // Update is called once per frame
@@ -136,7 +136,7 @@ public class GameManager : Singleton<GameManager>
     {
        
         //If there's need to Recalculate a Path - do it for every active monster
-        if (cRePath && AStar.NewGoal == true)
+        if (cRePath)
         {
             foreach (Monster monster in ActiveMonsters)
             {
@@ -144,7 +144,7 @@ public class GameManager : Singleton<GameManager>
                 monster.GetComponent<Monster>().RePath();
             }
             //Reset "non bluePortal" toggle
-            AStar.cTmp = null;
+            //AStar.cTmp = null;
             
             cRePath = false;
         }
@@ -306,5 +306,19 @@ public class GameManager : Singleton<GameManager>
     public void Quit()
     {
         Application.Quit();
+    }
+
+
+
+    /// <summary>
+    /// //////////////////////////////////////////////DEBUGG
+    /// </summary>
+    public void Clicky()
+    {
+        cRePath = true;
+    }
+    public void Pointy()
+    {
+        AStar.NewGoal = !AStar.NewGoal;
     }
 }
