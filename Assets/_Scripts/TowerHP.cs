@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class TowerHP : MonoBehaviour
 {
-    static public bool IsDead;
+    public bool IsDead;
 
    
 

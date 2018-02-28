@@ -121,8 +121,12 @@ public class TileScript : MonoBehaviour {
         
         if (other.CompareTag("Monster"))
         {
+            
             other.GetComponent<Monster>().CurrentTilePos = gameObject.GetComponent<TileScript>().GridPosition;
-           
+           if (this.WalkAble == false)
+            {
+                other.GetComponent<Monster>().MRePath = true;
+            }
         }
     }
 

@@ -145,11 +145,11 @@ public class GameManager : Singleton<GameManager>
             //    monster.GetComponentInChildren<MonsterRange>().mTarget = false;
             //    monster.mRePath = false;
             //}
-           if (monster.mRePath)
+           if (monster.MRePath)
             {
-             
+                Debug.Log("REEEEEEEEEE");
                 monster.RePath();
-                monster.mRePath = false;
+                monster.MRePath = false;
             }
         }
             HandleEscape();
@@ -236,7 +236,7 @@ public class GameManager : Singleton<GameManager>
    private IEnumerator SpawnWave()
     {
         
-        LevelManager.Instance.GeneratePath(LevelManager.Instance.BlueSpawn);
+       
         for (int i = 0; i < wave; i++)
         {
             int monsterIndex = Random.Range(0, 2);

@@ -173,9 +173,9 @@ public class LevelManager : Singleton<LevelManager> {
 
         if (AStar.NewGoal)
         {
-            Debug.Log("NEW GOAL");
+
             //If path to redSpawn is unreachable turn on "NEW GoAL" mode to get to random obstacle
-            //int rng = UnityEngine.Random.Range(0, (AStar.Obstacles.Count));
+            //closest F score 
             if(AStar.Obstacles.Count != 0)
             {
                 Node closestEnemy = AStar.Obstacles.OrderBy(n => n.F).First();

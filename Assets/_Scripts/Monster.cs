@@ -22,8 +22,22 @@ public class Monster : MonoBehaviour {
     // id of tower that is being damaged
     public int tow_id;
 
-    public bool mRePath;
+    private bool mRePath;
+    public bool MRePath
+    {
+        get
+        {
+            return mRePath;
+        }
 
+        set
+        {
+            mRePath = value;
+        }
+    }
+
+
+    TowerHP tar;
 
     private Point currentTilePos;
     public Point CurrentTilePos
@@ -38,6 +52,7 @@ public class Monster : MonoBehaviour {
             currentTilePos = value;
         }
     }
+
 
 
     [SerializeField]
@@ -57,7 +72,7 @@ public class Monster : MonoBehaviour {
     {
         health = maxHealth;
         monsterRange = this.GetComponentInChildren<MonsterRange>();
-        mRePath = false;
+        this.MRePath = false;
     }
     private void Update()
     {
@@ -66,26 +81,30 @@ public class Monster : MonoBehaviour {
         Move();
         //If tower died (and is target?)
 
-        MonsterRange tar = this.GetComponentInChildren<MonsterRange>();
-        if (TowerHP.IsDead) // <----
+        TowerHP tar = this.GetComponentInChildren<MonsterRange>().Target;
+        if (tar != null)
         {
-      
-            //Toggle Repath algorythm in GameManager
-            //if (monsterRange.Target == null)
-            //{
-            //   Debug.Log("NO TARGET mTarget: " + monsterRange.mTarget);
-            //    monsterRange.mTarget = true;
-            //}
-               
-            //else
-            //{
-                mRePath = true;
-               
-           // }
-                
+            if (tar.IsDead) // <----
+            {
+
+                //Toggle Repath algorythm in GameManager
+                //if (monsterRange.Target == null)
+                //{
+                //   Debug.Log("NO TARGET mTarget: " + monsterRange.mTarget);
+                //    monsterRange.mTarget = true;
+                //}
+
+                //else
+                //{
+                this.MRePath = true;
+                Debug.Log("ISDEAD");
+                // }
+
+            }
+
         }
-        
-        
+
+
     }
 
     //Recalculates a path for a monster which had an obscured path and now it's open
@@ -108,20 +127,21 @@ public class Monster : MonoBehaviour {
         path = LevelManager.Instance.GeneratePath(CurrentTilePos);
         //Set it as Path for this Monster
         SetPath(path);
-   
-        
+
+
         //Move 
         //Move();
-        
-        TowerHP.IsDead = false;
+
+      //<---- wrong
+
     }
 
 
     //Spawn monster
     public void Spawn(int gmhealth)
     {
-        
-       
+
+        LevelManager.Instance.GeneratePath(LevelManager.Instance.BlueSpawn);
         health = maxHealth;
 
        
@@ -174,7 +194,7 @@ public class Monster : MonoBehaviour {
                 }
                 else if (path.Count == 0 && !monsterRange.Target && GridPosition != LevelManager.Instance.RedSpawn)
                 {
-                    mRePath = true;
+                    this.MRePath = true;
                 }
             }
         }
@@ -217,6 +237,7 @@ public class Monster : MonoBehaviour {
         GridPosition = LevelManager.Instance.BlueSpawn;
         GameManager.Instance.Pool.ReleaseObject(gameObject);
         //Romove itself from the active monsterlist
+
         GameManager.Instance.RemoveMonster(this);
     }
 
