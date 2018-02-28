@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MonsterRange : MonoBehaviour {
 
+    //Toggle for repath
+    public bool mTarget;
     [SerializeField]
     private int damage = 1;
     public int Damage
@@ -13,6 +15,7 @@ public class MonsterRange : MonoBehaviour {
             return damage;
         }
     }
+   
 
     //serializable projectile type
     [SerializeField]
@@ -57,14 +60,14 @@ public class MonsterRange : MonoBehaviour {
     // Use this for initialization
     void Start() {
         mySpriteRenderer = GetComponent<SpriteRenderer>();
-     
+        mTarget = false;
     }
 
     // Update is called once per frame
     void Update() {
-        
+      
         Attack();
-
+       
     }
 
 
@@ -75,7 +78,7 @@ public class MonsterRange : MonoBehaviour {
         Animator anim = transform.parent.GetComponent<Animator>();
         //left or right bool
 
-       
+        //Attack speed delay
         if (!canAttack)
         {
             AttackTimer += Time.deltaTime;
@@ -89,6 +92,7 @@ public class MonsterRange : MonoBehaviour {
         if (target == null && monsters.Count>0)
         {
             target = monsters.Dequeue();
+            
         }
         //make sure that we dont attack inactive monsters
         if (target != null)
@@ -97,6 +101,7 @@ public class MonsterRange : MonoBehaviour {
             {
                 
                 Shoot();
+              
                 anim.SetBool("attack", true);
                 canAttack = false;
             }
@@ -104,6 +109,7 @@ public class MonsterRange : MonoBehaviour {
         else if (target == null)
         {
             anim.SetBool("attack", false);
+            mTarget = false;
         }
            
 

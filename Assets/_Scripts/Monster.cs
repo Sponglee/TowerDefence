@@ -18,6 +18,13 @@ public class Monster : MonoBehaviour {
     //Declare a final path stack to backtrack the path
     Stack<Node> MonsterlPath = new Stack<Node>();
 
+    MonsterRange monsterRange;
+    // id of tower that is being damaged
+    public int tow_id;
+
+    public bool mRePath;
+
+
     private Point currentTilePos;
     public Point CurrentTilePos
     {
@@ -49,26 +56,44 @@ public class Monster : MonoBehaviour {
     public void Start()
     {
         health = maxHealth;
+        monsterRange = this.GetComponentInChildren<MonsterRange>();
+        mRePath = false;
     }
     private void Update()
     {
-      
+  
         hp.text = health.ToString();
         Move();
-        //If tower died
-        if (TowerHP.IsDead)
+        //If tower died (and is target?)
+
+        MonsterRange tar = this.GetComponentInChildren<MonsterRange>();
+        if (TowerHP.IsDead) // <----
         {
+      
             //Toggle Repath algorythm in GameManager
-            GameManager.Instance.cRePath = true;
+            //if (monsterRange.Target == null)
+            //{
+            //   Debug.Log("NO TARGET mTarget: " + monsterRange.mTarget);
+            //    monsterRange.mTarget = true;
+            //}
+               
+            //else
+            //{
+                mRePath = true;
+               
+           // }
+                
         }
+        
         
     }
 
     //Recalculates a path for a monster which had an obscured path and now it's open
     public void RePath()
     {
+        
         //Reset previous path
-        LevelManager.Instance.Path = null;
+        path = null;
         //Toggle switch of start to this current tile
         AStar.firstCurrent = true;
         //this current start tile
@@ -77,11 +102,13 @@ public class Monster : MonoBehaviour {
           
         //Toggle off obscured ASTar path
         //AStar.NewGoal = false;
+
+
         //Generate New path from this place
-        LevelManager.Instance.GeneratePath(CurrentTilePos);
+        path = LevelManager.Instance.GeneratePath(CurrentTilePos);
         //Set it as Path for this Monster
-        SetPath(LevelManager.Instance.Path);
-        Debug.Log(LevelManager.Instance.Path.Count + " <- MONSTER");
+        SetPath(path);
+   
         
         //Move 
         //Move();
@@ -109,7 +136,7 @@ public class Monster : MonoBehaviour {
 
         transform.position = LevelManager.Instance.BluePortal.transform.position;
         StartCoroutine(Scale(new Vector3(0.1f,0.1f,0.1f), new Vector3(0.3f,0.3f,0.1f), false));
-        //Get a path
+        
         SetPath(LevelManager.Instance.Path);
       
     }
@@ -135,13 +162,19 @@ public class Monster : MonoBehaviour {
     {
         if (IsActive)
         {
+          
             transform.position = Vector2.MoveTowards(transform.position, destination, speed*Time.deltaTime);
             if (transform.position == destination)
             {               
                 if (path != null && path.Count > 0)
-                {                
+                {
+                   
                     GridPosition = path.Peek().GridPosition;
                     destination = path.Pop().WorldPosition;
+                }
+                else if (path.Count == 0 && !monsterRange.Target && GridPosition != LevelManager.Instance.RedSpawn)
+                {
+                    mRePath = true;
                 }
             }
         }
@@ -153,13 +186,15 @@ public class Monster : MonoBehaviour {
     {
         if (newPath != null)
         {
-            path = newPath;            
-            if (path.Count>0)
-            {     
+            path = newPath;
+            if (path.Count > 0)
+            {
                 GridPosition = path.Peek().GridPosition;
                 destination = path.Pop().WorldPosition;
-            } 
+            }
+           
         }
+        
     }
 
     private void OnTriggerEnter2D (Collider2D other)

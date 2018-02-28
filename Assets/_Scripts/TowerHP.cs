@@ -6,11 +6,12 @@ using UnityEngine.UI;
 public class TowerHP : MonoBehaviour
 {
     static public bool IsDead;
-  
+
+   
 
     public bool MIsActive { get; set; }
 
-
+ 
 
     [SerializeField]
     private Text hp;
@@ -22,6 +23,7 @@ public class TowerHP : MonoBehaviour
 
     public void Start()
     {
+      
         IsDead = false;
         MIsActive = true;
         health = maxHealth;
@@ -59,7 +61,7 @@ public class TowerHP : MonoBehaviour
         {
             health -= damage;
             hp.text = health.ToString();
-
+       
             if (health <= 0)
             {
                 MIsActive = false;
@@ -70,4 +72,6 @@ public class TowerHP : MonoBehaviour
             }
         }
     }
+
+    
 }

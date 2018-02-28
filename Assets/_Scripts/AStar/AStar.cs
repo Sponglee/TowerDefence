@@ -9,8 +9,8 @@ public static class AStar
 
     public static Dictionary<Point, Node> nodes;
     //Add List of obstacles if they block the way
-    private static List<Node> obstacles;
-    public static List<Node> Obstacles
+    private static HashSet<Node> obstacles;
+    public static HashSet<Node> Obstacles
     {
         get
         {
@@ -40,7 +40,7 @@ public static class AStar
     public static Stack<Node> GetPath(Point start, Point goal)
     {
         // numerator for array of obstacles
-        obstacles = new List<Node>();
+        obstacles = new HashSet<Node>();
     
         if (nodes == null)
         {
@@ -134,7 +134,7 @@ public static class AStar
             {
                 //Path is clear
                 NewGoal = false;
-                Debug.Log("NET");
+              
                 //Backtrack to start
                 while (currentNode.GridPosition != start)
                 {
@@ -146,7 +146,7 @@ public static class AStar
             //if we didn't exit - push new goal to finalPath(cause can't reach Obstacle (unwalkable))
             else if (NewGoal == true)
             {
-                Debug.Log("DA");
+               
                 // Check if current node is near the current Obstacle
                 if (Math.Abs(currentNode.GridPosition.X - nodes[goal].GridPosition.X) <= 1
                         && Math.Abs(currentNode.GridPosition.Y - nodes[goal].GridPosition.Y) <= 1
@@ -181,7 +181,7 @@ public static class AStar
             
             //Tell LevelManager to set a goal to new obstacle 
             NewGoal = true;
-            Debug.Log("NOW NEW GOAL");
+          
             return finalPath;
         }
             

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LevelManager : Singleton<LevelManager> {
@@ -34,8 +35,8 @@ public class LevelManager : Singleton<LevelManager> {
         {
             //if (path == null)
             //{
-            //       //Makes a Path between cTMP position and Redspawn
-            //        GeneratePath();
+            //    //Makes a Path between cTMP position and Redspawn
+            //    GeneratePath(BlueSpawn);
             //}
             return new Stack<Node>(new Stack<Node>(path));
         }
@@ -161,18 +162,27 @@ public class LevelManager : Singleton<LevelManager> {
 
     public Stack<Node> GeneratePath(Point spawn)
     {
-        if (AStar.Obstacles ==null)
-            AStar.NewGoal = false;
+        if (AStar.Obstacles ==null )
             // case when there's clear path to redSpawn
+            AStar.NewGoal = false;
+          
+
+
         path = AStar.GetPath(spawn, RedSpawn);
         
-        Debug.Log(path.Count+ " <-ASTAR");
+
         if (AStar.NewGoal)
         {
+            Debug.Log("NEW GOAL");
             //If path to redSpawn is unreachable turn on "NEW GoAL" mode to get to random obstacle
-            int rng = UnityEngine.Random.Range(0, (AStar.Obstacles.Count));
-           
-            Tmp = AStar.Obstacles[rng].GridPosition;
+            //int rng = UnityEngine.Random.Range(0, (AStar.Obstacles.Count));
+            if(AStar.Obstacles.Count != 0)
+            {
+                Node closestEnemy = AStar.Obstacles.OrderBy(n => n.F).First();
+
+                Tmp = closestEnemy.GridPosition;
+            }
+               
            
             //Check if 
             for (int x = -1; x <= 1; x++)

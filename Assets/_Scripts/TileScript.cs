@@ -116,7 +116,7 @@ public class TileScript : MonoBehaviour {
 
     }
     //Sends Each monster a grid position whenever it enters a tile
-    public void OnTriggerStay2D(Collider2D other)
+    public void OnTriggerEnter2D(Collider2D other)
     {
         
         if (other.CompareTag("Monster"))
