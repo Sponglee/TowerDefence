@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MonsterRange : MonoBehaviour {
-
+    //animator for a tower
+    public Animator anim;
     //Toggle for repath
     public bool mTarget;
     [SerializeField]
@@ -73,9 +74,8 @@ public class MonsterRange : MonoBehaviour {
 
     public void Attack()
     {
+        anim = transform.parent.GetComponent<Animator>();
 
-        //animator for a tower
-        Animator anim = transform.parent.GetComponent<Animator>();
         //left or right bool
 
         //Attack speed delay
@@ -111,7 +111,10 @@ public class MonsterRange : MonoBehaviour {
             anim.SetBool("attack", false);
             mTarget = false;
         }
-           
+        if (!this.GetComponentInParent<Monster>().IsActive)
+        {
+            target = null;
+        }
 
     }
 

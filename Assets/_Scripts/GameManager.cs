@@ -135,9 +135,16 @@ public class GameManager : Singleton<GameManager>
 
         //If there's need to Recalculate a Path - do it for every active monster
 
+            GRePath();
+            HandleEscape();
+    }
+
+
+    public void GRePath()
+    {
         foreach (Monster monster in ActiveMonsters)
         {
-           
+
             //if (monster.GetComponentInChildren<MonsterRange>().mTarget)
             //{
             //    Debug.Log("CHECK CHECK ");
@@ -145,25 +152,24 @@ public class GameManager : Singleton<GameManager>
             //    monster.GetComponentInChildren<MonsterRange>().mTarget = false;
             //    monster.mRePath = false;
             //}
-           if (monster.MRePath)
+            if (monster.MRePath)
             {
                 Debug.Log("REEEEEEEEEE");
                 monster.RePath();
                 monster.MRePath = false;
             }
         }
-            HandleEscape();
     }
-
     //Activate tower placement whichever button is pressed
     public void PickTower(TowerBtn towerBtn)
     {
-        if (Currency >= towerBtn.Price && !WaveActive && !gameOverChecker)
+        if (Currency >= towerBtn.Price && !gameOverChecker)
         {
             this.ClickedBtn = towerBtn;
             Hover.Instance.Activate(towerBtn.Sprite);
             //Gets hover range size for each button
             hoverRange.transform.localScale = towerBtn.TowerPrefab.transform.GetChild(0).transform.localScale;
+            
         }
 
     }
@@ -244,10 +250,10 @@ public class GameManager : Singleton<GameManager>
             switch (monsterIndex)
             {
                 case 0:
-                    type = "orc";
+                    type = "Enemy1";
                     break;
                 case 1:
-                    type = "goblin";
+                    type = "Enemy1";
                     break;
             }
             //Grab Monster script from monster spawn and spawn it on portal

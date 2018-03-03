@@ -99,7 +99,7 @@ public class Tower : MonoBehaviour {
             target = monsters.Dequeue();
         }
         //make sure that we dont attack inactive monsters
-        if (target != null && target.IsActive)
+        if (target != null && target.IsActive || target !=null && !target.IsActive)
         {
             if (canAttack)
             {
@@ -161,9 +161,5 @@ public class Tower : MonoBehaviour {
             target = null;
         }
     }
-
-    public void TowerDamage()
-    {
-
-    }
+    
 }

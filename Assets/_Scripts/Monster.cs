@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Monster : MonoBehaviour {
 
     [SerializeField]
-    private float speed=1f;
+    private float speed = 1f;
     //path 
     private Stack<Node> path;
     // position
@@ -22,6 +22,20 @@ public class Monster : MonoBehaviour {
     // id of tower that is being damaged
     public int tow_id;
 
+    private float curr_speed;
+    private bool slowed = false;
+    public bool Slowed
+    {
+        get
+        {
+            return slowed;
+        }
+
+        set
+        {
+            slowed = value;
+        }
+    }
     private bool mRePath;
     public bool MRePath
     {
@@ -70,13 +84,14 @@ public class Monster : MonoBehaviour {
 
     public void Start()
     {
+        this.curr_speed = speed;
         health = maxHealth;
         monsterRange = this.GetComponentInChildren<MonsterRange>();
         this.MRePath = false;
     }
     private void Update()
     {
-  
+
         hp.text = health.ToString();
         Move();
         //If tower died (and is target?)
@@ -110,19 +125,19 @@ public class Monster : MonoBehaviour {
     //Recalculates a path for a monster which had an obscured path and now it's open
     public void RePath()
     {
-        
+
         //Reset previous path
         path = null;
         //Toggle switch of start to this current tile
         AStar.firstCurrent = true;
         //this current start tile
 
-            //<----
-          
+        //<----
+
         //Toggle off obscured ASTar path
         //AStar.NewGoal = false;
 
-
+        AStar.Obstacles.Clear();
         //Generate New path from this place
         path = LevelManager.Instance.GeneratePath(CurrentTilePos);
         //Set it as Path for this Monster
@@ -132,7 +147,7 @@ public class Monster : MonoBehaviour {
         //Move 
         //Move();
 
-      //<---- wrong
+        //<---- wrong
 
     }
 
@@ -144,7 +159,7 @@ public class Monster : MonoBehaviour {
         LevelManager.Instance.GeneratePath(LevelManager.Instance.BlueSpawn);
         health = maxHealth;
 
-       
+
         hp.text = health.ToString();
 
         //health.Initialize();
@@ -155,21 +170,21 @@ public class Monster : MonoBehaviour {
         */
 
         transform.position = LevelManager.Instance.BluePortal.transform.position;
-        StartCoroutine(Scale(new Vector3(0.1f,0.1f,0.1f), new Vector3(0.3f,0.3f,0.1f), false));
-        
+        StartCoroutine(Scale(new Vector3(0.1f, 0.1f, 0.1f), new Vector3(1f, 1f, 0.1f), false));
+
         SetPath(LevelManager.Instance.Path);
-      
+
     }
 
-    public IEnumerator Scale (Vector3 from, Vector3 to, bool remove)
+    public IEnumerator Scale(Vector3 from, Vector3 to, bool remove)
     {
         health = maxHealth;
         float progress = 0;
-        while (progress<=1)
+        while (progress <= 1)
         {
-            transform.localScale = Vector3.Lerp(from, to,progress);
+            transform.localScale = Vector3.Lerp(from, to, progress);
             progress += Time.deltaTime;
-            yield return null; 
+            yield return null;
         }
         transform.localScale = to;
         IsActive = true;
@@ -182,23 +197,24 @@ public class Monster : MonoBehaviour {
     {
         if (IsActive)
         {
-          
-            transform.position = Vector2.MoveTowards(transform.position, destination, speed*Time.deltaTime);
+
+            transform.position = Vector2.MoveTowards(transform.position, destination, speed * Time.deltaTime);
             if (transform.position == destination)
-            {               
+            {
                 if (path != null && path.Count > 0)
                 {
-                   
+
                     GridPosition = path.Peek().GridPosition;
                     destination = path.Pop().WorldPosition;
                 }
                 else if (path.Count == 0 && !monsterRange.Target && GridPosition != LevelManager.Instance.RedSpawn)
                 {
                     this.MRePath = true;
+                    this.GetComponentInChildren<MonsterRange>().anim.SetBool("attack", false);
                 }
             }
         }
-       
+
     }
 
     //Sets a path 
@@ -212,21 +228,77 @@ public class Monster : MonoBehaviour {
                 GridPosition = path.Peek().GridPosition;
                 destination = path.Pop().WorldPosition;
             }
-           
+
         }
-        
+
     }
 
-    private void OnTriggerEnter2D (Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("RedPortal") && gameObject.tag =="Monster")
+
+        if (other.CompareTag("RedPortal") && gameObject.tag == "Monster")
         {
-            StartCoroutine(Scale(new Vector3(0.3f, 0.3f, 0.1f), new Vector3(0.1f, 0.1f, 0.1f), true));
+            StartCoroutine(Scale(new Vector3(1f, 1f, 0.1f), new Vector3(0.1f, 0.1f, 0.1f), true));
             //DAMAGE US
             GameManager.Instance.Lives -= 1;
+
+        //}
+        //// LEft or Up
+        //if ((other.CompareTag("MonsterBound") && other.transform.position.x > this.transform.position.x)
+        //            || (other.CompareTag("MonsterBound") && other.transform.position.y < this.transform.position.y))
+        //{
+           
             
+        //    this.speed = 0.1f;}
+           
         }
     }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if ((other.CompareTag("MonsterBound") && other.transform.position.x > this.transform.position.x)
+                     || (other.CompareTag("MonsterBound") && other.transform.position.y < this.transform.position.y))
+        {
+
+            //direction vector from collider to destination
+            Vector2 dir = destination - other.transform.position;
+            //direction between colliders
+            Vector2 dir2 = other.transform.position - transform.position;
+            Vector2 dir3 = dir - dir2;
+            //direction turned to degrees
+            float angle = Mathf.Atan2(dir3.y, dir3.x) * Mathf.Rad2Deg;
+            Debug.Log(angle);
+
+
+
+            
+            
+                this.speed = Random.Range(0.001f,0.1f);
+                
+                    if (other.GetComponentInParent<Monster>())
+                        other.GetComponentInParent<Monster>().speed = curr_speed;
+                    else
+                        this.speed = curr_speed;
+                
+           
+           
+
+
+        }
+
+    }
+    public void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("MonsterBound"))
+        {
+            Debug.Log("Exit");
+            this.speed = curr_speed;
+        }
+      
+       
+    }
+
+
     //Resets disabled object 
     private void Release()
     {
@@ -256,4 +328,15 @@ public class Monster : MonoBehaviour {
             }
         }
     }
+
+    private IEnumerator SlowDown()
+    {
+        yield return new WaitForSeconds(Random.Range(0.1f,1f));
+    }
+
+   
+
+   
+
+  
 }

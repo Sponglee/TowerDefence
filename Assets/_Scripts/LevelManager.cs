@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class LevelManager : Singleton<LevelManager> {
 
+    int i = 0;
     [SerializeField]
     private GameObject[] tiles;
     [SerializeField]
@@ -77,7 +78,8 @@ public class LevelManager : Singleton<LevelManager> {
 
     // Use this for initialization
     void Start ()
-    { 
+    {
+     
         InitializeLevel();
         SpawnPortals();
 	}
@@ -85,6 +87,7 @@ public class LevelManager : Singleton<LevelManager> {
     // Create a level
     private void InitializeLevel()
     {
+  
         //Dictionary of tiles to form a grid
         Tiles = new Dictionary<Point, TileScript>();
         string[] mapData = ReadLevelText();
@@ -125,9 +128,16 @@ public class LevelManager : Singleton<LevelManager> {
             newTile.WalkAble = false;
         }
         else
+        {
+            
             newTile.WalkAble = true;
+            i++;
+            newTile.transform.Rotate(Vector3.forward, (180 * i+90) % 360);
+        }
+           
         //Moving tile to it's place
         newTile.transform.position = new Vector2(worldStart.x + TileSize * x + TileSize/2, worldStart.y - TileSize * y - TileSize/2 );
+       
         newTile.Setup(new Point(x, y), newTile.transform.position = new Vector2(worldStart.x + TileSize * x + TileSize / 2, worldStart.y - TileSize * y - TileSize / 2), map);
 
        
@@ -166,7 +176,7 @@ public class LevelManager : Singleton<LevelManager> {
             // case when there's clear path to redSpawn
             AStar.NewGoal = false;
           
-
+        
 
         path = AStar.GetPath(spawn, RedSpawn);
         

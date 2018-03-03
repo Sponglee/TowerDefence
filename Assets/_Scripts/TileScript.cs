@@ -111,7 +111,11 @@ public class TileScript : MonoBehaviour {
             IsEmpty = false;
             spriteRenderer.color = Color.white;
             
-            
+            foreach (Monster monster in GameManager.Instance.ActiveMonsters)
+            {
+                monster.MRePath = true;
+            }
+            GameManager.Instance.GRePath();
 
 
     }
