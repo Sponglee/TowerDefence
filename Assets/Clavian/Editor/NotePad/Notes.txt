@@ -1,0 +1,7 @@
+TODO:
+
+
+
+Recalculate Fscore for obstacles from current positions to pick more
+logical paths
+

@@ -42,6 +42,7 @@ public class MonsterRange : MonoBehaviour {
     public TowerHP Target
     {
         get { return target; }
+        set { target = value; }
     }
 
 

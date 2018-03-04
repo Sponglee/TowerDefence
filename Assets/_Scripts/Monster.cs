@@ -91,7 +91,7 @@ public class Monster : MonoBehaviour {
     }
     private void Update()
     {
-
+        Debug.Log("CUR: " + CurrentTilePos.X + " " + CurrentTilePos.Y);
         hp.text = health.ToString();
         Move();
         //If tower died (and is target?)
@@ -125,7 +125,7 @@ public class Monster : MonoBehaviour {
     //Recalculates a path for a monster which had an obscured path and now it's open
     public void RePath()
     {
-
+        Debug.Log("REPATH");
         //Reset previous path
         path = null;
         //Toggle switch of start to this current tile
@@ -136,7 +136,7 @@ public class Monster : MonoBehaviour {
 
         //Toggle off obscured ASTar path
         //AStar.NewGoal = false;
-
+        //Clear obstacles
         AStar.Obstacles.Clear();
         //Generate New path from this place
         path = LevelManager.Instance.GeneratePath(CurrentTilePos);
@@ -171,7 +171,7 @@ public class Monster : MonoBehaviour {
 
         transform.position = LevelManager.Instance.BluePortal.transform.position;
         StartCoroutine(Scale(new Vector3(0.1f, 0.1f, 0.1f), new Vector3(1f, 1f, 0.1f), false));
-
+        
         SetPath(LevelManager.Instance.Path);
 
     }
@@ -240,6 +240,7 @@ public class Monster : MonoBehaviour {
         {
             StartCoroutine(Scale(new Vector3(1f, 1f, 0.1f), new Vector3(0.1f, 0.1f, 0.1f), true));
             //DAMAGE US
+            this.GetComponentInChildren<MonsterRange>().Target = null;
             GameManager.Instance.Lives -= 1;
 
         //}

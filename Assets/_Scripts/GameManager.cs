@@ -154,7 +154,7 @@ public class GameManager : Singleton<GameManager>
             //}
             if (monster.MRePath)
             {
-                Debug.Log("REEEEEEEEEE");
+                Debug.Log("punk");
                 monster.RePath();
                 monster.MRePath = false;
             }

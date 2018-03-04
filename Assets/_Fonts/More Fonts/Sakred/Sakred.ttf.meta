@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 18e8eb9367a6a7a4ab37c1cbb6ff64c9
+timeCreated: 1520102092
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Sakred
+  fontNames:
+  - Sakred
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

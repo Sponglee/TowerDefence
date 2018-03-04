@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 95720055689591806}
   - component: {fileID: 61514178088884946}
   - component: {fileID: 50602811816756958}
-  m_Layer: 1
+  m_Layer: 2
   m_Name: portalRed
   m_TagString: RedPortal
   m_Icon: {fileID: 0}

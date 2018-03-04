@@ -58,13 +58,16 @@ public class TileScript : MonoBehaviour {
         //also checks if tile is Not walkable by monsters to place it
         if (!EventSystem.current.IsPointerOverGameObject() && GameManager.Instance.ClickedBtn != null)
         {
-            if (IsEmpty && !Debugging && WalkAble)
+            if (IsEmpty && !Debugging && WalkAble 
+                            && Mathf.Abs(GridPosition.X-LevelManager.Instance.BlueSpawn.X)>1 || Mathf.Abs(GridPosition.Y - LevelManager.Instance.BlueSpawn.Y) > 1)
             {
                 spriteRenderer.color = emptyColor;
                 if (Input.GetMouseButtonDown(0))
                     PlaceTower();
             }
-            else if ((!IsEmpty && !Debugging) || (!WalkAble && !Debugging))
+            else if ((!IsEmpty && !Debugging) || (!WalkAble && !Debugging)
+                    || ( Mathf.Abs(GridPosition.X - LevelManager.Instance.BlueSpawn.X) <=  1 
+                             && Mathf.Abs(GridPosition.Y - LevelManager.Instance.BlueSpawn.Y) <= 1))
             {
                 spriteRenderer.color = fullColor;
             }
@@ -113,9 +116,14 @@ public class TileScript : MonoBehaviour {
             
             foreach (Monster monster in GameManager.Instance.ActiveMonsters)
             {
-                monster.MRePath = true;
+                if (monster.GetComponentInChildren<MonsterRange>().Target == null)
+                {
+                Debug.Log("REPAH");
+                    monster.MRePath = true;
+                }
+             
             }
-            GameManager.Instance.GRePath();
+            
 
 
     }
