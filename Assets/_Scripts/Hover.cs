@@ -8,14 +8,26 @@ public class Hover : Singleton<Hover> {
 
     //reference to tower's range
     private SpriteRenderer rangeSpriteRenderer;
+    public SpriteRenderer RangeSpriteRenderer
+    {
+        get
+        {
+            return rangeSpriteRenderer;
+        }
 
-	// Use this for initialization
-	void Start ()
+        set
+        {
+            rangeSpriteRenderer = value;
+        }
+    }
+
+    // Use this for initialization
+    void Start ()
     {
         //instantiating the sprite
         this.spriteRenderer = GetComponent<SpriteRenderer>();
 
-        this.rangeSpriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        this.RangeSpriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
 
 	}
 	
@@ -39,7 +51,7 @@ public class Hover : Singleton<Hover> {
     {
         spriteRenderer.enabled = true;
         this.spriteRenderer.sprite = sprite;
-        rangeSpriteRenderer.enabled = true;
+        RangeSpriteRenderer.enabled = true;
 
     }
 
@@ -49,6 +61,6 @@ public class Hover : Singleton<Hover> {
         spriteRenderer.enabled = false;
         // set clickedBtn to empty from this script (GameManager line :10)
         GameManager.Instance.ClickedBtn = null;
-        rangeSpriteRenderer.enabled = false;
+        RangeSpriteRenderer.enabled = false;
     }
 }

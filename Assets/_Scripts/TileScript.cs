@@ -58,22 +58,25 @@ public class TileScript : MonoBehaviour {
         //also checks if tile is Not walkable by monsters to place it
         if (!EventSystem.current.IsPointerOverGameObject() && GameManager.Instance.ClickedBtn != null)
         {
-            if (IsEmpty && !Debugging && WalkAble 
-                            && Mathf.Abs(GridPosition.X-LevelManager.Instance.BlueSpawn.X)>1 || Mathf.Abs(GridPosition.Y - LevelManager.Instance.BlueSpawn.Y) > 1)
+            if (IsEmpty && !Debugging && WalkAble)
+
             {
                 spriteRenderer.color = emptyColor;
                 if (Input.GetMouseButtonDown(0))
                     PlaceTower();
             }
-            else if ((!IsEmpty && !Debugging) || (!WalkAble && !Debugging)
-                    || ( Mathf.Abs(GridPosition.X - LevelManager.Instance.BlueSpawn.X) <=  1 
-                             && Mathf.Abs(GridPosition.Y - LevelManager.Instance.BlueSpawn.Y) <= 1))
+            else if ((!IsEmpty && !Debugging) || (!WalkAble && !Debugging) ||
+                (Mathf.Abs(GridPosition.X - LevelManager.Instance.BlueSpawn.X) < 1
+                    && Mathf.Abs(GridPosition.Y - LevelManager.Instance.BlueSpawn.Y) == 0)
+                        || GridPosition == LevelManager.Instance.RedSpawn)
+
             {
                 spriteRenderer.color = fullColor;
             }
 
         }
-        else if (!EventSystem.current.IsPointerOverGameObject() && GameManager.Instance.ClickedBtn == null && Input.GetMouseButtonDown(0))
+        else if (!EventSystem.current.IsPointerOverGameObject()
+            && GameManager.Instance.ClickedBtn == null /* && Input.GetMouseButtonDown(0)*/)
         {
             if (myTower != null)
             {
@@ -81,17 +84,20 @@ public class TileScript : MonoBehaviour {
             }
             else
             {
-                
+
                 GameManager.Instance.DeselectTower();
             }
-              
+
         }
+        
+       
     }
 
     private void OnMouseExit()
     {
         if (!Debugging)
          spriteRenderer.color = Color.white;
+        GameManager.Instance.DeselectTower();
     }
 
 
@@ -116,12 +122,7 @@ public class TileScript : MonoBehaviour {
             
             foreach (Monster monster in GameManager.Instance.ActiveMonsters)
             {
-                if (monster.GetComponentInChildren<MonsterRange>().Target == null)
-                {
-                Debug.Log("REPAH");
                     monster.MRePath = true;
-                }
-             
             }
             
 
@@ -135,7 +136,8 @@ public class TileScript : MonoBehaviour {
         {
             
             other.GetComponent<Monster>().CurrentTilePos = gameObject.GetComponent<TileScript>().GridPosition;
-           if (this.WalkAble == false)
+            other.GetComponent<SpriteRenderer>().sortingOrder = GridPosition.Y;
+            if (this.WalkAble == false)
             {
                 other.GetComponent<Monster>().MRePath = true;
             }

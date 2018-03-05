@@ -12,11 +12,14 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     private Text currencyTxt;
 
+    [SerializeField]
+    private GameObject GameOverMenu;
     //Object reference for hover icon
 
     [SerializeField]
     private GameObject hoverRange;
-
+    [SerializeField]
+    private Sprite sellSprite;
     //Our hp
     private int lives;
     [SerializeField]
@@ -31,8 +34,11 @@ public class GameManager : Singleton<GameManager>
 
     //current selected tower
     private Tower selectedTower;
-
-   
+    //selling toggle
+    public bool sellSwitch = false;
+    //Mana prefab
+    [SerializeField]
+    private GameObject mana;
 
     //Check if ther're are monsters on the field
     public bool WaveActive
@@ -70,7 +76,7 @@ public class GameManager : Singleton<GameManager>
             return activeMonsters;
         }
 
-     
+
     }
     // Create monster object pool
     public ObjectPool Pool { get; set; }
@@ -86,7 +92,7 @@ public class GameManager : Singleton<GameManager>
         set
         {
             currency = value;
-            this.currencyTxt.text = value.ToString() + " <color=orange>$</color>";
+            this.currencyTxt.text = value.ToString() + "<color=orange>$</color>";
         }
     }
 
@@ -101,7 +107,7 @@ public class GameManager : Singleton<GameManager>
         {
             //set value hp if not 0
             this.lives = value;
-            livesTxt.text = string.Format("Health: <color=orange>{0}</color>", lives.ToString());
+            livesTxt.text = string.Format("{0}<color=orange>HP</color>", lives.ToString());
             //Check for gameover on set
             if (lives <= 0)
             {
@@ -120,23 +126,23 @@ public class GameManager : Singleton<GameManager>
     //Before start
     private void Awake()
     {
-        Pool = GetComponent<ObjectPool>();      
+        Pool = GetComponent<ObjectPool>();
     }
     // Use this for initialization
     void Start()
     {
-        Lives = 50;
-        Currency = 150;
+        Lives = 10;
+        Currency = 10;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        Debug.Log(sellSwitch);
         //If there's need to Recalculate a Path - do it for every active monster
 
-            GRePath();
-            HandleEscape();
+        GRePath();
+        HandleEscape();
     }
 
 
@@ -155,6 +161,13 @@ public class GameManager : Singleton<GameManager>
             if (monster.MRePath)
             {
                 Debug.Log("punk");
+                //Generate New path from this place
+                foreach (KeyValuePair<Point, Node> node in AStar.nodes)
+                {
+                    node.Value.F = 0;
+                    node.Value.H = 0;
+                    node.Value.G = 0;
+                }
                 monster.RePath();
                 monster.MRePath = false;
             }
@@ -169,17 +182,28 @@ public class GameManager : Singleton<GameManager>
             Hover.Instance.Activate(towerBtn.Sprite);
             //Gets hover range size for each button
             hoverRange.transform.localScale = towerBtn.TowerPrefab.transform.GetChild(0).transform.localScale;
-            
+
         }
 
     }
 
     // discard the tower
-    private void HandleEscape()
+    public void HandleEscape()
     {
         if (Input.GetMouseButtonDown(1))
         {
             Hover.Instance.Deactivate();
+            sellSwitch = false;
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            
+            DeselectTower();
+            GameOverMenu.SetActive(!GameOverMenu.activeSelf);
+            if (!GameOverMenu.activeSelf)
+                Time.timeScale = 1;
+            else
+                Time.timeScale = 0;
         }
     }
 
@@ -198,51 +222,69 @@ public class GameManager : Singleton<GameManager>
     //Deselect tower
     public void DeselectTower()
     {
-        if(selectedTower !=null)
+        if (selectedTower != null)
         {
             selectedTower.Select();
         }
         selectedTower = null;
     }
+    //Handles sell
+    public void SelectSellTower()
+    {
+        //Hover.Instance.Activate(sellSprite);
+        Hover.Instance.RangeSpriteRenderer.enabled = false;
+        sellSwitch = true;
+    }
 
+    public void SellTower(TowerHP tower)
+    {
+        if (tower != null)
+        {
+            Currency += tower.cost/2;
+            
+            Destroy(tower.gameObject);
+            Debug.Log("WEEEEEE");
+            sellSwitch = false;
+        }
+    }
     // handles buy 
     public void BuyTower()
     {
-        if(Currency>= ClickedBtn.Price)
+        if (Currency >= ClickedBtn.Price)
         {
             Currency -= ClickedBtn.Price;
             Hover.Instance.Deactivate();
             ClickedBtn = null;
         }
     }
-  
+
     //Spawn waves of monsters
     public void StartWave()
     {
         wave++;
 
         //Set Recalc mRePath toggle off each wave
-        
+
         //AStar.NewGoal = true;
         //increase difficulty every 3rd wave
-        if (wave % 3 == 0)
-        {
-            gmHealth += 5;
-        }
+        //if (wave % 3 == 0)
+        //{
+        //    gmHealth += 5;
+        //}
 
-        waveTxt.text = string.Format("Wave: <color=orange>{0}</color>", wave);
+        waveTxt.text = string.Format("WAVE:<color=orange>{0}</color>", wave);
 
-        StartCoroutine (SpawnWave());
+        StartCoroutine(SpawnWave());
 
         waveBtn.SetActive(false);
     }
 
 
-   //Monster spawn
-   private IEnumerator SpawnWave()
+    //Monster spawn
+    private IEnumerator SpawnWave()
     {
-        
-       
+
+
         for (int i = 0; i < wave; i++)
         {
             int monsterIndex = Random.Range(0, 2);
@@ -261,10 +303,10 @@ public class GameManager : Singleton<GameManager>
             monster.Spawn(gmHealth);
             //Added to list of active monsters to check for waves
             ActiveMonsters.Add(monster);
-           
+
             yield return new WaitForSeconds(2.5f);
-           
-        }  
+
+        }
     }
 
     //Removes monsters from activeMonster list for wavechecks
@@ -281,7 +323,7 @@ public class GameManager : Singleton<GameManager>
     //Show gameOver menu 
     public void GameOver()
     {
-        if(!GameOverChecker)
+        if (!GameOverChecker)
         {
             gameOverChecker = true;
             gameOverMenu.SetActive(true);
@@ -292,6 +334,9 @@ public class GameManager : Singleton<GameManager>
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //TOGGLE MENU 
+        GameOverMenu.SetActive(!GameOverMenu.activeSelf);
+        //GameOverMenu.SetActive(false);
         //In case game was paused before
         Time.timeScale = 1;
     }
@@ -302,11 +347,20 @@ public class GameManager : Singleton<GameManager>
         Application.Quit();
     }
 
-   
 
+    public void SpawnMana(Monster monster)
+    {
+        GameObject tmp = Instantiate(mana, monster.transform.position, Quaternion.identity);
+        tmp.transform.position = monster.transform.position;
+    }
+
+    public void EatMana(int manaAmount)
+    {
+        Currency += manaAmount;
+    }
     /// <summary>
     /// //////////////////////////////////////////////DEBUGG
     /// </summary>
-  
- 
+
+
 }

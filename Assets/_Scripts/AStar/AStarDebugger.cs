@@ -159,10 +159,12 @@ public class AStarDebugger : MonoBehaviour
     private void CreateDebugTile(Vector3 worldPos, Color32 color, Node node = null)
     {
         GameObject debugTile = (GameObject)Instantiate(debugTilePrefab, worldPos, Quaternion.identity);
+        debugTile.GetComponent<Canvas>().sortingOrder += 1;
         debugTile.transform.position = worldPos;
         if (node != null)
         {
             DebugTile tmp = debugTile.GetComponent<DebugTile>();
+           
             tmp.G.text += node.G;
             tmp.H.text += node.H;
             tmp.F.text += node.F;

@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 61794955755669660}
   - component: {fileID: 50658962114371342}
   - component: {fileID: 114603836621544204}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Healer
   m_TagString: Tower
   m_Icon: {fileID: 0}
@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50ac3801825e69749aacc593142dfc7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
+  damage: 5
   projectileType: fire
   projectileSpeed: 2
   towerRange: 2
@@ -271,7 +271,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDead: 0
+  cost: 10
   hp: {fileID: 114161126597831608}
+  maxHealth: 20
 --- !u!114 &114914444926036262
 MonoBehaviour:
   m_ObjectHideFlags: 1

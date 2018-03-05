@@ -33,6 +33,7 @@ public class Node
     //calculate astar function
     public void CalcValues(Node parent, Node goal, int gCost)
     {
+       
         //set parent to backtrack
         this.Parent = parent;
         // Neighbour score

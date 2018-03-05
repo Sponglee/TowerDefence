@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 224760965177966710}
   - component: {fileID: 222283951345229224}
   - component: {fileID: 114395982575381686}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 114286184152635754}
   - component: {fileID: 61560198635506638}
   - component: {fileID: 50178499825993636}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Fighter
   m_TagString: Tower
   m_Icon: {fileID: 0}
@@ -77,7 +77,7 @@ GameObject:
   - component: {fileID: 223159859194660760}
   - component: {fileID: 114750412911313208}
   - component: {fileID: 114662219618222774}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,7 +201,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDead: 0
+  cost: 2
   hp: {fileID: 114395982575381686}
+  maxHealth: 20
 --- !u!114 &114291758506173628
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -215,7 +217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   projectileType: fire
-  projectileSpeed: 5
+  projectileSpeed: 15
   towerRange: 0
   AttackCooldown: 0.5
 --- !u!114 &114395982575381686

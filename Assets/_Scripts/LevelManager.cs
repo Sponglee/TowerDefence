@@ -172,9 +172,12 @@ public class LevelManager : Singleton<LevelManager> {
 
     public Stack<Node> GeneratePath(Point spawn)
     {
-        if (AStar.Obstacles ==null )
-            // case when there's clear path to redSpawn
-            AStar.NewGoal = false;
+
+
+        if ( AStar.Obstacles == null)
+                AStar.NewGoal = false;
+   
+            
           
         
 

@@ -15,6 +15,7 @@ TagManager:
   - Tile
   - Exit
   - MonsterBound
+  - Mana
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Tower
   - 
   - 
   - 

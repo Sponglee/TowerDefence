@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 61270230077162228}
   - component: {fileID: 114852694123220736}
   - component: {fileID: 50107595355060500}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Gunman
   m_TagString: Tower
   m_Icon: {fileID: 0}
@@ -237,9 +237,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50ac3801825e69749aacc593142dfc7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
+  damage: 2
   projectileType: fire
-  projectileSpeed: 2
+  projectileSpeed: 5
   towerRange: 2
   AttackCooldown: 0.5
 --- !u!114 &114714143630311052
@@ -286,7 +286,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9f2162ad9b3e44479404f5355cbe98e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsDead: 0
+  cost: 4
   hp: {fileID: 114714143630311052}
+  maxHealth: 15
 --- !u!212 &212259824538815532
 SpriteRenderer:
   m_ObjectHideFlags: 1

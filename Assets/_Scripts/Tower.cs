@@ -14,6 +14,7 @@ public class Tower : MonoBehaviour {
         }
     }
 
+   
     //serializable projectile type
     [SerializeField]
     private string projectileType;
@@ -162,4 +163,5 @@ public class Tower : MonoBehaviour {
         }
     }
     
+
 }

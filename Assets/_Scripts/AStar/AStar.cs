@@ -171,7 +171,7 @@ public static class AStar
 
         //****ONLY FOR DEBUGGING*****//
         
-       //wGameObject.Find("AStarDebugger").GetComponent<AStarDebugger>().DebugPath(openList, closedList, finalPath);
+       //GameObject.Find("AStarDebugger").GetComponent<AStarDebugger>().DebugPath(openList, closedList, finalPath);
 
         //If goal is 
         if (finalPath.Count>0)

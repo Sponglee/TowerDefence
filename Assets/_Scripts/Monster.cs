@@ -91,7 +91,7 @@ public class Monster : MonoBehaviour {
     }
     private void Update()
     {
-        Debug.Log("CUR: " + CurrentTilePos.X + " " + CurrentTilePos.Y);
+      
         hp.text = health.ToString();
         Move();
         //If tower died (and is target?)
@@ -133,12 +133,11 @@ public class Monster : MonoBehaviour {
         //this current start tile
 
         //<----
-
-        //Toggle off obscured ASTar path
-        //AStar.NewGoal = false;
+        AStar.NewGoal = false;
+       
         //Clear obstacles
         AStar.Obstacles.Clear();
-        //Generate New path from this place
+        
         path = LevelManager.Instance.GeneratePath(CurrentTilePos);
         //Set it as Path for this Monster
         SetPath(path);
@@ -243,65 +242,47 @@ public class Monster : MonoBehaviour {
             this.GetComponentInChildren<MonsterRange>().Target = null;
             GameManager.Instance.Lives -= 1;
 
-        //}
-        //// LEft or Up
-        //if ((other.CompareTag("MonsterBound") && other.transform.position.x > this.transform.position.x)
-        //            || (other.CompareTag("MonsterBound") && other.transform.position.y < this.transform.position.y))
-        //{
-           
             
-        //    this.speed = 0.1f;}
-           
+
         }
+        
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if ((other.CompareTag("MonsterBound") && other.transform.position.x > this.transform.position.x)
-                     || (other.CompareTag("MonsterBound") && other.transform.position.y < this.transform.position.y))
+
+
+       if (other.CompareTag("Monster"))
         {
+            if ((other.CompareTag("MonsterBound") && other.transform.position.x > this.transform.position.x)
+                    || (other.CompareTag("MonsterBound") && other.transform.position.y < this.transform.position.y))
+            {
+                this.speed = curr_speed;
+                this.speed = Random.Range(0.1f, 0.2f);
+                float time=0;
+                time +=  Time.deltaTime;
+                Debug.Log(time);
+                if (time >= 0.2)
+                    this.speed = curr_speed;
+            }
+        }
 
-            //direction vector from collider to destination
-            Vector2 dir = destination - other.transform.position;
-            //direction between colliders
-            Vector2 dir2 = other.transform.position - transform.position;
-            Vector2 dir3 = dir - dir2;
-            //direction turned to degrees
-            float angle = Mathf.Atan2(dir3.y, dir3.x) * Mathf.Rad2Deg;
-            Debug.Log(angle);
 
-
-
-            
-            
-                this.speed = Random.Range(0.001f,0.1f);
-                
-                    if (other.GetComponentInParent<Monster>())
-                        other.GetComponentInParent<Monster>().speed = curr_speed;
-                    else
-                        this.speed = curr_speed;
-                
-           
-           
+    }
+        public void OnTriggerExit2D(Collider2D other)
+        {
+            if (other.CompareTag("MonsterBound"))
+            {
+                Debug.Log("Exit");
+                this.speed = curr_speed;
+            }
 
 
         }
 
-    }
-    public void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("MonsterBound"))
-        {
-            Debug.Log("Exit");
-            this.speed = curr_speed;
-        }
-      
-       
-    }
 
-
-    //Resets disabled object 
-    private void Release()
+        //Resets disabled object 
+        private void Release()
     {
         health = maxHealth;
         hp.text = health.ToString();
@@ -325,14 +306,16 @@ public class Monster : MonoBehaviour {
             {
               
                 Release();
-                
+                GameManager.Instance.SpawnMana(this);
             }
         }
     }
 
     private IEnumerator SlowDown()
     {
-        yield return new WaitForSeconds(Random.Range(0.1f,1f));
+        Debug.Log("YIEEEE");
+        this.speed = curr_speed;
+        yield return new WaitForSeconds(Random.Range(1f,2f));
     }
 
    

@@ -1,14 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class TowerHP : MonoBehaviour
 {
     public bool IsDead;
 
+    [SerializeField]
+    public int cost = 0;
    
-
     public bool MIsActive { get; set; }
 
  
@@ -18,6 +20,7 @@ public class TowerHP : MonoBehaviour
 
    
     private int health;
+    [SerializeField]
     private int maxHealth = 15;
 
 
@@ -72,6 +75,34 @@ public class TowerHP : MonoBehaviour
             }
         }
     }
+    //FOr tower selling purposes
+    public void OnMouseOver()
+    {
+        Debug.Log("1");
+        if (GameManager.Instance.sellSwitch == true && Input.GetMouseButtonDown(0))
+        {
+                GameManager.Instance.SellTower(this);
+                gameObject.transform.parent.GetComponent<TileScript>().WalkAble = true;
+                gameObject.transform.parent.GetComponent<TileScript>().IsEmpty = true;
+        }
+        else
+        {
 
+                GameManager.Instance.HandleEscape();
+        }
+        
+        if (!EventSystem.current.IsPointerOverGameObject()
+            && GameManager.Instance.ClickedBtn == null /* && Input.GetMouseButtonDown(0)*/)
+            {
+            
+                GameManager.Instance.SelectTower(this.GetComponentInChildren<Tower>());
+            }
+            else
+            {
+
+                GameManager.Instance.DeselectTower();
+            }
+
+        }
     
 }
