@@ -352,7 +352,7 @@ public class GameManager : Singleton<GameManager>
     public void SpawnMana(Monster monster)
     {
         GameObject tmp = Instantiate(mana, monster.transform.position, Quaternion.identity);
-        tmp.transform.position = monster.transform.position;
+        tmp.transform.position = monster.transform.position + new Vector3(0,0,-1);
     }
 
     public void EatMana(int manaAmount)
