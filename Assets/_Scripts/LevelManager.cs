@@ -90,8 +90,8 @@ public class LevelManager : Singleton<LevelManager> {
   
         //Dictionary of tiles to form a grid
         Tiles = new Dictionary<Point, TileScript>();
-        string[] mapData = ReadLevelText();
-
+        //string[] mapData = ReadLevelText();
+        string[] mapData = ReadLevelTextWebGL();
         //Map size from Level.txt
         int mapX = mapData[0].ToCharArray().Length;
         int mapY = mapData.Length;
@@ -147,9 +147,42 @@ public class LevelManager : Singleton<LevelManager> {
     //Get Level.txt file
     private string[] ReadLevelText()
     {
-        TextAsset bindData = Resources.Load("Level") as TextAsset;
+        int levelIndex = UnityEngine.Random.Range(0, 2);
+        string type = string.Empty;
+        switch (levelIndex)
+        {
+            case 0:
+                type = "Level1";
+                break;
+            case 1:
+                type = "Level2";
+                break;
+            case 2:
+                type = "Level3";
+                break;
+        }
+        TextAsset bindData = Resources.Load(type) as TextAsset;
         string data = bindData.text.Replace(Environment.NewLine, string.Empty);
         return data.Split('-');
+    }
+
+    //Get Level.txt file
+    private string[] ReadLevelTextWebGL()
+    {
+        int levelIndex = UnityEngine.Random.Range(0, 2);
+
+        string level="";
+        switch (levelIndex)
+        {
+            case 0:
+                level = "111111111111111-144444444444111-111444111114111-111444411114111-111414441114111-111411444114111-111411144414111-111411114444111-111444444444441-111111111111111";
+                break;
+            case 1:
+                level = "111111111111111-144444441111111-144111144411111-144111111441111-144444444444111-114411111144111-111444111444111-111144444411111-111111144444441-111111111111111";              break;
+           
+        }
+        
+        return level.Split('-');
     }
 
     // Add portals to the grid

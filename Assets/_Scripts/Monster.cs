@@ -154,7 +154,7 @@ public class Monster : MonoBehaviour {
     //Spawn monster
     public void Spawn(int gmhealth)
     {
-
+        maxHealth += gmhealth;
         LevelManager.Instance.GeneratePath(LevelManager.Instance.BlueSpawn);
         health = maxHealth;
 

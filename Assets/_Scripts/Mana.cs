@@ -28,7 +28,8 @@ public class Mana : MonoBehaviour {
                 this.transform.GetChild(0).GetComponent<Renderer>().enabled = true;
                 GameObject tmp = Instantiate(FltText, transform.position, Quaternion.identity);
                 tmp.transform.position = this.transform.position;
-                Destroy(gameObject);
+            SoundManager.PlaySound("coin");
+            Destroy(gameObject);
             }
     }
 

@@ -131,6 +131,7 @@ public class GameManager : Singleton<GameManager>
     // Use this for initialization
     void Start()
     {
+        gmHealth = 0;
         Lives = 10;
         Currency = 10;
     }
@@ -160,7 +161,7 @@ public class GameManager : Singleton<GameManager>
             //}
             if (monster.MRePath)
             {
-                Debug.Log("punk");
+                
                 //Generate New path from this place
                 foreach (KeyValuePair<Point, Node> node in AStar.nodes)
                 {
@@ -243,7 +244,7 @@ public class GameManager : Singleton<GameManager>
             Currency += tower.cost/2;
             
             Destroy(tower.gameObject);
-            Debug.Log("WEEEEEE");
+           
             sellSwitch = false;
         }
     }
@@ -267,10 +268,10 @@ public class GameManager : Singleton<GameManager>
 
         //AStar.NewGoal = true;
         //increase difficulty every 3rd wave
-        //if (wave % 3 == 0)
-        //{
-        //    gmHealth += 5;
-        //}
+        if (wave % 3 == 0)
+        {
+            gmHealth += 5;
+        }
 
         waveTxt.text = string.Format("WAVE:<color=orange>{0}</color>", wave);
 
