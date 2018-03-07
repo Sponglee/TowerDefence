@@ -155,11 +155,17 @@ public class Monster : MonoBehaviour {
     public void Spawn(int gmhealth)
     {
         maxHealth += gmhealth;
-        LevelManager.Instance.GeneratePath(LevelManager.Instance.BlueSpawn);
+        //int rng = Random.Range(0, LevelManager.Instance.BlueSpawn.Length);
+        int rng = 0;
+        Debug.Log(" >>>" + LevelManager.Instance.BlueSpawn[rng].X + "." + LevelManager.Instance.BlueSpawn[rng].Y);
+        LevelManager.Instance.GeneratePath(LevelManager.Instance.BlueSpawn[rng]);
         health = maxHealth;
 
 
         hp.text = health.ToString();
+            
+        
+ 
 
         //health.Initialize();
 
@@ -168,9 +174,10 @@ public class Monster : MonoBehaviour {
         this.health.CurrentVal = this.health.MaxVal;
         */
 
-        transform.position = LevelManager.Instance.BluePortal.transform.position;
+        
         StartCoroutine(Scale(new Vector3(0.1f, 0.1f, 0.1f), new Vector3(1f, 1f, 0.1f), false));
         
+        transform.position = LevelManager.Instance.BluePortal.transform.position;
         SetPath(LevelManager.Instance.Path);
 
     }
@@ -208,6 +215,7 @@ public class Monster : MonoBehaviour {
                 }
                 else if (path.Count == 0 && !monsterRange.Target && GridPosition != LevelManager.Instance.RedSpawn)
                 {
+                 
                     this.MRePath = true;
                     this.GetComponentInChildren<MonsterRange>().anim.SetBool("attack", false);
                 }
@@ -283,12 +291,15 @@ public class Monster : MonoBehaviour {
 
         //Resets disabled object 
         private void Release()
-    {
+        {
+
+        //int rng = Random.Range(0,LevelManager.Instance.BlueSpawn.Count);
+        int rng = 0;
         health = maxHealth;
         hp.text = health.ToString();
         //Stop before scaling is done
         IsActive = false;
-        GridPosition = LevelManager.Instance.BlueSpawn;
+        GridPosition = LevelManager.Instance.BlueSpawn[rng];
         GameManager.Instance.Pool.ReleaseObject(gameObject);
         //Romove itself from the active monsterlist
 

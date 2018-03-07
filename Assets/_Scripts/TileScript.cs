@@ -34,9 +34,11 @@ public class TileScript : MonoBehaviour {
 
     public bool WalkAble { get; set; }
     public bool Enemy { get; set; }
+    float time;
 
     public void Start()
     {
+        
        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -66,9 +68,9 @@ public class TileScript : MonoBehaviour {
                     PlaceTower();
             }
             else if ((!IsEmpty && !Debugging) || (!WalkAble && !Debugging) ||
-                (Mathf.Abs(GridPosition.X - LevelManager.Instance.BlueSpawn.X) < 1
+               /* (Mathf.Abs(GridPosition.X - LevelManager.Instance.BlueSpawn.X) < 1
                     && Mathf.Abs(GridPosition.Y - LevelManager.Instance.BlueSpawn.Y) == 0)
-                        || GridPosition == LevelManager.Instance.RedSpawn)
+                        ||*/ GridPosition == LevelManager.Instance.RedSpawn)
 
             {
                 spriteRenderer.color = fullColor;
@@ -122,7 +124,21 @@ public class TileScript : MonoBehaviour {
             
             foreach (Monster monster in GameManager.Instance.ActiveMonsters)
             {
-                    monster.MRePath = true;
+            ////Get path from curr pos to obstacle
+            // Stack<Node> path = AStar.GetPath(monster.CurrentTilePos, GridPosition);
+            // Node last = path.Pop();
+            ////Get path from curr pos to goal
+            //Stack<Node> gpath = AStar.GetPath(monster.CurrentTilePos, LevelManager.Instance.RedSpawn);
+            //Node glast = path.Pop();
+          
+            //if(last.F < glast.F)
+            //{
+            //    Debug.Log("REEE");
+            //    AStar.NewGoal = true;
+                monster.MRePath = true;
+                
+           
+                    
             }
             
 
@@ -131,7 +147,7 @@ public class TileScript : MonoBehaviour {
     //Sends Each monster a grid position whenever it enters a tile
     public void OnTriggerEnter2D(Collider2D other)
     {
-        
+        time = 0;
         if (other.CompareTag("Monster"))
         {
             
@@ -143,6 +159,28 @@ public class TileScript : MonoBehaviour {
             }
         }
     }
+
+    public void OnTriggerStay2D(Collider2D other)
+    {
+        
+        //if (other.CompareTag("Monster"))
+        //{
+       
+        //    if (other.gameObject.GetComponentInChildren<MonsterRange>().Target == null)
+        //    {
+                
+        //        time += Time.deltaTime;
+        //        if (time >= 2)
+        //        {
+                 
+        //            other.gameObject.GetComponent<Monster>().MRePath = true;
+        //            time = 0;
+        //        }
+        //    }
+           
+        //}
+    }
+
 
         
   

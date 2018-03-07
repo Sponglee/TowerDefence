@@ -75,13 +75,14 @@ public static class AStar
             {
                 for (int y = -1; y <= 1; y++)
                 {
+                    int gCost;
                     Point neighbourPos = new Point(currentNode.GridPosition.X - x, currentNode.GridPosition.Y - y);
                     // Inbounds checks "offgrid" cases and Walkables
                     if (LevelManager.Instance.InBounds(neighbourPos) && LevelManager.Instance.Tiles[neighbourPos].WalkAble
                         && neighbourPos != currentNode.GridPosition)
                     {
                         // calculate GScore of a node
-                        int gCost = 0;
+                        gCost = 0;
                         if (Math.Abs(x - y) == 1)
                             gCost = 10;
                         else
@@ -112,8 +113,9 @@ public static class AStar
                     // Add any obstacle to list
                     else if (LevelManager.Instance.Tiles[neighbourPos].Enemy)
                     {
-                        Node neighbour = nodes[neighbourPos];
-                        obstacles.Add(neighbour);
+                            Node neighbour = nodes[neighbourPos];
+                            obstacles.Add(neighbour);
+                            
                     }
                 }
             }
@@ -132,6 +134,7 @@ public static class AStar
             //11 Exit if we found the goal
             if (currentNode == nodes[goal])
             {
+
                 //Path is clear
                 NewGoal = false;
               
@@ -146,7 +149,7 @@ public static class AStar
             //if we didn't exit - push new goal to finalPath(cause can't reach Obstacle (unwalkable))
             else if (NewGoal == true)
             {
-               
+                
                 // Check if current node is near the current Obstacle
                 if (Math.Abs(currentNode.GridPosition.X - nodes[goal].GridPosition.X) <= 1
                         && Math.Abs(currentNode.GridPosition.Y - nodes[goal].GridPosition.Y) <= 1

@@ -139,7 +139,7 @@ public class GameManager : Singleton<GameManager>
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(sellSwitch);
+
         //If there's need to Recalculate a Path - do it for every active monster
 
         GRePath();
@@ -270,6 +270,7 @@ public class GameManager : Singleton<GameManager>
         //increase difficulty every 3rd wave
         if (wave % 3 == 0)
         {
+           
             gmHealth += 5;
         }
 
@@ -288,16 +289,17 @@ public class GameManager : Singleton<GameManager>
 
         for (int i = 0; i < wave; i++)
         {
-            int monsterIndex = Random.Range(0, 2);
+            //int monsterIndex = Random.Range(0, 2);
+            int monsterIndex = 0;
             string type = string.Empty;
             switch (monsterIndex)
             {
                 case 0:
                     type = "Enemy1";
                     break;
-                case 1:
-                    type = "Enemy1";
-                    break;
+                //case 1:
+                //    type = "Enemy1";
+                //    break;
             }
             //Grab Monster script from monster spawn and spawn it on portal
             Monster monster = Pool.GetObject(type).GetComponent<Monster>();
@@ -352,7 +354,7 @@ public class GameManager : Singleton<GameManager>
     public void SpawnMana(Monster monster)
     {
         GameObject tmp = Instantiate(mana, monster.transform.position, Quaternion.identity);
-        tmp.transform.position = monster.transform.position;
+        tmp.transform.position = monster.transform.position + new Vector3 (0,0,-1f);
     }
 
     public void EatMana(int manaAmount)

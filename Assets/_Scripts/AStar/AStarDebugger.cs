@@ -28,7 +28,7 @@ public class AStarDebugger : MonoBehaviour
         }
     }
 
-    //Pick start and end for pathfinding
+    //Pick start and end for pathfinding  (DEBUGGING)
     private void ClickTile()
     {
         if (Input.GetMouseButtonDown(2))

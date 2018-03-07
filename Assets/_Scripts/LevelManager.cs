@@ -43,14 +43,16 @@ public class LevelManager : Singleton<LevelManager> {
         }
         set { path = value; }
     }
-    private Point blueSpawn;
-    public Point BlueSpawn
+    //private Point[] blueSpawn;
+    private List<Point> blueSpawn;
+    public List<Point> BlueSpawn
     {
         get
         {
             return blueSpawn;
         }
     }
+  
     //Temporary position
     Point tmp;
     public Point Tmp
@@ -73,21 +75,25 @@ public class LevelManager : Singleton<LevelManager> {
         get { return tiles[0].GetComponent<SpriteRenderer>().sprite.bounds.size.x; }
     }
 
-
+    int count;
 
 
     // Use this for initialization
     void Start ()
     {
-     
+        count = 0;
         InitializeLevel();
         SpawnPortals();
+       
+           
 	}
     
     // Create a level
     private void InitializeLevel()
     {
-  
+        //instance of blueSpawn list of portals
+        blueSpawn = new List<Point>();
+        
         //Dictionary of tiles to form a grid
         Tiles = new Dictionary<Point, TileScript>();
         //string[] mapData = ReadLevelText();
@@ -117,69 +123,82 @@ public class LevelManager : Singleton<LevelManager> {
     {
         //Get a single tile prefab code
         int tileIndex = int.Parse(tileType);
-        
+       
         //Instantiating TileScript to each component
         TileScript newTile = Instantiate(tiles[tileIndex]).GetComponent<TileScript>();
 
-        //Checks if tile is a road(Walkable) or not and sets it in 
-        //Walkable property for TileScript instance
-        if (tileIndex != 4)
-        {
-            newTile.WalkAble = false;
-        }
-        else
-        {
-            
-            newTile.WalkAble = true;
-            i++;
-            newTile.transform.Rotate(Vector3.forward, (180 * i+90) % 360);
-        }
-           
         //Moving tile to it's place
         newTile.transform.position = new Vector2(worldStart.x + TileSize * x + TileSize/2, worldStart.y - TileSize * y - TileSize/2 );
        
         newTile.Setup(new Point(x, y), newTile.transform.position = new Vector2(worldStart.x + TileSize * x + TileSize / 2, worldStart.y - TileSize * y - TileSize / 2), map);
 
+        //Checks if tile is a road(Walkable) or not and sets it in 
+        //Walkable property for TileScript instance
+        if (tileIndex == 4)
+        {
+            newTile.WalkAble = true;
+            //randomize tiles by turning 90*
+            i++;
+            newTile.transform.Rotate(Vector3.forward, (180 * i + 90) % 360);
+        }
+        // Spawn points (index 2 )
+        else if (tileIndex == 2)
+        {
+            //add new blue portal if there's tile for it
+            blueSpawn.Add(newTile.GridPosition);
+            count++;
+            newTile.WalkAble = true;
+        }
+        // Spawn points for exit (index 3 )
+        else if (tileIndex == 3)
+        {
+            newTile.WalkAble = true;
+        }
+        else
+        {
+            newTile.WalkAble = false;  
+        }
        
    
     }
 
     //Get Level.txt file
-    private string[] ReadLevelText()
-    {
-        int levelIndex = UnityEngine.Random.Range(0, 2);
-        string type = string.Empty;
-        switch (levelIndex)
-        {
-            case 0:
-                type = "Level1";
-                break;
-            case 1:
-                type = "Level2";
-                break;
-            case 2:
-                type = "Level3";
-                break;
-        }
-        TextAsset bindData = Resources.Load(type) as TextAsset;
-        string data = bindData.text.Replace(Environment.NewLine, string.Empty);
-        return data.Split('-');
-    }
+    //private string[] ReadLevelText()
+    //{
+    //    int levelIndex = UnityEngine.Random.Range(0, 2);
+    //    string type = string.Empty;
+    //    switch (levelIndex)
+    //    {
+    //        case 0:
+    //            type = "Level";
+    //            break;
+    //        //case 1:
+    //        //    type = "Level2";
+    //        //    break;
+    //        //case 2:
+    //        //    type = "Level3";
+    //        //    break;
+    //    }
+    //    TextAsset bindData = Resources.Load(type) as TextAsset;
+    //    string data = bindData.text.Replace(Environment.NewLine, string.Empty);
+    //    return data.Split('-');
+    //}
 
     //Get Level.txt file
     private string[] ReadLevelTextWebGL()
     {
-        int levelIndex = UnityEngine.Random.Range(0, 2);
-
+        //int levelIndex = UnityEngine.Random.Range(0, 2);
+        int levelIndex = 0;
         string level="";
         switch (levelIndex)
         {
+            //case 0:
+            //    level = "111111111111111-124444444444111-111444111114111-111444411114111-111414441114111-111411444114111-111411144414111-111411114444111-111444444444441-111111111111111";
+            //    break;
             case 0:
-                level = "111111111111111-144444444444111-111444111114111-111444411114111-111414441114111-111411444114111-111411144414111-111411114444111-111444444444441-111111111111111";
+                level = "111111111111111-124444111111111-114444411111111-111144444111111-111111444411111-111111144441111-111111114444111-111111111444411-111111111144431-111111111111111";
                 break;
-            case 1:
-                level = "111111111111111-144444441111111-144111144411111-144111111441111-144444444444111-114411111144111-111444111444111-111144444411111-111111144444441-111111111111111";              break;
-           
+
         }
         
         return level.Split('-');
@@ -188,14 +207,32 @@ public class LevelManager : Singleton<LevelManager> {
     // Add portals to the grid
     private void SpawnPortals()
     {
+
         Camera.main.transform.Translate(Vector3.up*0.65f);
-        blueSpawn = new Point(1, 1);
+      
+        //Red Spawn coordinates yet
         redSpawn = new Point(13, 8);//13.8
-        GameObject tmp = Instantiate(bluePortalPref, Tiles[BlueSpawn].GetComponent<TileScript>().WorldPosition, Quaternion.Euler(Vector3.forward * -90));
+        Instantiate(redPortalPref, Tiles[RedSpawn].GetComponent<TileScript>().WorldPosition, Quaternion.Euler(Vector3.forward * -90));
+
+
+
+
+        //for (int i = 0; i < blueSpawnFile.Count; i++)
+        //{
+        //    Point index = blueSpawnFile[i];
+
+
+
+        //   GameObject tmp = Instantiate(bluePortalPref, Tiles[index].GetComponent<TileScript>().WorldPosition, Quaternion.Euler(Vector3.forward * -90));
+
+        //}
+
+        //v3 of each tile with blue portals
+        Vector3 v3tmp = Tiles[blueSpawn[0]].GetComponent<TileScript>().WorldPosition;
+        Debug.Log(v3tmp.x + "       " + v3tmp.y + "         " + v3tmp.z + "    :     ");
+        GameObject tmp = Instantiate(bluePortalPref, v3tmp, Quaternion.Euler(Vector3.forward * -90));
         BluePortal = tmp.GetComponent<Portal>();
         BluePortal.name = "BluePortal";
-
-        Instantiate(redPortalPref, Tiles[RedSpawn].GetComponent<TileScript>().WorldPosition, Quaternion.Euler(Vector3.forward * -90));
     }
 
     public bool InBounds(Point position)
@@ -219,7 +256,7 @@ public class LevelManager : Singleton<LevelManager> {
 
         if (AStar.NewGoal)
         {
-
+           
             //If path to redSpawn is unreachable turn on "NEW GoAL" mode to get to random obstacle
             //closest F score 
             if(AStar.Obstacles.Count != 0)
