@@ -215,20 +215,19 @@ public class LevelManager : Singleton<LevelManager> {
         
 
         path = AStar.GetPath(spawn, RedSpawn);
-
-        //If path to redSpawn is unreachable turn on "NEW GoAL" mode to get to random obstacle
-        //closest F score 
-        if (AStar.Obstacles.Count != 0)
-        {
-            Node closestEnemy = AStar.Obstacles.OrderBy(n => n.F).First();
-
-            Tmp = closestEnemy.GridPosition;
-        }
+        
 
         if (AStar.NewGoal)
         {
 
-           
+            //If path to redSpawn is unreachable turn on "NEW GoAL" mode to get to random obstacle
+            //closest F score 
+            if(AStar.Obstacles.Count != 0)
+            {
+                Node closestEnemy = AStar.Obstacles.OrderBy(n => n.F).First();
+
+                Tmp = closestEnemy.GridPosition;
+            }
                
            
             //Check if 

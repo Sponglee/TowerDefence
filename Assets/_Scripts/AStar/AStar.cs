@@ -6,10 +6,7 @@ using UnityEngine;
 
 public static class AStar
 {
-    /// <summary>
-    /// ///////// ADD GOAl NODE TO PUBLIC PROPERTY -> LEVEL MANAGER ACCESSES IT 
-    /// TO CHECK IF FSCORE IS LOWER FOR OBSTACLE:::
-    /// </summary>
+
     public static Dictionary<Point, Node> nodes;
     //Add List of obstacles if they block the way
     private static HashSet<Node> obstacles;
@@ -135,23 +132,16 @@ public static class AStar
             //11 Exit if we found the goal
             if (currentNode == nodes[goal])
             {
-                
-                
-                    //Path is clear
-                    NewGoal = false;
-
-                    //Backtrack to start
-                    while (currentNode.GridPosition != start)
-                    {
-                        finalPath.Push(currentNode);
-                        currentNode = currentNode.Parent;
-                    }
-                    break;
-               
-               
-            
-
-
+                //Path is clear
+                NewGoal = false;
+              
+                //Backtrack to start
+                while (currentNode.GridPosition != start)
+                {
+                    finalPath.Push(currentNode);
+                    currentNode = currentNode.Parent;
+                }
+                break;
             }
             //if we didn't exit - push new goal to finalPath(cause can't reach Obstacle (unwalkable))
             else if (NewGoal == true)
@@ -181,7 +171,7 @@ public static class AStar
 
         //****ONLY FOR DEBUGGING*****//
         
-       GameObject.Find("AStarDebugger").GetComponent<AStarDebugger>().DebugPath(openList, closedList, finalPath);
+       //GameObject.Find("AStarDebugger").GetComponent<AStarDebugger>().DebugPath(openList, closedList, finalPath);
 
         //If goal is 
         if (finalPath.Count>0)
