@@ -8,12 +8,14 @@ public class Monster : MonoBehaviour {
     [SerializeField]
     private float speed = 1f;
     //path 
+   
     private Stack<Node> path;
     // position
     public Point GridPosition { get; set; }
     // set destination (not final point, but next point from stack
     private Vector3 destination;
     //Spawn trigger (don't move before spawn finishes)
+    [SerializeField]
     public bool IsActive { get; set; }
     //Declare a final path stack to backtrack the path
     Stack<Node> MonsterlPath = new Stack<Node>();
@@ -95,7 +97,7 @@ public class Monster : MonoBehaviour {
         hp.text = health.ToString();
         Move();
         //If tower died (and is target?)
-
+        Debug.Log(path);
         TowerHP tar = this.GetComponentInChildren<MonsterRange>().Target;
         if (tar != null)
         {
@@ -134,7 +136,8 @@ public class Monster : MonoBehaviour {
 
         //<----
         AStar.NewGoal = false;
-       
+
+        //this.GetComponent<MonsterRange>().Target = null;
         //Clear obstacles
         AStar.Obstacles.Clear();
         
@@ -155,17 +158,13 @@ public class Monster : MonoBehaviour {
     public void Spawn(int gmhealth)
     {
         maxHealth += gmhealth;
+        health = maxHealth;
+        hp.text = health.ToString();
         //int rng = Random.Range(0, LevelManager.Instance.BlueSpawn.Length);
         int rng = 0;
         Debug.Log(" >>>" + LevelManager.Instance.BlueSpawn[rng].X + "." + LevelManager.Instance.BlueSpawn[rng].Y);
         LevelManager.Instance.GeneratePath(LevelManager.Instance.BlueSpawn[rng]);
-        health = maxHealth;
-
-
-        hp.text = health.ToString();
-            
         
- 
 
         //health.Initialize();
 
@@ -184,7 +183,6 @@ public class Monster : MonoBehaviour {
 
     public IEnumerator Scale(Vector3 from, Vector3 to, bool remove)
     {
-        health = maxHealth;
         float progress = 0;
         while (progress <= 1)
         {
@@ -209,13 +207,11 @@ public class Monster : MonoBehaviour {
             {
                 if (path != null && path.Count > 0)
                 {
-
                     GridPosition = path.Peek().GridPosition;
                     destination = path.Pop().WorldPosition;
                 }
                 else if (path.Count == 0 && !monsterRange.Target && GridPosition != LevelManager.Instance.RedSpawn)
                 {
-                 
                     this.MRePath = true;
                     this.GetComponentInChildren<MonsterRange>().anim.SetBool("attack", false);
                 }
@@ -247,7 +243,9 @@ public class Monster : MonoBehaviour {
         {
             StartCoroutine(Scale(new Vector3(1f, 1f, 0.1f), new Vector3(0.1f, 0.1f, 0.1f), true));
             //DAMAGE US
+            
             this.GetComponentInChildren<MonsterRange>().Target = null;
+            Release();
             GameManager.Instance.Lives -= 1;
 
             
@@ -292,17 +290,16 @@ public class Monster : MonoBehaviour {
         //Resets disabled object 
         private void Release()
         {
-
+         
         //int rng = Random.Range(0,LevelManager.Instance.BlueSpawn.Count);
         int rng = 0;
-        health = maxHealth;
-        hp.text = health.ToString();
+        
+       
         //Stop before scaling is done
         IsActive = false;
         GridPosition = LevelManager.Instance.BlueSpawn[rng];
         GameManager.Instance.Pool.ReleaseObject(gameObject);
         //Romove itself from the active monsterlist
-
         GameManager.Instance.RemoveMonster(this);
     }
 
@@ -317,6 +314,7 @@ public class Monster : MonoBehaviour {
             {
               
                 Release();
+                health = maxHealth;
                 GameManager.Instance.SpawnMana(this);
             }
         }

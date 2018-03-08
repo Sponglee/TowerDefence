@@ -162,26 +162,30 @@ public class TileScript : MonoBehaviour {
 
     public void OnTriggerStay2D(Collider2D other)
     {
-        
-        //if (other.CompareTag("Monster"))
-        //{
-       
-        //    if (other.gameObject.GetComponentInChildren<MonsterRange>().Target == null)
-        //    {
-                
-        //        time += Time.deltaTime;
-        //        if (time >= 2)
-        //        {
-                 
-        //            other.gameObject.GetComponent<Monster>().MRePath = true;
-        //            time = 0;
-        //        }
-        //    }
-           
-        //}
+
+        if (other.CompareTag("Monster"))
+        {
+
+            if (other.gameObject.GetComponentInChildren<MonsterRange>().Target == null)
+            {
+
+                time += Time.deltaTime;
+                if (time >= 3)
+                {
+                  
+                    other.GetComponentInChildren<MonsterRange>().Target = null;
+                    LevelManager.Instance.Path = null;
+                    other.GetComponent<Monster>().CurrentTilePos = gameObject.GetComponent<TileScript>().GridPosition;
+                    other.gameObject.GetComponent<Monster>().MRePath = true;
+                   
+                    time = 0;
+                }
+            }
+
+        }
     }
 
 
-        
-  
+
+
 }

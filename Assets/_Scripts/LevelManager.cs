@@ -246,10 +246,6 @@ public class LevelManager : Singleton<LevelManager> {
 
         if ( AStar.Obstacles == null)
                 AStar.NewGoal = false;
-   
-            
-          
-        
 
         path = AStar.GetPath(spawn, RedSpawn);
         
@@ -266,7 +262,6 @@ public class LevelManager : Singleton<LevelManager> {
                 Tmp = closestEnemy.GridPosition;
             }
                
-           
             //Check if 
             for (int x = -1; x <= 1; x++)
             {

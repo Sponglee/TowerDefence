@@ -37,6 +37,7 @@ public class MonsterRange : MonoBehaviour {
 
 
     //tower ref
+    [SerializeField]
     private TowerHP target;
     // public property for target
     public TowerHP Target
@@ -53,6 +54,7 @@ public class MonsterRange : MonoBehaviour {
     private SpriteRenderer mySpriteRenderer;
 
     //attack toggle
+    [SerializeField]
     private bool canAttack = true;
 
     [SerializeField]
@@ -100,12 +102,13 @@ public class MonsterRange : MonoBehaviour {
         {
             if (canAttack)
             {
-                
+
                 Shoot();
-              
+
                 anim.SetBool("attack", true);
                 canAttack = false;
             }
+           
         }
         else if (target == null)
         {

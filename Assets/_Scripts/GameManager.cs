@@ -265,15 +265,16 @@ public class GameManager : Singleton<GameManager>
         wave++;
 
         //Set Recalc mRePath toggle off each wave
-
+        int i = 0;
         //AStar.NewGoal = true;
         //increase difficulty every 3rd wave
         if (wave % 3 == 0)
         {
-           
-            gmHealth += 5;
+            i++;
+            gmHealth += 5*i;
         }
-
+        else
+            gmHealth = 0;
         waveTxt.text = string.Format("WAVE:<color=orange>{0}</color>", wave);
 
         StartCoroutine(SpawnWave());
