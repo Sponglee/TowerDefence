@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour {
     public static AudioClip playerCoinSound;
-        static AudioSource audioSrc;
+    static AudioSource audioSrc;
 
 
 	// Use this for initialization

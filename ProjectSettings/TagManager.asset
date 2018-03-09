@@ -16,6 +16,7 @@ TagManager:
   - Exit
   - MonsterBound
   - Mana
+  - HealProj
   layers:
   - Default
   - TransparentFX

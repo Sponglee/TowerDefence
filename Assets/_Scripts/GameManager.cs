@@ -6,8 +6,11 @@ using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
-
+    [SerializeField]
+    public GameObject backGroundMusic;
+    public AudioClip backMusic;
     //money
+    [SerializeField]
     private int currency;
     [SerializeField]
     private Text currencyTxt;
@@ -21,11 +24,13 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     private Sprite sellSprite;
     //Our hp
+    [SerializeField]
     private int lives;
     [SerializeField]
     private Text livesTxt;
 
     //wave number
+    [SerializeField]
     private int wave = 0;
     [SerializeField]
     private Text waveTxt;
@@ -33,6 +38,7 @@ public class GameManager : Singleton<GameManager>
     private GameObject waveBtn;
 
     //current selected tower
+    private TowerHeal selectedHeal;
     private Tower selectedTower;
     //selling toggle
     public bool sellSwitch = false;
@@ -134,6 +140,7 @@ public class GameManager : Singleton<GameManager>
         gmHealth = 0;
         Lives = 10;
         Currency = 10;
+       backMusic = Resources.Load<AudioClip>("bossFight");
     }
 
     // Update is called once per frame
@@ -152,7 +159,8 @@ public class GameManager : Singleton<GameManager>
         foreach (Monster monster in ActiveMonsters)
         {
 
-            //if (monster.GetComponentInChildren<MonsterRange>().mTarget)
+            //if (monster.GetComponentInChildren<MonsterRange>().m
+            
             //{
             //    Debug.Log("CHECK CHECK ");
             //    monster.RePath();
@@ -209,16 +217,35 @@ public class GameManager : Singleton<GameManager>
     }
 
     //Selects tower
-    public void SelectTower(Tower tower)
+    public void SelectTower(GameObject tower)
     {
         if (selectedTower != null)
         {
             selectedTower.Select();
+
         }
-        selectedTower = tower;
+        else if (selectedHeal != null)
+        {
+            selectedHeal.Select();
+        }
+
         //toggle spriteRenderer for range(based on current selection)
-        selectedTower.Select();
+        if (tower.GetComponentInChildren<Tower>())
+        {
+            selectedTower = tower.GetComponentInChildren<Tower>();
+            selectedTower.Select();
+        }
+
+
+        else if (tower.GetComponentInChildren<TowerHeal>())
+        {
+            selectedHeal = tower.GetComponentInChildren<TowerHeal>();
+            selectedHeal.Select();
+        } 
+        
+       
     }
+
 
     //Deselect tower
     public void DeselectTower()
@@ -227,7 +254,12 @@ public class GameManager : Singleton<GameManager>
         {
             selectedTower.Select();
         }
+        else if (selectedHeal != null)
+        {
+            selectedHeal.Select();
+        }
         selectedTower = null;
+        selectedHeal = null;
     }
     //Handles sell
     public void SelectSellTower()
@@ -263,7 +295,7 @@ public class GameManager : Singleton<GameManager>
     public void StartWave()
     {
         wave++;
-
+    
         //Set Recalc mRePath toggle off each wave
         int i = 0;
         //AStar.NewGoal = true;
@@ -276,8 +308,14 @@ public class GameManager : Singleton<GameManager>
         else
             gmHealth = 0;
         waveTxt.text = string.Format("WAVE:<color=orange>{0}</color>", wave);
-
-        StartCoroutine(SpawnWave());
+        if (wave%11==0)
+        {
+            Debug.Log("BOSS");
+            SpawnBoss();
+        }
+         
+        else
+            StartCoroutine(SpawnWave());
 
         waveBtn.SetActive(false);
     }
@@ -308,11 +346,37 @@ public class GameManager : Singleton<GameManager>
             //Added to list of active monsters to check for waves
             ActiveMonsters.Add(monster);
 
-            yield return new WaitForSeconds(2.5f);
+            yield return new WaitForSeconds(Random.Range(0f,2.5f));
 
         }
     }
 
+    public void SpawnBoss()
+    {
+        int monsterIndex = 0;
+        backGroundMusic.GetComponent<AudioSource>().Stop();
+        AudioSource src = backGroundMusic.GetComponent<AudioSource>();
+        src.PlayOneShot(backMusic);
+        string type = string.Empty;
+        switch (monsterIndex)
+        {
+            case 0:
+                type = "Enemy2";
+                break;
+                //case 1:
+                //    type = "Enemy1";
+                //    break;
+        }
+        //Grab Monster script from monster spawn and spawn it on portal
+        Monster monster = Pool.GetObject(type).GetComponent<Monster>();
+        int bossHealth = 50;
+        monster.Spawn(bossHealth, 1);
+        monster.gameObject.transform.localScale = new Vector3(4f, 4f, 1f);
+        //Added to list of active monsters to check for waves
+        ActiveMonsters.Add(monster);
+
+       
+    }
     //Removes monsters from activeMonster list for wavechecks
     public void RemoveMonster(Monster monster)
     {
@@ -355,7 +419,7 @@ public class GameManager : Singleton<GameManager>
     public void SpawnMana(Monster monster)
     {
         GameObject tmp = Instantiate(mana, monster.transform.position, Quaternion.identity);
-        tmp.transform.position = monster.transform.position + new Vector3 (0,0,-1f);
+        tmp.transform.position = monster.transform.position + new Vector3 (Random.Range(0f,0.5f),Random.Range(0f,0.5f),-1f);
     }
 
     public void EatMana(int manaAmount)

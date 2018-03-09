@@ -12,8 +12,8 @@ public class TowerHP : MonoBehaviour
     public int cost = 0;
    
     public bool MIsActive { get; set; }
-
- 
+    [SerializeField]
+    public bool IsDamaged { get; set; }
 
     [SerializeField]
     private Text hp;
@@ -26,7 +26,7 @@ public class TowerHP : MonoBehaviour
 
     public void Start()
     {
-      
+        IsDamaged = false;
         IsDead = false;
         MIsActive = true;
         health = maxHealth;
@@ -36,26 +36,29 @@ public class TowerHP : MonoBehaviour
     {
         hp.text = health.ToString();
 
-        
+        if (health < maxHealth)
+            IsDamaged = true;
+        else
+            IsDamaged = false;
     }
 
     
 
-    public IEnumerator Scale(Vector3 from, Vector3 to, bool remove)
-    {
-        health = maxHealth;
-        float progress = 0;
-        while (progress <= 1)
-        {
-            transform.localScale = Vector3.Lerp(from, to, progress);
-            progress += Time.deltaTime;
-            yield return null;
-        }
-        transform.localScale = to;
-        MIsActive = true;
-        if (remove)
-           Destroy(gameObject);
-    }
+    //public IEnumerator Scale(Vector3 from, Vector3 to, bool remove)
+    //{
+    //    health = maxHealth;
+    //    float progress = 0;
+    //    while (progress <= 1)
+    //    {
+    //        transform.localScale = Vector3.Lerp(from, to, progress);
+    //        progress += Time.deltaTime;
+    //        yield return null;
+    //    }
+    //    transform.localScale = to;
+    //    MIsActive = true;
+    //    if (remove)
+    //       Destroy(gameObject);
+    //}
 
 
     public void TakeDamage(int damage)
@@ -75,10 +78,27 @@ public class TowerHP : MonoBehaviour
             }
         }
     }
+
+    public void HealUp (int damage)
+    {
+        if (IsDamaged)
+        {
+            health += damage;
+            hp.text = health.ToString();
+
+            if (health >= maxHealth)
+            {
+                health = maxHealth;
+                IsDamaged = false;  
+                
+            }
+        }
+    }
+
     //FOr tower selling purposes
     public void OnMouseOver()
     {
-        Debug.Log("1");
+     
         if (GameManager.Instance.sellSwitch == true && Input.GetMouseButtonDown(0))
         {
                 GameManager.Instance.SellTower(this);
@@ -95,7 +115,7 @@ public class TowerHP : MonoBehaviour
             && GameManager.Instance.ClickedBtn == null /* && Input.GetMouseButtonDown(0)*/)
             {
             
-                GameManager.Instance.SelectTower(this.GetComponentInChildren<Tower>());
+                GameManager.Instance.SelectTower(gameObject);
             }
             else
             {

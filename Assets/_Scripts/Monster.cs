@@ -7,8 +7,10 @@ public class Monster : MonoBehaviour {
 
     [SerializeField]
     private float speed = 1f;
+    
+    //Boss toggle
+    private bool IsBoss=false;
     //path 
-   
     private Stack<Node> path;
     // position
     public Point GridPosition { get; set; }
@@ -97,7 +99,7 @@ public class Monster : MonoBehaviour {
         hp.text = health.ToString();
         Move();
         //If tower died (and is target?)
-        Debug.Log(path);
+ 
         TowerHP tar = this.GetComponentInChildren<MonsterRange>().Target;
         if (tar != null)
         {
@@ -114,7 +116,7 @@ public class Monster : MonoBehaviour {
                 //else
                 //{
                 this.MRePath = true;
-                Debug.Log("ISDEAD");
+              
                 // }
 
             }
@@ -127,7 +129,7 @@ public class Monster : MonoBehaviour {
     //Recalculates a path for a monster which had an obscured path and now it's open
     public void RePath()
     {
-        Debug.Log("REPATH");
+       
         //Reset previous path
         path = null;
         //Toggle switch of start to this current tile
@@ -155,16 +157,17 @@ public class Monster : MonoBehaviour {
 
 
     //Spawn monster
-    public void Spawn(int gmhealth)
+    public void Spawn(int gmhealth, int boss = 0)
     {
+        
         maxHealth += gmhealth;
         health = maxHealth;
         hp.text = health.ToString();
         //int rng = Random.Range(0, LevelManager.Instance.BlueSpawn.Length);
         int rng = 0;
-        Debug.Log(" >>>" + LevelManager.Instance.BlueSpawn[rng].X + "." + LevelManager.Instance.BlueSpawn[rng].Y);
+        //Debug.Log(" >>>" + LevelManager.Instance.BlueSpawn[rng].X + "." + LevelManager.Instance.BlueSpawn[rng].Y);
         LevelManager.Instance.GeneratePath(LevelManager.Instance.BlueSpawn[rng]);
-        
+
 
         //health.Initialize();
 
@@ -173,9 +176,18 @@ public class Monster : MonoBehaviour {
         this.health.CurrentVal = this.health.MaxVal;
         */
 
-        
-        StartCoroutine(Scale(new Vector3(0.1f, 0.1f, 0.1f), new Vector3(1f, 1f, 0.1f), false));
-        
+        if (boss == 1)
+        {
+            IsBoss = true;
+            health = maxHealth * 10;
+            maxHealth = health;
+            hp.text = health.ToString();
+            StartCoroutine(Scale(new Vector3(0.1f, 0.1f, 0.1f), new Vector3(4f, 4f, 0.1f), false));
+        }
+           
+        else 
+            StartCoroutine(Scale(new Vector3(0.1f, 0.1f, 0.1f), new Vector3(1f, 1f, 0.1f), false));
+
         transform.position = LevelManager.Instance.BluePortal.transform.position;
         SetPath(LevelManager.Instance.Path);
 
@@ -267,7 +279,7 @@ public class Monster : MonoBehaviour {
                 this.speed = Random.Range(0.1f, 0.2f);
                 float time=0;
                 time +=  Time.deltaTime;
-                Debug.Log(time);
+
                 if (time >= 0.2)
                     this.speed = curr_speed;
             }
@@ -279,7 +291,7 @@ public class Monster : MonoBehaviour {
         {
             if (other.CompareTag("MonsterBound"))
             {
-                Debug.Log("Exit");
+               
                 this.speed = curr_speed;
             }
 
@@ -315,6 +327,19 @@ public class Monster : MonoBehaviour {
               
                 Release();
                 health = maxHealth;
+                if (IsBoss)
+                {
+                    for (int i = 0; i < 15; i++)
+                    {
+                        GameManager.Instance.SpawnMana(this);
+                        GameManager.Instance.backGroundMusic.GetComponent<AudioSource>().Stop();
+                        GameManager.Instance.backMusic = Resources.Load<AudioClip>("YetAnotherJourney");
+                        GameManager.Instance.backGroundMusic.GetComponent<AudioSource>().Play();
+                    }
+
+                }
+                   
+                else
                 GameManager.Instance.SpawnMana(this);
             }
         }
@@ -322,7 +347,7 @@ public class Monster : MonoBehaviour {
 
     private IEnumerator SlowDown()
     {
-        Debug.Log("YIEEEE");
+    
         this.speed = curr_speed;
         yield return new WaitForSeconds(Random.Range(1f,2f));
     }

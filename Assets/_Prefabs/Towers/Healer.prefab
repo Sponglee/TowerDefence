@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 4146746891094696}
   - component: {fileID: 212255847061792410}
   - component: {fileID: 58221929463847894}
-  - component: {fileID: 114336476758707470}
+  - component: {fileID: 114520720505706928}
   m_Layer: 2
   m_Name: Range
   m_TagString: Tower
@@ -222,22 +222,6 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 15
---- !u!114 &114336476758707470
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1763955375117264}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50ac3801825e69749aacc593142dfc7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 5
-  projectileType: fire
-  projectileSpeed: 2
-  towerRange: 2
-  AttackCooldown: 0.5
 --- !u!114 &114371559271626644
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -259,6 +243,23 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &114520720505706928
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1763955375117264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7664c0eae563d32449d0d58d04389af4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 2
+  projectileType: heal
+  projectileSpeed: 2
+  towerRange: 0
+  target: {fileID: 0}
+  AttackCooldown: 1
 --- !u!114 &114603836621544204
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour {
+public class HProjectile : MonoBehaviour {
 
 
-    private Monster target;
+    private TowerHP target;
     // ref to parent (Tower script)
-    private Tower parent;
+    private TowerHeal parent;
 	// Use this for initialization
 	void Start () {
 		
@@ -15,19 +15,25 @@ public class Projectile : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (target == null)
+        {
+            //delete the projectile
+            GameManager.Instance.Pool.ReleaseObject(gameObject);
+        }
+        else
         MoveToTarget();
-       
+        
     }
 
     //grab references from tower script (parent)
-    public void Initialize(Tower parent)
+    public void Initialize(TowerHeal parent)
     {
         this.target = parent.Target;
         this.parent = parent;
     }
     private void MoveToTarget()
     {
-        if(target !=null && target.IsActive)
+        if(target !=null && target.IsDamaged)
         {
             transform.position = Vector3.MoveTowards(transform.position, target.transform.position, Time.deltaTime * parent.ProjectileSpeed);
 
@@ -38,9 +44,9 @@ public class Projectile : MonoBehaviour {
 
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
-        else if(!target.IsActive)
+        else if(!target.IsDamaged)
         {
-           
+          
             GameManager.Instance.Pool.ReleaseObject(gameObject);
         }
     }
@@ -48,14 +54,14 @@ public class Projectile : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D other)
     {
        
-        if (other.CompareTag("Monster") && gameObject.CompareTag("TowerProj"))
+        if (other.CompareTag("Tower") && gameObject.CompareTag("HealProj"))
         {
            
             if (target.gameObject == other.gameObject)
             {
            
                 Monster hitInfo = other.GetComponent<Monster>();
-                target.TakeDamage(parent.Damage);
+                target.HealUp(parent.Damage);
 
                 //delete the projectile
                 GameManager.Instance.Pool.ReleaseObject(gameObject);

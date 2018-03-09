@@ -18,7 +18,7 @@ public class TileScript : MonoBehaviour {
 
 
     //keeping track of selected towers
-    private Tower myTower;
+    private GameObject myTower;
 
 
     public bool Debugging{ get; set; }
@@ -113,7 +113,7 @@ public class TileScript : MonoBehaviour {
             tower.GetComponent<SpriteRenderer>().sortingOrder = GridPosition.Y+1;
             tower.transform.SetParent(transform);
             // reference to tower for range
-            myTower = tower.transform.GetChild(0).GetComponent<Tower>();
+            myTower = tower;
           
 
             GameManager.Instance.BuyTower();
