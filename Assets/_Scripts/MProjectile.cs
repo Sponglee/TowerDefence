@@ -53,7 +53,7 @@ public class MProjectile : MonoBehaviour {
             if (target.gameObject == other.gameObject)
             {
             
-                TowerHP hitInfo = other.GetComponent<TowerHP>();
+                //TowerHP hitInfo = other.GetComponent<TowerHP>();
                 target.TakeDamage(parent.Damage);
 
                 //delete the projectile

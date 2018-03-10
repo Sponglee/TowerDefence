@@ -21,11 +21,11 @@ GameObject:
   - component: {fileID: 4739348454857274}
   - component: {fileID: 212936533469797006}
   - component: {fileID: 95187391604854226}
-  - component: {fileID: 61517656622394750}
-  - component: {fileID: 114749939501199420}
+  - component: {fileID: 114260818706210214}
+  - component: {fileID: 61308686566559206}
   m_Layer: 0
-  m_Name: monster
-  m_TagString: MonsterProj
+  m_Name: gunman
+  m_TagString: TowerProj
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -37,13 +37,13 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1356663010559574}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.16, y: 2.56, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalPosition: {x: 0.91718125, y: -0.034439564, z: 0}
+  m_LocalScale: {x: 35, y: 10, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61517656622394750
+--- !u!61 &61308686566559206
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -52,21 +52,21 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.16, y: 0}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 10.78, y: 4.82}
-    newSize: {x: 10.78, y: 4.82}
+    oldSize: {x: 0.013, y: 0.013}
+    newSize: {x: 11.47, y: 5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.35, y: 0.65}
+  m_Size: {x: 0.005, y: 0.013}
   m_EdgeRadius: 0
 --- !u!95 &95187391604854226
 Animator:
@@ -85,7 +85,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114749939501199420
+--- !u!114 &114260818706210214
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -93,7 +93,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1356663010559574}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ddb2aa1091dc7e49be2c964799f69ec, type: 3}
+  m_Script: {fileID: 11500000, guid: 75e173e26be27d24081d2b064d1801b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &212936533469797006
@@ -130,12 +130,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: a49ece97bffe78747a9f0486496be269, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 0}
+  m_Sprite: {fileID: 21300000, guid: ada4e4aaf5fa1b242b232c986c9850f4, type: 3}
+  m_Color: {r: 1, g: 0.828, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 10.78, y: 4.82}
+  m_Size: {x: 11.47, y: 5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

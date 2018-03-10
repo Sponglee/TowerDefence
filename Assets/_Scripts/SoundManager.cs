@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour {
     public static AudioClip playerCoinSound;
+    public static AudioClip playerCoinDrop;
     static AudioSource audioSrc;
 
 
 	// Use this for initialization
 	void Start () {
         playerCoinSound = Resources.Load<AudioClip>("coin");
+        playerCoinDrop = Resources.Load<AudioClip>("coinDrop");
         audioSrc = GetComponent<AudioSource>();
 	}
 	
@@ -25,7 +27,9 @@ public class SoundManager : MonoBehaviour {
             case "coin":
                 audioSrc.PlayOneShot(playerCoinSound);
                 break;
-
+            case "drop":
+                audioSrc.PlayOneShot(playerCoinDrop);
+                break;
         }
     }
 }

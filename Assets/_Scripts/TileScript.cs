@@ -87,7 +87,7 @@ public class TileScript : MonoBehaviour {
             else
             {
 
-                GameManager.Instance.DeselectTower();
+                //GameManager.Instance.DeselectTower();
             }
 
         }
@@ -99,7 +99,7 @@ public class TileScript : MonoBehaviour {
     {
         if (!Debugging)
          spriteRenderer.color = Color.white;
-        GameManager.Instance.DeselectTower();
+        //GameManager.Instance.DeselectTower();
     }
 
 

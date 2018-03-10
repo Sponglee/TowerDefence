@@ -99,7 +99,7 @@ public class Monster : MonoBehaviour {
         hp.text = health.ToString();
         Move();
         //If tower died (and is target?)
- 
+
         TowerHP tar = this.GetComponentInChildren<MonsterRange>().Target;
         if (tar != null)
         {
@@ -179,8 +179,10 @@ public class Monster : MonoBehaviour {
         if (boss == 1)
         {
             IsBoss = true;
+            gameObject.transform.GetChild(1).gameObject.SetActive(true);
             health = maxHealth * 10;
             maxHealth = health;
+          
             hp.text = health.ToString();
             StartCoroutine(Scale(new Vector3(0.1f, 0.1f, 0.1f), new Vector3(4f, 4f, 0.1f), false));
         }
@@ -258,7 +260,13 @@ public class Monster : MonoBehaviour {
             
             this.GetComponentInChildren<MonsterRange>().Target = null;
             Release();
-            GameManager.Instance.Lives -= 1;
+            if (IsBoss)
+            {
+                GameManager.Instance.Lives = 0;
+            }
+                
+            else
+                GameManager.Instance.Lives -= 1;
 
             
 
@@ -325,22 +333,31 @@ public class Monster : MonoBehaviour {
             if(health <=0)
             {
               
-                Release();
-                health = maxHealth;
+                
+                
                 if (IsBoss)
                 {
-                    for (int i = 0; i < 15; i++)
-                    {
-                        GameManager.Instance.SpawnMana(this);
-                        GameManager.Instance.backGroundMusic.GetComponent<AudioSource>().Stop();
-                        GameManager.Instance.backMusic = Resources.Load<AudioClip>("YetAnotherJourney");
-                        GameManager.Instance.backGroundMusic.GetComponent<AudioSource>().Play();
-                    }
 
+                    gameObject.GetComponentInChildren<MonsterRange>().anim.SetBool("attack",false);
+                    gameObject.GetComponentInChildren<MonsterRange>().anim.SetTrigger("death");
+                    this.speed = 0.00f;
+                    gameObject.transform.GetChild(1).gameObject.SetActive(false);
+                    this.GetComponentInChildren<MonsterRange>().Target = null;
+                    StartCoroutine(BossMana());
+                    GameManager.Instance.backGroundMusic.GetComponent<AudioSource>().Stop();
+                    GameManager.Instance.backMusic = Resources.Load<AudioClip>("YetAnotherJourney");
+                    GameManager.Instance.backGroundMusic.GetComponent<AudioSource>().Play();
+                    this.speed = 1f;
+                    health = maxHealth;
                 }
                    
                 else
-                GameManager.Instance.SpawnMana(this);
+                {
+                    GameManager.Instance.SpawnMana(this);
+                    Release();
+                }
+                
+
             }
         }
     }
@@ -352,7 +369,20 @@ public class Monster : MonoBehaviour {
         yield return new WaitForSeconds(Random.Range(1f,2f));
     }
 
-   
+   private IEnumerator BossMana()
+    {
+        for (int indexator = 0; indexator < 15; indexator++)
+        {
+            Debug.Log("HEY");
+            GameManager.Instance.SpawnMana(this,1);
+            SoundManager.PlaySound("drop");
+            yield return new WaitForSeconds(Random.Range(0.12f, 0.3f));
+        }
+
+        Release();
+        
+
+    }
 
    
 

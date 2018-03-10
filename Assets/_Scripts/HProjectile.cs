@@ -60,7 +60,7 @@ public class HProjectile : MonoBehaviour {
             if (target.gameObject == other.gameObject)
             {
            
-                Monster hitInfo = other.GetComponent<Monster>();
+                //Monster hitInfo = other.GetComponent<Monster>();
                 target.HealUp(parent.Damage);
 
                 //delete the projectile

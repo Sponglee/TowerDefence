@@ -54,7 +54,7 @@ public class Projectile : MonoBehaviour {
             if (target.gameObject == other.gameObject)
             {
            
-                Monster hitInfo = other.GetComponent<Monster>();
+                //Monster hitInfo = other.GetComponent<Monster>();
                 target.TakeDamage(parent.Damage);
 
                 //delete the projectile
