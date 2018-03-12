@@ -20,7 +20,7 @@ public class Monster : MonoBehaviour {
     [SerializeField]
     public bool IsActive { get; set; }
     //Declare a final path stack to backtrack the path
-    Stack<Node> MonsterlPath = new Stack<Node>();
+    //Stack<Node> MonsterlPath = new Stack<Node>();
 
     MonsterRange monsterRange;
     // id of tower that is being damaged
