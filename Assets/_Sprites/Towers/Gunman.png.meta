@@ -1,43 +1,105 @@
 fileFormatVersion: 2
 guid: 72846bc8ff5bd4f0c9b30589b2a0d31a
-timeCreated: 1432377831
-licenseType: Store
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: $Gunman_E_1_0
-    21300002: $Gunman_E_1_1
-    21300004: $Gunman_E_1_2
-    21300006: $Gunman_E_1_3
-    21300008: $Gunman_E_1_4
-    21300010: $Gunman_E_1_5
-    21300012: $Gunman_E_1_6
-    21300014: $Gunman_E_1_7
-    21300016: $Gunman_E_1_8
-    21300018: $Gunman_E_1_9
-    21300020: $Gunman_E_1_10
-    21300022: $Gunman_E_1_11
-    21300024: $Gunman_E_1_12
-    21300026: $Gunman_E_1_13
-    21300028: $Gunman_E_1_14
-    21300030: $Gunman_E_1_15
-    21300032: Gunman_0
-    21300034: Gunman_1
-    21300036: Gunman_2
-    21300038: Gunman_3
-    21300040: Gunman_4
-    21300042: Gunman_5
-    21300044: Gunman_6
-    21300046: Gunman_7
-    21300048: Gunman_8
-    21300050: Gunman_9
-    21300052: Gunman_10
-    21300054: Gunman_11
-    21300056: Gunman_12
-    21300058: Gunman_13
-    21300060: Gunman_14
-    21300062: Gunman_15
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: $Gunman_E_1_0
+  - first:
+      213: 21300002
+    second: $Gunman_E_1_1
+  - first:
+      213: 21300004
+    second: $Gunman_E_1_2
+  - first:
+      213: 21300006
+    second: $Gunman_E_1_3
+  - first:
+      213: 21300008
+    second: $Gunman_E_1_4
+  - first:
+      213: 21300010
+    second: $Gunman_E_1_5
+  - first:
+      213: 21300012
+    second: $Gunman_E_1_6
+  - first:
+      213: 21300014
+    second: $Gunman_E_1_7
+  - first:
+      213: 21300016
+    second: $Gunman_E_1_8
+  - first:
+      213: 21300018
+    second: $Gunman_E_1_9
+  - first:
+      213: 21300020
+    second: $Gunman_E_1_10
+  - first:
+      213: 21300022
+    second: $Gunman_E_1_11
+  - first:
+      213: 21300024
+    second: $Gunman_E_1_12
+  - first:
+      213: 21300026
+    second: $Gunman_E_1_13
+  - first:
+      213: 21300028
+    second: $Gunman_E_1_14
+  - first:
+      213: 21300030
+    second: $Gunman_E_1_15
+  - first:
+      213: 21300032
+    second: Gunman_0
+  - first:
+      213: 21300034
+    second: Gunman_1
+  - first:
+      213: 21300036
+    second: Gunman_2
+  - first:
+      213: 21300038
+    second: Gunman_3
+  - first:
+      213: 21300040
+    second: Gunman_4
+  - first:
+      213: 21300042
+    second: Gunman_5
+  - first:
+      213: 21300044
+    second: Gunman_6
+  - first:
+      213: 21300046
+    second: Gunman_7
+  - first:
+      213: 21300048
+    second: Gunman_8
+  - first:
+      213: 21300050
+    second: Gunman_9
+  - first:
+      213: 21300052
+    second: Gunman_10
+  - first:
+      213: 21300054
+    second: Gunman_11
+  - first:
+      213: 21300056
+    second: Gunman_12
+  - first:
+      213: 21300058
+    second: Gunman_13
+  - first:
+      213: 21300060
+    second: Gunman_14
+  - first:
+      213: 21300062
+    second: Gunman_15
   externalObjects: {}
-  serializedVersion: 4
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -55,6 +117,8 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -65,7 +129,7 @@ TextureImporter:
     serializedVersion: 2
     filterMode: 0
     aniso: 16
-    mipBias: -1
+    mipBias: -100
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -77,18 +141,22 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
+  singleChannelComponent: 0
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  applyGammaDecoding: 1
   platformSettings:
-  - buildTarget: DefaultTexturePlatform
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -98,6 +166,7 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -115,6 +184,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 04305410000000000800000000000000
+      internalID: 21300032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Gunman_1
       rect:
@@ -129,6 +205,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 24305410000000000800000000000000
+      internalID: 21300034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Gunman_2
       rect:
@@ -143,6 +226,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 44305410000000000800000000000000
+      internalID: 21300036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Gunman_3
       rect:
@@ -157,6 +247,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 64305410000000000800000000000000
+      internalID: 21300038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Gunman_4
       rect:
@@ -171,6 +268,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 84305410000000000800000000000000
+      internalID: 21300040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Gunman_5
       rect:
@@ -185,6 +289,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: a4305410000000000800000000000000
+      internalID: 21300042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Gunman_6
       rect:
@@ -199,6 +310,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c4305410000000000800000000000000
+      internalID: 21300044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Gunman_7
       rect:
@@ -213,6 +331,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: e4305410000000000800000000000000
+      internalID: 21300046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Gunman_8
       rect:
@@ -227,6 +352,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 05305410000000000800000000000000
+      internalID: 21300048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Gunman_9
       rect:
@@ -241,6 +373,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 25305410000000000800000000000000
+      internalID: 21300050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Gunman_10
       rect:
@@ -255,6 +394,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 45305410000000000800000000000000
+      internalID: 21300052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Gunman_11
       rect:
@@ -269,6 +415,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 65305410000000000800000000000000
+      internalID: 21300054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Gunman_12
       rect:
@@ -283,6 +436,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 85305410000000000800000000000000
+      internalID: 21300056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Gunman_13
       rect:
@@ -297,6 +457,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: a5305410000000000800000000000000
+      internalID: 21300058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Gunman_14
       rect:
@@ -311,6 +478,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c5305410000000000800000000000000
+      internalID: 21300060
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Gunman_15
       rect:
@@ -325,9 +499,26 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: e5305410000000000800000000000000
+      internalID: 21300062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
   spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
